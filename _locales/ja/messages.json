@@ -1,0 +1,26 @@
+{
+  "extensionName": {
+    "message": "Live Regions Catcher（ライブリージョン・キャッチャー）"
+  },
+  "extensionDescription": {
+    "message": "Webページ上のARIAライブリージョンの更新とariaNotify()の呼び出しをキャッチし、サイドパネルに時系列で表示します。"
+  },
+  "actionTooltip": {
+    "message": "ライブリージョン・キャッチャーのサイドパネルを開く"
+  },
+  "sidePanelTitle": {
+    "message": "ライブリージョン・キャッチャー"
+  },
+  "sidePanelEmpty": {
+    "message": "まだキャッチはありません。現在のタブのARIAライブリージョンの更新がここに表示されます。"
+  },
+  "optionsDocumentTitle": {
+    "message": "ライブリージョン・キャッチャー — オプション"
+  },
+  "optionsTitle": {
+    "message": "オプション"
+  },
+  "optionsPlaceholder": {
+    "message": "設定項目は今後のバージョンで追加されます。"
+  }
+}

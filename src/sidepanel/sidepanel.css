@@ -1,0 +1,19 @@
+.panel-header {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--color-separator);
+}
+
+.panel-header h1 {
+  margin: 0;
+  font-size: 1.125rem;
+  line-height: 1.4;
+}
+
+.catch-log {
+  padding: 1rem;
+}
+
+.empty-message {
+  margin: 0;
+  color: var(--color-text-subtle);
+}

@@ -1,0 +1,15 @@
+.options-page {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+}
+
+.options-page h1 {
+  margin: 0 0 1rem;
+  font-size: 1.5rem;
+  line-height: 1.4;
+}
+
+.placeholder-message {
+  margin: 0;
+}
