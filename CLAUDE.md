@@ -44,7 +44,7 @@
 
 - ESモジュール不可のため**classicスクリプト**とし、`manifest.json` の記載順（shared → effective-values → accessible-content → dom-path → catch-engine → observer）にロードして `globalThis.LRC` 名前空間を共有する
 - 監視開始は **DOMContentLoaded 後**（パーサー挿入の初期内容は「更新」ではないため）。`run_at: document_start` は ariaNotify() 観測（後続フェーズ）のために維持している
-- `test/demo.html` は手動検証用デモページ。`file://` で使う場合は chrome://extensions で「ファイルの URL へのアクセスを許可する」を有効にすること
+- `docs/index.html` は手動検証用デモページ（リリース後に https://securecat.github.io/live-regions-catcher/ として GitHub Pages で公開予定）。`file://` で使う場合は chrome://extensions で「ファイルの URL へのアクセスを許可する」を有効にすること
 
 ## UI 文言（仕様書 §22）
 
