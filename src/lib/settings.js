@@ -10,9 +10,11 @@ export const DEFAULT_SETTINGS = {
   catchEmpty: true,
   catchIframes: true,
   catchShadowDom: true,
+  catchAriaNotify: true,
   batchMode: 'batch', // 'batch' | 'individual' (spec §16.3)
   batchWindowMs: 100,
   busyHandling: 'respect', // 'respect' | 'record' (spec §16.4)
+  modalHandling: 'note-outside', // 'catch-outside' | 'ignore-outside' | 'note-outside' (spec §16.5)
   timePrecision: 'seconds', // 'seconds' | 'milliseconds' (spec §16.6)
   detailsInitiallyOpen: false,
   duplicateHandling: 'all', // 'all' | 'collapse' | 'count' (spec §12.5)

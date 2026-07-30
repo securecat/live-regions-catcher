@@ -49,9 +49,11 @@ LRC.DEFAULT_SETTINGS = {
   catchEmpty: true, // spec §7.4
   catchIframes: true,
   catchShadowDom: true,
+  catchAriaNotify: true, // spec §4.3
   batchMode: 'batch', // 'batch' | 'individual' (spec §10)
   batchWindowMs: 100,
   busyHandling: 'respect', // 'respect' | 'record' (spec §6.4)
+  modalHandling: 'note-outside', // 'catch-outside' | 'ignore-outside' | 'note-outside' (spec §11.2)
   debug: false
 };
 

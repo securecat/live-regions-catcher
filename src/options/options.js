@@ -16,9 +16,11 @@ function reflect(settings) {
   form.elements.catchEmpty.checked = settings.catchEmpty;
   form.elements.catchIframes.checked = settings.catchIframes;
   form.elements.catchShadowDom.checked = settings.catchShadowDom;
+  form.elements.catchAriaNotify.checked = settings.catchAriaNotify;
   form.elements.batchMode.value = settings.batchMode;
   form.elements.batchWindowMs.value = String(settings.batchWindowMs);
   form.elements.busyHandling.value = settings.busyHandling;
+  form.elements.modalHandling.value = settings.modalHandling;
   form.elements.timePrecision.value = settings.timePrecision;
   form.elements.detailsInitial.value = settings.detailsInitiallyOpen ? 'open' : 'closed';
   form.elements.duplicateHandling.value = settings.duplicateHandling;
@@ -37,11 +39,13 @@ function collect() {
     catchEmpty: form.elements.catchEmpty.checked,
     catchIframes: form.elements.catchIframes.checked,
     catchShadowDom: form.elements.catchShadowDom.checked,
+    catchAriaNotify: form.elements.catchAriaNotify.checked,
     batchMode: form.elements.batchMode.value,
     batchWindowMs: Number.isFinite(windowMs)
       ? Math.min(Math.max(windowMs, min), max)
       : DEFAULT_SETTINGS.batchWindowMs,
     busyHandling: form.elements.busyHandling.value,
+    modalHandling: form.elements.modalHandling.value,
     timePrecision: form.elements.timePrecision.value,
     detailsInitiallyOpen: form.elements.detailsInitial.value === 'open',
     duplicateHandling: form.elements.duplicateHandling.value,

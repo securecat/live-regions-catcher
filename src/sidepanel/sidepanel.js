@@ -201,27 +201,34 @@ function renderDetails(record) {
   };
 
   const none = t('valueNone');
-  const explicit = record.explicit ?? {};
-  const effective = record.effective ?? {};
-  const pair = (explicitValue, effectiveValue) =>
-    `${explicitValue ?? none} / ${effectiveValue}`;
+  const isAriaNotify = record.sourceType === 'aria-notify';
 
-  addCodeRow('role', explicit.role ?? none);
-  addCodeRow(`aria-live (${t('detailExplicit')} / ${t('detailEffective')})`, pair(explicit.ariaLive, effective.live ?? record.politeness));
-  addCodeRow(`aria-atomic (${t('detailExplicit')} / ${t('detailEffective')})`, pair(explicit.ariaAtomic, String(effective.atomic ?? false)));
-  addCodeRow(`aria-relevant (${t('detailExplicit')} / ${t('detailEffective')})`, pair(explicit.ariaRelevant, (effective.relevant ?? []).join(' ')));
-  if (explicit.ariaBusy) {
-    addCodeRow('aria-busy', explicit.ariaBusy);
+  if (isAriaNotify) {
+    addCodeRow(t('detailTargetType'), record.targetType ?? t('valueUnknown'));
+    addCodeRow(t('detailPriority'), record.priority ?? 'normal');
+  } else {
+    const explicit = record.explicit ?? {};
+    const effective = record.effective ?? {};
+    const pair = (explicitValue, effectiveValue) =>
+      `${explicitValue ?? none} / ${effectiveValue}`;
+
+    addCodeRow('role', explicit.role ?? none);
+    addCodeRow(`aria-live (${t('detailExplicit')} / ${t('detailEffective')})`, pair(explicit.ariaLive, effective.live ?? record.politeness));
+    addCodeRow(`aria-atomic (${t('detailExplicit')} / ${t('detailEffective')})`, pair(explicit.ariaAtomic, String(effective.atomic ?? false)));
+    addCodeRow(`aria-relevant (${t('detailExplicit')} / ${t('detailEffective')})`, pair(explicit.ariaRelevant, (effective.relevant ?? []).join(' ')));
+    if (explicit.ariaBusy) {
+      addCodeRow('aria-busy', explicit.ariaBusy);
+    }
+
+    const changeTypeNames = {
+      additions: t('changeTypeAdditions'),
+      removals: t('changeTypeRemovals'),
+      text: t('changeTypeText')
+    };
+    addRow(t('detailChangeTypes'), (dd) => {
+      dd.textContent = (record.changeTypes ?? []).map((type) => changeTypeNames[type] ?? type).join(', ') || none;
+    });
   }
-
-  const changeTypeNames = {
-    additions: t('changeTypeAdditions'),
-    removals: t('changeTypeRemovals'),
-    text: t('changeTypeText')
-  };
-  addRow(t('detailChangeTypes'), (dd) => {
-    dd.textContent = (record.changeTypes ?? []).map((type) => changeTypeNames[type] ?? type).join(', ') || none;
-  });
 
   addRow(t('detailTime'), (dd) => {
     const first = record.firstTimestamp ?? record.timestamp;
@@ -230,9 +237,16 @@ function renderDetails(record) {
       ? formatTimeDetailed(last)
       : `${formatTimeDetailed(first)} – ${formatTimeDetailed(last)}`;
   });
-  addRow(t('detailMutationCount'), (dd) => {
-    dd.textContent = String(record.mutationCount ?? 1);
-  });
+  if (!isAriaNotify) {
+    addRow(t('detailMutationCount'), (dd) => {
+      dd.textContent = String(record.mutationCount ?? 1);
+    });
+  }
+  if (record.modalPosition === 'inside' || record.modalPosition === 'outside') {
+    addRow(t('detailModalPosition'), (dd) => {
+      dd.textContent = t(record.modalPosition === 'inside' ? 'modalInside' : 'modalOutside');
+    });
+  }
 
   if (record.source?.domPath) {
     addCodeRow(t('detailDomPath'), record.source.domPath);
@@ -307,18 +321,26 @@ function renderItem(record, count = 1) {
   const meta = document.createElement('p');
   meta.className = 'catch-meta';
 
-  // politeness and role are ARIA tokens and are never localized (spec §15.2).
+  // politeness, role, and ariaNotify are tokens and are never localized
+  // (spec §15.2).
+  const isAriaNotify = record.sourceType === 'aria-notify';
   const politeness = document.createElement('span');
   politeness.className = 'chip catch-politeness';
   politeness.dataset.politeness = record.politeness;
-  politeness.textContent = record.politeness;
+  politeness.textContent = isAriaNotify ? 'ariaNotify()' : record.politeness;
   meta.append(politeness);
 
+  if (isAriaNotify && record.priority === 'high') {
+    meta.append(chip(t('chipHighPriority')));
+  }
   if (record.role) {
     const role = document.createElement('span');
     role.className = 'catch-token';
     role.textContent = `role="${record.role}"`;
     meta.append(role);
+  }
+  if (record.modalPosition === 'outside') {
+    meta.append(chip(t('chipOutsideModal')));
   }
   if (record.emptyContent) {
     meta.append(chip(t('chipEmpty')));

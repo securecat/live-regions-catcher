@@ -77,6 +77,24 @@
       border: 1px solid var(--color-region-border);
       margin-top: 0.75rem;
     }
+
+    .demo-modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      max-width: 22rem;
+      width: calc(100% - 2rem);
+      background: var(--color-bg);
+      border: 2px solid var(--color-region-border);
+      padding: 1rem;
+      z-index: 10;
+    }
+
+    .demo-modal h3 {
+      margin-top: 0;
+      font-size: 1.125rem;
+    }
   </style>
 </head>
 <body>
@@ -139,8 +157,28 @@
   <button type="button" id="off-conflict-update">Update muted status region</button>
   <div class="region" role="status" aria-live="off" id="off-conflict"></div>
 
-  <h2>13. iframe</h2>
-  <iframe id="frame" title="Live region demo iframe" srcdoc='<!DOCTYPE html><html lang="en"><body style="font-family:sans-serif;font-size:16px;background:#ffffff;color:#1b1b1f;"><button type="button" id="b">Update status in iframe</button><div role="status" id="s" style="border:1px solid #767676;padding:4px 8px;margin-top:8px;min-height:2rem;"></div><script>document.getElementById("b").addEventListener("click", () => { document.getElementById("s").textContent = "Updated inside iframe at " + new Date().toLocaleTimeString(); });</script></body></html>'></iframe>
+  <h2>13. Modal dialog and an outside notification</h2>
+  <p>While the modal is open, the status region below it updates after 1 second. Handling is configurable in the extension's options.</p>
+  <button type="button" id="open-modal">Open modal dialog</button>
+  <div class="region" role="status" id="modal-outside-status"></div>
+  <div class="demo-modal" id="demo-modal" role="dialog" aria-modal="true" aria-labelledby="demo-modal-title" hidden>
+    <h3 id="demo-modal-title">Demo modal</h3>
+    <p>A status update fires outside this modal 1 second after it opens.</p>
+    <button type="button" id="close-modal">Close</button>
+  </div>
+
+  <h2>14. ariaNotify()</h2>
+  <p id="arianotify-support"></p>
+  <button type="button" id="notify-normal">document.ariaNotify() (normal)</button>
+  <button type="button" id="notify-high">element.ariaNotify() (high priority)</button>
+
+  <h2>15. Shadow root attached after connection</h2>
+  <p>The host is inserted first; an open shadow root with a status region is attached afterwards, then updated.</p>
+  <button type="button" id="late-shadow">Attach shadow root, then update</button>
+  <div class="region" id="late-shadow-host"></div>
+
+  <h2>16. iframe</h2>
+  <iframe id="frame" title="Live region demo iframe" loading="lazy" srcdoc='<!DOCTYPE html><html lang="en"><body style="font-family:sans-serif;font-size:16px;background:#ffffff;color:#1b1b1f;"><button type="button" id="b">Update status in iframe</button><div role="status" id="s" style="border:1px solid #767676;padding:4px 8px;margin-top:8px;min-height:2rem;"></div><script>document.getElementById("b").addEventListener("click", () => { document.getElementById("s").textContent = "Updated inside iframe at " + new Date().toLocaleTimeString(); });</script></body></html>'></iframe>
 
   <script>
     const byId = (id) => document.getElementById(id);
@@ -218,6 +256,52 @@
 
     byId('off-conflict-update').addEventListener('click', () => {
       byId('off-conflict').textContent = `Muted update at ${time()}`;
+    });
+
+    byId('open-modal').addEventListener('click', () => {
+      byId('demo-modal').hidden = false;
+      byId('close-modal').focus();
+      setTimeout(() => {
+        byId('modal-outside-status').textContent = `Updated outside the modal at ${time()}`;
+      }, 1000);
+    });
+
+    byId('close-modal').addEventListener('click', () => {
+      byId('demo-modal').hidden = true;
+      byId('open-modal').focus();
+    });
+
+    if (typeof document.ariaNotify === 'function') {
+      byId('arianotify-support').textContent = 'ariaNotify() is available in this browser.';
+    } else {
+      byId('arianotify-support').textContent = 'ariaNotify() is not available in this browser; these buttons will do nothing.';
+    }
+
+    byId('notify-normal').addEventListener('click', () => {
+      if (typeof document.ariaNotify === 'function') {
+        document.ariaNotify(`Notified via document.ariaNotify at ${time()}`);
+      }
+    });
+
+    byId('notify-high').addEventListener('click', () => {
+      const button = byId('notify-high');
+      if (typeof button.ariaNotify === 'function') {
+        button.ariaNotify(`High priority notification at ${time()}`, { priority: 'high' });
+      }
+    });
+
+    byId('late-shadow').addEventListener('click', () => {
+      const host = byId('late-shadow-host');
+      let lateStatus = host.shadowRoot?.querySelector('[role="status"]');
+      if (!lateStatus) {
+        const lateRoot = host.attachShadow({ mode: 'open' });
+        lateStatus = document.createElement('div');
+        lateStatus.setAttribute('role', 'status');
+        lateRoot.append(lateStatus);
+      }
+      setTimeout(() => {
+        lateStatus.textContent = `Updated in a late-attached shadow at ${time()}`;
+      }, 200);
     });
   </script>
 </body>

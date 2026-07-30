@@ -61,8 +61,15 @@
 
 - 保存先は `chrome.storage.local` のキー `settings`（既定値・スキーマは `src/lib/settings.js`。コンテンツスクリプト側は `src/content/shared.js` の `LRC.DEFAULT_SETTINGS` と**同期を保つこと**）
 - Optionsページは変更を即時自動保存し、各サーフェス（パネル・コンテンツスクリプト・SW）は `storage.onChanged` で追従する
-- **未実装の§16項目**（該当フェーズで追加）：ariaNotify()のキャッチ対象・モーダル設定（→段階6）、未確認の既読タイミング4種・保持期間「ブラウザを閉じるまで／手動まで」（→項目単位の既読UIやログブラウザが必要になったタイミング）
+- **未実装の§16項目**（該当フェーズで追加）：未確認の既読タイミング4種・保持期間「ブラウザを閉じるまで／手動まで」（→項目単位の既読UIやログブラウザが必要になったタイミング）
 - Optionsページ最下部には `<hr>` ＋ GitHub Issues への報告案内リンクを必ず置く（Yuさん指定。en/jaでローカライズ）
+
+## MAIN world フック（`src/content/page-hooks.js`）
+
+- `world: "MAIN"` のコンテンツスクリプトで `ariaNotify()`（Document/Element）と `attachShadow()`（openのみ）をラップし、DOMイベントで ISOLATED 側へ通知する
+  - イベント名：`lrc-arianotify`（detailは**JSON文字列**。オブジェクトはworld境界を越えないため）／`lrc-attachshadow`（detailなし、hostがtarget）
+  - ラッパーは元メソッドを必ず呼び、this・引数・戻り値・例外を変更しない（仕様書§4.4）。例外は記録したうえで再throwする
+- モーダル判定（§11.3）は「表示中の `aria-modal="true"` な dialog/alertdialog のうちスキャン順で最後のもの」というヒューリスティック。「本拡張が判定したモーダル」として扱う
 
 ## パイプライン（content → Service Worker → サイドパネル）
 

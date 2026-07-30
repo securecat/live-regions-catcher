@@ -60,6 +60,11 @@ form label {
   color: var(--color-error-text);
 }
 
+.field-note {
+  margin: 0 0 0.25rem;
+  color: var(--color-text-subtle);
+}
+
 .reset-all-row {
   margin: 2.5rem 0 0;
 }

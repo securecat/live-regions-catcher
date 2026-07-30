@@ -46,6 +46,82 @@
   }
 
   const engine = LRC.createEngine(settings, emit);
+  let notifyCounter = 0;
+
+  // ariaNotify() calls observed by the MAIN-world hook (spec §4.3, §4.4).
+  // Capture phase so page-level stopPropagation cannot swallow the event.
+  document.addEventListener(
+    'lrc-arianotify',
+    (event) => {
+      if (!settings.catchAriaNotify) {
+        return;
+      }
+      let detail = {};
+      try {
+        detail = JSON.parse(typeof event.detail === 'string' ? event.detail : '{}') ?? {};
+      } catch {
+        detail = {};
+      }
+      const target = event.target instanceof Element ? event.target : null;
+      const referenceNode = target ?? document.documentElement;
+      const modalPosition = referenceNode ? engine.modalPositionFor(referenceNode) : 'none';
+      const notes = [];
+      if (modalPosition === 'outside') {
+        if (settings.modalHandling === 'ignore-outside') {
+          return;
+        }
+        if (settings.modalHandling === 'note-outside') {
+          notes.push('outside-modal');
+        }
+      }
+      if (detail.threw) {
+        notes.push('arianotify-call-failed');
+      }
+      const content = typeof detail.message === 'string' ? detail.message : '';
+      if (!content.trim() && !settings.catchEmpty) {
+        return;
+      }
+      const contentLanguage = referenceNode ? LRC.nearestLang(referenceNode) : null;
+      if (!contentLanguage) {
+        notes.push('content-language-unknown');
+      }
+      if (!content.trim()) {
+        notes.push('empty-content');
+      }
+      notifyCounter += 1;
+      emit({
+        id: `notify-${notifyCounter}-${Math.random().toString(36).slice(2, 8)}`,
+        sourceType: 'aria-notify',
+        timestamp: new Date().toISOString(),
+        content,
+        emptyContent: !content.trim(),
+        priority: detail.priority === 'high' ? 'high' : 'normal',
+        politeness: detail.priority === 'high' ? 'assertive' : 'polite',
+        targetType: target ? 'element' : 'document',
+        source: target
+          ? LRC.buildSourceInfo(target)
+          : { domPath: '#document', inShadowDom: false, tagName: null, elementId: null },
+        contentLanguage,
+        direction: referenceNode ? LRC.nearestDir(referenceNode) : null,
+        modalPosition,
+        notes
+      });
+    },
+    true
+  );
+
+  // Open shadow roots attached after the host is connected (spec §5.2, §5.4);
+  // detached hosts are covered by childList detection when inserted.
+  document.addEventListener(
+    'lrc-attachshadow',
+    (event) => {
+      const host = event.target;
+      if (settings.catchShadowDom && host instanceof Element && host.shadowRoot) {
+        engine.observeShadowRoot(host.shadowRoot);
+      }
+    },
+    true
+  );
 
   try {
     chrome.storage.onChanged.addListener((changes, area) => {

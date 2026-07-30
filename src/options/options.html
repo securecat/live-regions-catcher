@@ -27,6 +27,8 @@
         <label><input type="checkbox" name="catchEmpty"> <span data-msg="targetEmpty">Empty notifications</span></label>
         <label><input type="checkbox" name="catchIframes"> <span data-msg="targetIframes">Notifications inside iframes</span></label>
         <label><input type="checkbox" name="catchShadowDom"> <span data-msg="targetShadowDom">Notifications inside open shadow DOM</span></label>
+        <label><input type="checkbox" name="catchAriaNotify"> <span data-msg="targetAriaNotify">ariaNotify() calls</span></label>
+        <p class="sub-option field-note" data-msg="ariaNotifyNote">Calls made before the observer is injected, or in browsers without the API, cannot be caught.</p>
       </fieldset>
 
       <fieldset>
@@ -41,6 +43,13 @@
         <legend data-msg="sectionBusy">aria-busy</legend>
         <label><input type="radio" name="busyHandling" value="respect"> <span data-msg="busyRespect">Respect aria-busy and hold catches until it clears</span></label>
         <label><input type="radio" name="busyHandling" value="record"> <span data-msg="busyRecord">Record changes during aria-busy too</span></label>
+      </fieldset>
+
+      <fieldset>
+        <legend data-msg="sectionModal">Modal dialogs</legend>
+        <label><input type="radio" name="modalHandling" value="catch-outside"> <span data-msg="modalCatchOutside">Catch notifications outside the active modal</span></label>
+        <label><input type="radio" name="modalHandling" value="ignore-outside"> <span data-msg="modalIgnoreOutside">Do not catch notifications outside the active modal</span></label>
+        <label><input type="radio" name="modalHandling" value="note-outside"> <span data-msg="modalNoteOutside">Catch both and add a note to outside notifications</span></label>
       </fieldset>
 
       <fieldset class="section-group">

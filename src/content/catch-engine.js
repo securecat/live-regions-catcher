@@ -49,7 +49,11 @@
     const pendingBatches = new Map(); // region root -> batch
     const heldBatches = new Map(); // region root -> batch held while aria-busy
     const lastContent = new WeakMap(); // region root -> last computed content
+    const assertiveTimes = []; // recent assertive catch times (spec §19 burst note)
     let catchCounter = 0;
+
+    const ASSERTIVE_BURST_WINDOW_MS = 10000;
+    const ASSERTIVE_BURST_THRESHOLD = 5;
 
     const OBSERVER_INIT = {
       subtree: true,
@@ -365,8 +369,27 @@
       }
     }
 
+    function modalPositionFor(node) {
+      const modal = LRC.findActiveModal(observers.keys());
+      if (!modal) {
+        return 'none';
+      }
+      return LRC.isInsideModal(node, modal) ? 'inside' : 'outside';
+    }
+
     function emitBatch(root, batch) {
       const notes = new Set(batch.notes);
+
+      const modalPosition = modalPositionFor(root);
+      if (modalPosition === 'outside') {
+        if (settings.modalHandling === 'ignore-outside') {
+          return;
+        }
+        if (settings.modalHandling === 'note-outside') {
+          notes.add('outside-modal');
+        }
+      }
+
       const relevantInfo = LRC.effectiveRelevant(root);
       if (relevantInfo.invalidTokens.length > 0) {
         notes.add('invalid-aria-relevant');
@@ -397,7 +420,7 @@
       const atomic = LRC.effectiveAtomic(root);
       const groups = settings.batchMode === 'individual' ? splitByKind(changes) : [changes];
       for (const group of groups) {
-        emitCatch(root, batch, group, { notes, atomic, relevantInfo, previous, current });
+        emitCatch(root, batch, group, { notes, atomic, relevantInfo, previous, current, modalPosition });
       }
     }
 
@@ -434,6 +457,21 @@
         itemNotes.add('empty-content');
       }
 
+      const contentLanguage = LRC.nearestLang(root);
+      if (!contentLanguage) {
+        itemNotes.add('content-language-unknown');
+      }
+
+      if (batch.region.politeness === 'assertive') {
+        assertiveTimes.push(batch.lastTime);
+        while (assertiveTimes.length > 0 && assertiveTimes[0] < batch.lastTime - ASSERTIVE_BURST_WINDOW_MS) {
+          assertiveTimes.shift();
+        }
+        if (assertiveTimes.length >= ASSERTIVE_BURST_THRESHOLD) {
+          itemNotes.add('assertive-burst');
+        }
+      }
+
       catchCounter += 1;
       onCatch({
         id: `catch-${catchCounter}-${Math.random().toString(36).slice(2, 8)}`,
@@ -458,8 +496,9 @@
         previousContent: context.previous,
         changes: changes.map(serializeChange),
         source: LRC.buildSourceInfo(root),
-        contentLanguage: LRC.nearestLang(root),
+        contentLanguage,
         direction: LRC.nearestDir(root),
+        modalPosition: context.modalPosition,
         notes: [...itemNotes]
       });
     }
@@ -494,7 +533,12 @@
       // Re-walks the tree, e.g. after shadow DOM observation is re-enabled.
       rescan() {
         observeTree(document);
-      }
+      },
+      // Starts observing a shadow root reported by the attachShadow hook.
+      observeShadowRoot(root) {
+        observeTree(root);
+      },
+      modalPositionFor
     };
   };
 })();
