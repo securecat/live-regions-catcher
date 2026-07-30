@@ -56,11 +56,11 @@ A demo page covering the typical scenarios is included at [docs/index.html](http
 
 See [CHANGELOG.md](./CHANGELOG.md) for the full history.
 
-### [1.0.0] - 2026-07-31
+### [1.0.1] - 2026-07-31
 
-#### Added
+#### Changed
 
-- Initial release
+- Adjusted the extension icon colors
 
 ---
 
@@ -122,8 +122,8 @@ Webページ上のARIAライブリージョンの更新と `ariaNotify()` の呼
 
 全履歴は [CHANGELOG.md](./CHANGELOG.md) を参照してください。
 
-### [1.0.0] - 2026-07-31
+### [1.0.1] - 2026-07-31
 
-#### 追加
+#### 変更
 
-- 初回リリース
+- 拡張機能アイコンの配色を調整

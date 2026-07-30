@@ -2,6 +2,12 @@
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.0.1] - 2026-07-31
+
+### Changed
+
+- Adjusted the extension icon colors
+
 ## [1.0.0] - 2026-07-31
 
 ### Added
@@ -23,6 +29,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 # 更新履歴
 
 このファイルは [Keep a Changelog](https://keepachangelog.com/ja/1.1.0/) の形式に基づき、プロジェクトは [Semantic Versioning](https://semver.org/lang/ja/) に従います。
+
+## [1.0.1] - 2026-07-31
+
+### 変更
+
+- 拡張機能アイコンの配色を調整
 
 ## [1.0.0] - 2026-07-31
 
