@@ -46,6 +46,13 @@
 - 監視開始は **DOMContentLoaded 後**（パーサー挿入の初期内容は「更新」ではないため）。`run_at: document_start` は ariaNotify() 観測（後続フェーズ）のために維持している
 - `docs/index.html` は手動検証用デモページ（リリース後に https://securecat.github.io/live-regions-catcher/ として GitHub Pages で公開予定）。`file://` で使う場合は chrome://extensions で「ファイルの URL へのアクセスを許可する」を有効にすること
 
+## パイプライン（content → Service Worker → サイドパネル）
+
+- メッセージ：`lrc:catch`（content → SW）、`lrc:mark-read`（パネル → SW）
+- 保存：`chrome.storage.session` にタブ単位で `catches:<tabId>` / `unread:<tabId>`。上限は1タブ1000件（超過分は古い順に破棄）。タブを閉じると削除（仕様書 §16.8 の初期値）
+- サイドパネルは storage.session を直接読み、`onChanged` で追従する。バッジ更新はSWのみが行う
+- バッジ：未確認件数（99超は `99+`）。背景色は通常 `#1a56a8`／assertive含む `#b3261e`（文字は白）
+
 ## UI 文言（仕様書 §22）
 
 - 使用する：キャッチ／通知／通知内容／通知候補／通知元／実効値 など

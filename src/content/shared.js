@@ -47,7 +47,7 @@ LRC.DEFAULT_SETTINGS = {
   batchWindowMs: 100,
   busyHandling: 'respect', // 'respect' | 'record' (spec §6.4)
   catchEmpty: true, // spec §7.4
-  debug: true
+  debug: false
 };
 
 LRC.isLivePoliteness = (value) => value === 'polite' || value === 'assertive';
