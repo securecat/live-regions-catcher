@@ -1,7 +1,13 @@
-import { applyI18n, setLanguage } from '../lib/i18n.js';
-import { loadSettings, saveSettings, onSettingsChanged } from '../lib/settings.js';
+import { applyI18n, setLanguage, t } from '../lib/i18n.js';
+import { BATCH_WINDOW_LIMITS, DEFAULT_SETTINGS, loadSettings, saveSettings, onSettingsChanged } from '../lib/settings.js';
 
 const form = document.getElementById('settings-form');
+const windowInput = form.elements.batchWindowMs;
+const windowError = document.getElementById('batch-window-error');
+const windowReset = document.getElementById('batch-window-reset');
+
+windowInput.min = String(BATCH_WINDOW_LIMITS.min);
+windowInput.max = String(BATCH_WINDOW_LIMITS.max);
 
 function reflect(settings) {
   form.elements.language.value = settings.language;
@@ -22,7 +28,8 @@ function reflect(settings) {
 }
 
 function collect() {
-  const windowMs = Number.parseInt(form.elements.batchWindowMs.value, 10);
+  const { min, max } = BATCH_WINDOW_LIMITS;
+  const windowMs = Number.parseInt(windowInput.value, 10);
   return {
     language: form.elements.language.value,
     catchExplicit: form.elements.catchExplicit.checked,
@@ -31,7 +38,9 @@ function collect() {
     catchIframes: form.elements.catchIframes.checked,
     catchShadowDom: form.elements.catchShadowDom.checked,
     batchMode: form.elements.batchMode.value,
-    batchWindowMs: Number.isFinite(windowMs) ? Math.min(Math.max(windowMs, 0), 2000) : 100,
+    batchWindowMs: Number.isFinite(windowMs)
+      ? Math.min(Math.max(windowMs, min), max)
+      : DEFAULT_SETTINGS.batchWindowMs,
     busyHandling: form.elements.busyHandling.value,
     timePrecision: form.elements.timePrecision.value,
     detailsInitiallyOpen: form.elements.detailsInitial.value === 'open',
@@ -47,7 +56,47 @@ function collect() {
 function applyLanguage(language) {
   setLanguage(language);
   applyI18n();
+  windowReset.textContent = t('mutationWindowReset', { default: DEFAULT_SETTINGS.batchWindowMs });
 }
+
+function showWindowError(key, substitutions) {
+  windowError.textContent = t(key, substitutions);
+  windowError.hidden = false;
+}
+
+// The error stays visible until the user starts editing the field again
+// (feedback messages are never auto-dismissed).
+function clearWindowError() {
+  windowError.hidden = true;
+  windowError.textContent = '';
+}
+
+windowInput.addEventListener('input', clearWindowError);
+
+windowInput.addEventListener('focusout', async () => {
+  const { min, max } = BATCH_WINDOW_LIMITS;
+  const raw = windowInput.value.trim();
+  const value = Number.parseInt(raw, 10);
+  if (raw === '' || Number.isNaN(value)) {
+    windowInput.value = String(min);
+    showWindowError('mutationWindowErrorEmpty', { min });
+  } else if (value < min) {
+    windowInput.value = String(min);
+    showWindowError('mutationWindowErrorBelowMin', { min });
+  } else if (value > max) {
+    windowInput.value = String(max);
+    showWindowError('mutationWindowErrorAboveMax', { max });
+  } else {
+    return; // valid values are saved by the form's change handler
+  }
+  await saveSettings(collect());
+});
+
+windowReset.addEventListener('click', async () => {
+  windowInput.value = String(DEFAULT_SETTINGS.batchWindowMs);
+  clearWindowError();
+  await saveSettings(collect());
+});
 
 form.addEventListener('change', async () => {
   const settings = collect();

@@ -45,6 +45,28 @@ form label {
   margin-inline-start: 1.75rem;
 }
 
+.field-error {
+  margin: 0.25rem 0 0;
+  color: var(--color-error-text);
+}
+
+.reset-row {
+  margin: 0.375rem 0 0;
+}
+
+.inline-button {
+  font: inherit;
+  padding: 0.25rem 0.75rem;
+  background: var(--color-bg);
+  color: var(--color-text);
+  border: 1px solid var(--color-control-border);
+  border-radius: 0.375rem;
+}
+
+.inline-button:hover {
+  border-color: var(--color-text);
+}
+
 input[type="number"] {
   font: inherit;
   width: 6.5rem;

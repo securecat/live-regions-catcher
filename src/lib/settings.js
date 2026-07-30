@@ -1,6 +1,8 @@
 // Settings storage (chrome.storage.local, key "settings").
 // Content scripts cannot import this module; keep LRC.DEFAULT_SETTINGS in
 // src/content/shared.js in sync for the keys the engine consumes.
+export const BATCH_WINDOW_LIMITS = { min: 0, max: 2000 };
+
 export const DEFAULT_SETTINGS = {
   language: 'auto', // 'auto' | 'en' | 'ja' (spec §16.1)
   catchExplicit: true, // spec §16.2
