@@ -32,8 +32,8 @@
       <fieldset>
         <legend data-msg="sectionMutation">Mutation handling</legend>
         <label><input type="radio" name="batchMode" value="batch"> <span data-msg="mutationBatch">Group related changes within a short interval</span></label>
+        <label class="number-label sub-option"><span data-msg="mutationWindow">Grouping interval (milliseconds)</span> <input type="number" name="batchWindowMs" min="0" max="2000" step="10"></label>
         <label><input type="radio" name="batchMode" value="individual"> <span data-msg="mutationIndividual">Handle changes individually</span></label>
-        <label class="number-label"><span data-msg="mutationWindow">Grouping interval (milliseconds)</span> <input type="number" name="batchWindowMs" min="0" max="2000" step="10"></label>
       </fieldset>
 
       <fieldset>
