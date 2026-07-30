@@ -192,6 +192,16 @@
   text-decoration-thickness: 0.125em;
 }
 
+/* Forced colors strip the tinted backgrounds; the underline styles,
+   strikethrough, and visible chip labels carry the distinction alone. */
+@media (forced-colors: active) {
+  .diff-added,
+  .diff-changed,
+  .diff-removed {
+    background: transparent;
+  }
+}
+
 .catch-details {
   margin-top: 0.5rem;
   border-top: 1px solid var(--color-separator);
