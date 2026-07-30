@@ -34,7 +34,6 @@
         <label><input type="radio" name="batchMode" value="batch"> <span data-msg="mutationBatch">Group related changes within a short interval</span></label>
         <label class="number-label sub-option"><span data-msg="mutationWindow">Grouping interval (milliseconds)</span> <input type="number" name="batchWindowMs" min="0" max="2000" step="10" aria-describedby="batch-window-error"></label>
         <p class="field-error sub-option" id="batch-window-error" role="status" hidden></p>
-        <p class="sub-option reset-row"><button type="button" id="batch-window-reset" class="inline-button">Reset to default (100 ms)</button></p>
         <label><input type="radio" name="batchMode" value="individual"> <span data-msg="mutationIndividual">Handle changes individually</span></label>
       </fieldset>
 
@@ -84,6 +83,8 @@
         <legend data-msg="sectionDeveloper">Developer</legend>
         <label><input type="checkbox" name="debug"> <span data-msg="debugLabel">Log catches to the page console</span></label>
       </fieldset>
+
+      <p class="reset-all-row"><button type="button" id="reset-all" class="danger-button" data-msg="resetAll">Reset all settings to their defaults</button></p>
     </form>
 
     <hr>

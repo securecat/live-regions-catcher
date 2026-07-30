@@ -1,3 +1,13 @@
+:root {
+  --color-danger-hover-bg: #f6dcdc;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-danger-hover-bg: #4a2626;
+  }
+}
+
 .options-page {
   max-width: 40rem;
   margin: 0 auto;
@@ -50,21 +60,21 @@ form label {
   color: var(--color-error-text);
 }
 
-.reset-row {
-  margin: 0.375rem 0 0;
+.reset-all-row {
+  margin: 2.5rem 0 0;
 }
 
-.inline-button {
+.danger-button {
   font: inherit;
-  padding: 0.25rem 0.75rem;
+  padding: 0.375rem 1rem;
   background: var(--color-bg);
-  color: var(--color-text);
-  border: 1px solid var(--color-control-border);
+  color: var(--color-error-text);
+  border: 1px solid var(--color-error-text);
   border-radius: 0.375rem;
 }
 
-.inline-button:hover {
-  border-color: var(--color-text);
+.danger-button:hover {
+  background: var(--color-danger-hover-bg);
 }
 
 input[type="number"] {

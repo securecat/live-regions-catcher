@@ -4,7 +4,7 @@ import { BATCH_WINDOW_LIMITS, DEFAULT_SETTINGS, loadSettings, saveSettings, onSe
 const form = document.getElementById('settings-form');
 const windowInput = form.elements.batchWindowMs;
 const windowError = document.getElementById('batch-window-error');
-const windowReset = document.getElementById('batch-window-reset');
+const resetAllButton = document.getElementById('reset-all');
 
 windowInput.min = String(BATCH_WINDOW_LIMITS.min);
 windowInput.max = String(BATCH_WINDOW_LIMITS.max);
@@ -56,7 +56,6 @@ function collect() {
 function applyLanguage(language) {
   setLanguage(language);
   applyI18n();
-  windowReset.textContent = t('mutationWindowReset', { default: DEFAULT_SETTINGS.batchWindowMs });
 }
 
 function showWindowError(key, substitutions) {
@@ -64,14 +63,16 @@ function showWindowError(key, substitutions) {
   windowError.hidden = false;
 }
 
-// The error stays visible until the user starts editing the field again
-// (feedback messages are never auto-dismissed).
+// The error is never auto-dismissed; it disappears when the user's attention
+// has clearly moved on — editing the field again, operating another control,
+// or leaving the Options page.
 function clearWindowError() {
   windowError.hidden = true;
   windowError.textContent = '';
 }
 
 windowInput.addEventListener('input', clearWindowError);
+window.addEventListener('blur', clearWindowError);
 
 windowInput.addEventListener('focusout', async () => {
   const { min, max } = BATCH_WINDOW_LIMITS;
@@ -92,13 +93,21 @@ windowInput.addEventListener('focusout', async () => {
   await saveSettings(collect());
 });
 
-windowReset.addEventListener('click', async () => {
-  windowInput.value = String(DEFAULT_SETTINGS.batchWindowMs);
+resetAllButton.addEventListener('click', async () => {
+  if (!window.confirm(t('resetAllConfirm'))) {
+    return;
+  }
+  const defaults = { ...DEFAULT_SETTINGS };
+  reflect(defaults);
+  applyLanguage(defaults.language);
   clearWindowError();
-  await saveSettings(collect());
+  await saveSettings(defaults);
 });
 
-form.addEventListener('change', async () => {
+form.addEventListener('change', async (event) => {
+  if (event.target !== windowInput) {
+    clearWindowError();
+  }
   const settings = collect();
   applyLanguage(settings.language);
   await saveSettings(settings);
