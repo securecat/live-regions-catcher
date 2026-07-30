@@ -7,23 +7,5 @@
   },
   "actionTooltip": {
     "message": "ライブリージョン・キャッチャーのサイドパネルを開く"
-  },
-  "sidePanelTitle": {
-    "message": "ライブリージョン・キャッチャー"
-  },
-  "sidePanelEmpty": {
-    "message": "まだキャッチはありません。現在のタブのARIAライブリージョンの更新がここに表示されます。"
-  },
-  "emptyCatchContent": {
-    "message": "空の通知候補：ライブリージョンは更新されましたが、通知可能な内容を取得できませんでした。"
-  },
-  "optionsDocumentTitle": {
-    "message": "ライブリージョン・キャッチャー — オプション"
-  },
-  "optionsTitle": {
-    "message": "オプション"
-  },
-  "optionsPlaceholder": {
-    "message": "設定項目は今後のバージョンで追加されます。"
   }
 }

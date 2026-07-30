@@ -10,29 +10,5 @@
   "actionTooltip": {
     "message": "Open the Live Regions Catcher side panel",
     "description": "Tooltip of the toolbar icon."
-  },
-  "sidePanelTitle": {
-    "message": "Live Regions Catcher",
-    "description": "Heading and document title of the side panel."
-  },
-  "sidePanelEmpty": {
-    "message": "No catches yet. Updates of ARIA live regions on the current tab will appear here.",
-    "description": "Message shown in the side panel while the catch log is empty."
-  },
-  "emptyCatchContent": {
-    "message": "Empty notification candidate: the live region was updated, but no announceable content could be computed.",
-    "description": "Shown in place of the content when a catch has an empty notification candidate."
-  },
-  "optionsDocumentTitle": {
-    "message": "Live Regions Catcher — Options",
-    "description": "Document title of the Options page."
-  },
-  "optionsTitle": {
-    "message": "Options",
-    "description": "Heading of the Options page."
-  },
-  "optionsPlaceholder": {
-    "message": "Settings will be added in an upcoming version.",
-    "description": "Placeholder shown on the Options page before settings are implemented."
   }
 }

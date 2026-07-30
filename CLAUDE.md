@@ -46,6 +46,17 @@
 - 監視開始は **DOMContentLoaded 後**（パーサー挿入の初期内容は「更新」ではないため）。`run_at: document_start` は ariaNotify() 観測（後続フェーズ）のために維持している
 - `docs/index.html` は手動検証用デモページ（リリース後に https://securecat.github.io/live-regions-catcher/ として GitHub Pages で公開予定）。`file://` で使う場合は chrome://extensions で「ファイルの URL へのアクセスを許可する」を有効にすること
 
+## i18n の構成（仕様書 §15）
+
+- `_locales/` は**Chromeが直接表示する文言のみ**（拡張名・説明・アイコンツールチップ）
+- 拡張内UIの文言は**アプリ層の言語リソース**（`src/lib/messages.js` の en/ja カタログ＋ `src/lib/i18n.js` の `t()`）で扱う。実行時の言語切替（Optionsの auto/en/ja 設定）に対応するため、拡張内UIで `chrome.i18n.getMessage` を使わないこと
+- en と ja は必ず同じキーを定義する。未定義キーは en へフォールバック
+
+## Yuさんと合意済みの方針
+
+- 拡張アイコンの状態表現（仕様書 §13.1）は**アイコン画像の切り替えではなくバッジのみ**で行う（件数＋色：通常=青、assertive含む=赤）
+- コンテンツスクリプトのコンソール出力（debugフラグ）は、Optionsページの設定項目として**ユーザーがオンにできるようにする**（段階5で実装。コンソールで確認したいニーズがあるため）
+
 ## パイプライン（content → Service Worker → サイドパネル）
 
 - メッセージ：`lrc:catch`（content → SW）、`lrc:mark-read`（パネル → SW）
