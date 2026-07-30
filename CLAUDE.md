@@ -64,6 +64,14 @@
 - **未実装の§16項目**（該当フェーズで追加）：未確認の既読タイミング4種・保持期間「ブラウザを閉じるまで／手動まで」（→項目単位の既読UIやログブラウザが必要になったタイミング）
 - Optionsページ最下部には `<hr>` ＋ GitHub Issues への報告案内リンクを必ず置く（Yuさん指定。en/jaでローカライズ）
 
+## エクスポート（仕様書 §14）
+
+- 生成ロジックは `src/lib/export.js`（Markdown / JSON）。Markdownの見出し・ラベルはUI言語、キャッチ内容は原文のまま。JSONのキー・列挙値は英語固定（schemaVersion `1.0`）
+- エクスポート選択項目（§14.8）はパネルのエクスポート開閉領域に集約し、`settings` に永続化する（§16.7のOptions項目はここで兼ねる方針）
+- ファイル名：`{hostname}-live-region-log-{YYYYMMDD-HHMMSS}.{md|json}`（使用不可文字は `-` に置換、非URLページは `page`）
+- ダウンロードは Blob + `<a download>`（downloads権限は不要）。エクスポート後のログ自動消去はしない（§14.10）
+- **未実装のエクスポート範囲**（§14.3）：「フィルター結果」「選択したキャッチ項目」→ パネルにフィルター／選択UIが入るタイミングで追加
+
 ## MAIN world フック（`src/content/page-hooks.js`）
 
 - `world: "MAIN"` のコンテンツスクリプトで `ariaNotify()`（Document/Element）と `attachShadow()`（openのみ）をラップし、DOMイベントで ISOLATED 側へ通知する

@@ -12,6 +12,27 @@
     <h1 data-msg="sidePanelTitle">Live Regions Catcher</h1>
     <button type="button" class="panel-button" id="clear-log" data-msg="clearLog">Clear log</button>
   </header>
+  <details class="export-panel">
+    <summary data-msg="exportSummary">Export</summary>
+    <p class="export-privacy" data-msg="exportPrivacyNote">The log may contain personal or sensitive information from the page. Files are saved locally only and are never sent anywhere.</p>
+    <form id="export-form">
+      <fieldset>
+        <legend data-msg="exportDetailLabel">Output detail</legend>
+        <label><input type="radio" name="exportDetail" value="simple"> <span data-msg="exportDetailSimple">Simple output</span></label>
+        <label><input type="radio" name="exportDetail" value="detailed"> <span data-msg="exportDetailDetailed">Detailed output</span></label>
+      </fieldset>
+      <label><input type="checkbox" name="exportIncludeDomPath"> <span data-msg="exportIncludeDomPath">Include DOM paths</span></label>
+      <label><input type="checkbox" name="exportIncludeFrameInfo"> <span data-msg="exportIncludeFrameInfo">Include frame info</span></label>
+      <label><input type="checkbox" name="exportIncludeNotes"> <span data-msg="exportIncludeNotes">Include notes</span></label>
+      <label><input type="checkbox" name="exportIncludeMutations"> <span data-msg="exportIncludeMutations">Include mutation breakdown</span></label>
+      <label><input type="checkbox" name="exportIncludeHtml"> <span data-msg="exportIncludeHtml">Include HTML fragments</span></label>
+      <label><input type="checkbox" name="exportIncludePage"> <span data-msg="exportIncludePage">Include page URL and title</span></label>
+    </form>
+    <p class="export-actions">
+      <button type="button" class="panel-button" id="export-markdown" data-msg="exportMarkdown">Export Markdown</button>
+      <button type="button" class="panel-button" id="export-json" data-msg="exportJson">Export JSON</button>
+    </p>
+  </details>
   <main class="catch-log">
     <p class="empty-message" id="empty-message" data-msg="sidePanelEmpty">No catches yet. Updates of ARIA live regions on the current tab will appear here.</p>
   </main>

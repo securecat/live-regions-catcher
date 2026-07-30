@@ -43,6 +43,45 @@
   border-color: var(--color-text);
 }
 
+.export-panel {
+  border-bottom: 1px solid var(--color-separator);
+  padding: 0.5rem 1rem 0.75rem;
+}
+
+.export-panel summary {
+  color: var(--color-text-subtle);
+  cursor: pointer;
+}
+
+.export-privacy {
+  margin: 0.5rem 0;
+  color: var(--color-text-subtle);
+}
+
+.export-panel fieldset {
+  border: 0;
+  margin: 0 0 0.5rem;
+  padding: 0;
+}
+
+.export-panel legend {
+  padding: 0;
+  margin-bottom: 0.125rem;
+  font-weight: 700;
+}
+
+.export-panel form label {
+  display: block;
+  padding: 0.125rem 0;
+}
+
+.export-actions {
+  margin: 0.75rem 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
 .catch-log {
   padding: 1rem;
 }

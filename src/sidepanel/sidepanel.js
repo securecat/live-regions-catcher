@@ -1,5 +1,6 @@
 import { applyI18n, getLanguage, setLanguage, t } from '../lib/i18n.js';
-import { DEFAULT_SETTINGS, loadSettings, onSettingsChanged } from '../lib/settings.js';
+import { DEFAULT_SETTINGS, loadSettings, onSettingsChanged, saveSettings } from '../lib/settings.js';
+import { buildJsonExport, buildMarkdown, sanitizeFileNamePart, timestampSlug } from '../lib/export.js';
 
 let settings = { ...DEFAULT_SETTINGS }; // replaced by stored values in init
 
@@ -423,6 +424,87 @@ async function refresh({ initial = false } = {}) {
   }
 }
 
+const EXPORT_CHECKBOXES = [
+  'exportIncludeDomPath',
+  'exportIncludeFrameInfo',
+  'exportIncludeNotes',
+  'exportIncludeMutations',
+  'exportIncludeHtml',
+  'exportIncludePage'
+];
+const exportForm = document.getElementById('export-form');
+
+function reflectExportSettings() {
+  exportForm.elements.exportDetail.value = settings.exportDetail;
+  for (const key of EXPORT_CHECKBOXES) {
+    exportForm.elements[key].checked = Boolean(settings[key]);
+  }
+}
+
+// Export choices persist as settings (spec §16.7) while remaining selectable
+// at export time (spec §14.8).
+exportForm.addEventListener('change', async () => {
+  const next = { ...settings, exportDetail: exportForm.elements.exportDetail.value };
+  for (const key of EXPORT_CHECKBOXES) {
+    next[key] = exportForm.elements[key].checked;
+  }
+  settings = next;
+  await saveSettings(next);
+});
+
+function downloadFile(filename, text, mime) {
+  const blob = new Blob([text], { type: mime });
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement('a');
+  anchor.href = url;
+  anchor.download = filename;
+  document.body.append(anchor);
+  anchor.click();
+  anchor.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+async function exportLog(format) {
+  if (currentTabId === null) {
+    return;
+  }
+  const stored = await chrome.storage.session.get(catchesKey(currentTabId));
+  const catches = stored[catchesKey(currentTabId)] ?? [];
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  const now = new Date();
+  const meta = {
+    url: tab?.url ?? null,
+    title: tab?.title ?? null,
+    exportedAt: now.toISOString(),
+    uiLocale: getLanguage(),
+    extensionVersion: chrome.runtime.getManifest().version
+  };
+  const flags = {
+    detail: settings.exportDetail,
+    includeHtml: settings.exportIncludeHtml,
+    includeDomPath: settings.exportIncludeDomPath,
+    includeMutations: settings.exportIncludeMutations,
+    includeFrameInfo: settings.exportIncludeFrameInfo,
+    includeNotes: settings.exportIncludeNotes,
+    includePage: settings.exportIncludePage
+  };
+  let hostname = 'page';
+  try {
+    hostname = sanitizeFileNamePart(new URL(tab?.url ?? '').hostname);
+  } catch {
+    // Non-URL pages (chrome://, about:blank, …) fall back to "page".
+  }
+  const base = `${hostname}-live-region-log-${timestampSlug(now)}`;
+  if (format === 'markdown') {
+    downloadFile(`${base}.md`, buildMarkdown(catches, meta, flags), 'text/markdown');
+  } else {
+    downloadFile(`${base}.json`, buildJsonExport(catches, meta, flags), 'application/json');
+  }
+}
+
+document.getElementById('export-markdown').addEventListener('click', () => exportLog('markdown'));
+document.getElementById('export-json').addEventListener('click', () => exportLog('json'));
+
 clearButton.addEventListener('click', async () => {
   if (currentTabId === null || !window.confirm(t('clearLogConfirm'))) {
     return;
@@ -452,6 +534,7 @@ onSettingsChanged((next) => {
   settings = next;
   setLanguage(settings.language);
   applyI18n();
+  reflectExportSettings();
   refresh();
 });
 
@@ -459,6 +542,7 @@ onSettingsChanged((next) => {
   settings = await loadSettings();
   setLanguage(settings.language);
   applyI18n();
+  reflectExportSettings();
   currentTabId = await activeTabId();
   refresh({ initial: true });
 })();
