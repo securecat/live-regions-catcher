@@ -430,7 +430,7 @@
         role: LRC.firstRole(root),
         explicit: LRC.explicitAria(root),
         effective: {
-          live: batch.region.politeness,
+          live: batch.region.offConflictsWithRole ? 'off' : batch.region.politeness,
           atomic: context.atomic,
           relevant: context.relevantInfo.tokens
         },

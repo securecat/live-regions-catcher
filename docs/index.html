@@ -134,7 +134,12 @@
   <h2>11. Empty notification</h2>
   <button type="button" id="clear-status">Clear the status region of section 1</button>
 
-  <h2>12. iframe</h2>
+  <h2>12. aria-live="off" conflicting with an implicit live role</h2>
+  <p><code>role="status"</code> muted with <code>aria-live="off"</code>: effectively off, but caught with a note.</p>
+  <button type="button" id="off-conflict-update">Update muted status region</button>
+  <div class="region" role="status" aria-live="off" id="off-conflict"></div>
+
+  <h2>13. iframe</h2>
   <iframe id="frame" title="Live region demo iframe" srcdoc='<!DOCTYPE html><html lang="en"><body style="font-family:sans-serif;font-size:16px;background:#ffffff;color:#1b1b1f;"><button type="button" id="b">Update status in iframe</button><div role="status" id="s" style="border:1px solid #767676;padding:4px 8px;margin-top:8px;min-height:2rem;"></div><script>document.getElementById("b").addEventListener("click", () => { document.getElementById("s").textContent = "Updated inside iframe at " + new Date().toLocaleTimeString(); });</script></body></html>'></iframe>
 
   <script>
@@ -209,6 +214,10 @@
 
     byId('clear-status').addEventListener('click', () => {
       byId('save-status').textContent = '';
+    });
+
+    byId('off-conflict-update').addEventListener('click', () => {
+      byId('off-conflict').textContent = `Muted update at ${time()}`;
     });
   </script>
 </body>

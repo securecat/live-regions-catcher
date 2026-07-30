@@ -31,12 +31,17 @@
     for (let el = startElement(node); el; el = LRC.composedParent(el)) {
       const explicit = explicitLive(el);
       if (explicit !== null) {
-        return {
-          root: el,
-          politeness: explicit,
-          source: 'explicit',
-          offConflictsWithRole: explicit === 'off' && LRC.isLivePoliteness(implicitLive(el))
-        };
+        if (explicit === 'off') {
+          const implicit = implicitLive(el);
+          if (LRC.isLivePoliteness(implicit)) {
+            // An implicit live role muted with aria-live="off" (spec §19):
+            // effectively off, but caught with a note so that testers notice
+            // the conflict. Display priority comes from the role.
+            return { root: el, politeness: implicit, source: 'role', offConflictsWithRole: true };
+          }
+          return { root: el, politeness: 'off', source: 'explicit', offConflictsWithRole: false };
+        }
+        return { root: el, politeness: explicit, source: 'explicit', offConflictsWithRole: false };
       }
       const implicit = implicitLive(el);
       if (implicit !== null) {
