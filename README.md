@@ -43,7 +43,7 @@ It does **not** reproduce or record what a screen reader actually speaks. It sho
 4. Use **Export** to save the log as Markdown or JSON, or **Clear log** to start over
 5. Fine-tune behavior on the Options page: catch targets, mutation grouping, `aria-busy` and modal handling, display preferences, data retention, and UI language
 
-A demo page covering the typical scenarios is included at `docs/index.html`.
+A demo page covering the typical scenarios is included at [docs/index.html](https://securecat.github.io/live-regions-catcher/).
 
 ## Privacy
 
@@ -64,7 +64,7 @@ See [CHANGELOG.md](./CHANGELOG.md) for the full history.
 
 ---
 
-# Live Regions Catcher（ライブリージョン・キャッチャー）
+# ライブリージョン・キャッチャー
 
 Webページ上のARIAライブリージョンの更新と `ariaNotify()` の呼び出しをキャッチし、ブラウザのサイドパネルに時系列で可視化するChrome拡張です。
 
@@ -109,7 +109,7 @@ Webページ上のARIAライブリージョンの更新と `ariaNotify()` の呼
 4. **エクスポート**でMarkdown/JSONとして保存、**ログを消去**でやり直しができます
 5. Optionsページで動作を調整できます：キャッチ対象・Mutationの集約・`aria-busy` とモーダルの扱い・表示設定・データ保持・UI言語
 
-典型的なシナリオを集めたデモページを `docs/index.html` に同梱しています。
+典型的なシナリオを集めたデモページを [docs/index.html](https://securecat.github.io/live-regions-catcher/) に同梱しています。
 
 ## プライバシー
 

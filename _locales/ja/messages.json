@@ -1,6 +1,6 @@
 {
   "extensionName": {
-    "message": "Live Regions Catcher（ライブリージョン・キャッチャー）"
+    "message": "ライブリージョン・キャッチャー"
   },
   "extensionDescription": {
     "message": "Webページ上のARIAライブリージョンの更新とariaNotify()の呼び出しをキャッチし、サイドパネルに時系列で表示します。"
