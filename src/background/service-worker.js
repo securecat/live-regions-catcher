@@ -4,6 +4,8 @@
 // All state lives in chrome.storage.session because the service worker can
 // be shut down at any time.
 
+import { loadSettings } from '../lib/settings.js';
+
 const MAX_CATCHES_PER_TAB = 1000;
 const BADGE_COLOR_NORMAL = '#1a56a8';
 const BADGE_COLOR_ASSERTIVE = '#b3261e';
@@ -43,6 +45,20 @@ chrome.runtime.onMessage.addListener((message, sender) => {
 
 chrome.tabs.onRemoved.addListener((tabId) => {
   enqueue(() => chrome.storage.session.remove([catchesKey(tabId), unreadKey(tabId)]));
+});
+
+// Data retention "clear on page navigation" (spec §16.8).
+chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
+  if (changeInfo.status !== 'loading') {
+    return;
+  }
+  enqueue(async () => {
+    const settings = await loadSettings();
+    if (settings.retention === 'navigation') {
+      await chrome.storage.session.remove([catchesKey(tabId), unreadKey(tabId)]);
+      await updateBadge(tabId, { count: 0, assertive: false });
+    }
+  });
 });
 
 async function storeCatch(tabId, record) {

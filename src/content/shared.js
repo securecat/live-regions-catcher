@@ -40,13 +40,18 @@ LRC.IMPLICIT_LIVE_ROLES = {
   marquee: { live: 'off', atomic: null }
 };
 
-// Defaults follow the spec's initial values. The Options page will make these
-// configurable in a later phase.
+// Defaults follow the spec's initial values. Keep in sync with
+// DEFAULT_SETTINGS in src/lib/settings.js (content scripts cannot import
+// ES modules); user values arrive from chrome.storage.local at runtime.
 LRC.DEFAULT_SETTINGS = {
+  catchExplicit: true, // spec §16.2
+  catchImplicit: true,
+  catchEmpty: true, // spec §7.4
+  catchIframes: true,
+  catchShadowDom: true,
   batchMode: 'batch', // 'batch' | 'individual' (spec §10)
   batchWindowMs: 100,
   busyHandling: 'respect', // 'respect' | 'record' (spec §6.4)
-  catchEmpty: true, // spec §7.4
   debug: false
 };
 

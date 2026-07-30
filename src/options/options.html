@@ -10,7 +10,82 @@
 <body>
   <main class="options-page">
     <h1 data-msg="optionsTitle">Options</h1>
-    <p class="placeholder-message" data-msg="optionsPlaceholder">Settings will be added in an upcoming version.</p>
+    <p class="auto-save-note" data-msg="optionsAutoSaveNote">Changes are saved automatically.</p>
+
+    <form id="settings-form">
+      <fieldset>
+        <legend data-msg="sectionLanguage">Display language</legend>
+        <label><input type="radio" name="language" value="auto"> <span data-msg="languageAuto">Match Chrome's display language</span></label>
+        <label><input type="radio" name="language" value="en"> <span lang="en">English</span></label>
+        <label><input type="radio" name="language" value="ja"> <span lang="ja">日本語</span></label>
+      </fieldset>
+
+      <fieldset>
+        <legend data-msg="sectionCatchTargets">Catch targets</legend>
+        <label><input type="checkbox" name="catchExplicit"> <span data-msg="targetExplicit">Explicit live regions (aria-live)</span></label>
+        <label><input type="checkbox" name="catchImplicit"> <span data-msg="targetImplicit">Implicit live regions (role status / log / alert)</span></label>
+        <label><input type="checkbox" name="catchEmpty"> <span data-msg="targetEmpty">Empty notifications</span></label>
+        <label><input type="checkbox" name="catchIframes"> <span data-msg="targetIframes">Notifications inside iframes</span></label>
+        <label><input type="checkbox" name="catchShadowDom"> <span data-msg="targetShadowDom">Notifications inside open shadow DOM</span></label>
+      </fieldset>
+
+      <fieldset>
+        <legend data-msg="sectionMutation">Mutation handling</legend>
+        <label><input type="radio" name="batchMode" value="batch"> <span data-msg="mutationBatch">Group related changes within a short interval</span></label>
+        <label><input type="radio" name="batchMode" value="individual"> <span data-msg="mutationIndividual">Handle changes individually</span></label>
+        <label class="number-label"><span data-msg="mutationWindow">Grouping interval (milliseconds)</span> <input type="number" name="batchWindowMs" min="0" max="2000" step="10"></label>
+      </fieldset>
+
+      <fieldset>
+        <legend data-msg="sectionBusy">aria-busy</legend>
+        <label><input type="radio" name="busyHandling" value="respect"> <span data-msg="busyRespect">Respect aria-busy and hold catches until it clears</span></label>
+        <label><input type="radio" name="busyHandling" value="record"> <span data-msg="busyRecord">Record changes during aria-busy too</span></label>
+      </fieldset>
+
+      <fieldset class="section-group">
+        <legend data-msg="sectionDisplay">Display</legend>
+
+        <fieldset>
+          <legend data-msg="timePrecisionLabel">Time precision</legend>
+          <label><input type="radio" name="timePrecision" value="seconds"> <span data-msg="timeSeconds">Seconds</span></label>
+          <label><input type="radio" name="timePrecision" value="milliseconds"> <span data-msg="timeMilliseconds">Milliseconds</span></label>
+        </fieldset>
+
+        <fieldset>
+          <legend data-msg="detailsInitialLabel">Details of catch items</legend>
+          <label><input type="radio" name="detailsInitial" value="closed"> <span data-msg="detailsClosed">Initially collapsed</span></label>
+          <label><input type="radio" name="detailsInitial" value="open"> <span data-msg="detailsOpen">Initially expanded</span></label>
+        </fieldset>
+
+        <fieldset>
+          <legend data-msg="duplicatesLabel">Consecutive identical notifications</legend>
+          <label><input type="radio" name="duplicateHandling" value="all"> <span data-msg="duplicatesAll">Show all</span></label>
+          <label><input type="radio" name="duplicateHandling" value="collapse"> <span data-msg="duplicatesCollapse">Collapse into one</span></label>
+          <label><input type="radio" name="duplicateHandling" value="count"> <span data-msg="duplicatesCount">Collapse into one and show the count</span></label>
+        </fieldset>
+
+        <fieldset>
+          <legend data-msg="autoScrollLabel">Auto-scroll on new catches</legend>
+          <label><input type="radio" name="autoScroll" value="always"> <span data-msg="autoScrollAlways">Always scroll to the end</span></label>
+          <label><input type="radio" name="autoScroll" value="when-at-end"> <span data-msg="autoScrollWhenAtEnd">Only when already at the end</span></label>
+          <label><input type="radio" name="autoScroll" value="never"> <span data-msg="autoScrollNever">Do not auto-scroll</span></label>
+        </fieldset>
+      </fieldset>
+
+      <fieldset>
+        <legend data-msg="sectionRetention">Data retention</legend>
+        <label><input type="radio" name="retention" value="navigation"> <span data-msg="retentionNavigation">Clear on page navigation</span></label>
+        <label><input type="radio" name="retention" value="tab-close"> <span data-msg="retentionTabClose">Keep until the tab is closed</span></label>
+      </fieldset>
+
+      <fieldset>
+        <legend data-msg="sectionDeveloper">Developer</legend>
+        <label><input type="checkbox" name="debug"> <span data-msg="debugLabel">Log catches to the page console</span></label>
+      </fieldset>
+    </form>
+
+    <hr>
+    <p class="report-bugs"><span data-msg="reportBugsPrefix">If you find a bug, please report it on </span><a href="https://github.com/securecat/live-regions-catcher/issues" target="_blank" rel="noopener">GitHub Issues</a><span data-msg="reportBugsSuffix">.</span></p>
   </main>
   <script type="module" src="options.js"></script>
 </body>

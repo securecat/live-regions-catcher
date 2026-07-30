@@ -75,12 +75,29 @@
     function observeTree(root) {
       observeRoot(root);
       snapshotRegions(root);
+      if (!settings.catchShadowDom) {
+        return;
+      }
       const walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT);
       for (let el = walker.nextNode(); el; el = walker.nextNode()) {
         if (el.shadowRoot) {
           observeTree(el.shadowRoot);
         }
       }
+    }
+
+    // Applies the catch-target settings (spec §16.2) to a found region.
+    function regionAllowed(region) {
+      if (region.source === 'explicit' && !settings.catchExplicit) {
+        return false;
+      }
+      if (region.source === 'role' && !settings.catchImplicit) {
+        return false;
+      }
+      if (!settings.catchShadowDom && region.root.getRootNode() instanceof ShadowRoot) {
+        return false;
+      }
+      return true;
     }
 
     // Content present before observation starts is initial state, not an
@@ -126,7 +143,7 @@
       }
 
       const region = LRC.findLiveRegion(record.target);
-      const regionIsLive = region && LRC.isLivePoliteness(region.politeness);
+      const regionIsLive = region && LRC.isLivePoliteness(region.politeness) && regionAllowed(region);
 
       for (const node of record.addedNodes) {
         if (regionIsLive) {
@@ -158,7 +175,7 @@
 
     function ingestCharacterData(record) {
       const region = LRC.findLiveRegion(record.target);
-      if (!region || !LRC.isLivePoliteness(region.politeness)) {
+      if (!region || !LRC.isLivePoliteness(region.politeness) || !regionAllowed(region)) {
         return;
       }
       addChange(region, {
@@ -191,7 +208,7 @@
       }
 
       const region = LRC.findLiveRegion(el);
-      if (!region || !LRC.isLivePoliteness(region.politeness)) {
+      if (!region || !LRC.isLivePoliteness(region.politeness) || !regionAllowed(region)) {
         return;
       }
 
@@ -233,7 +250,7 @@
       }
       for (const candidate of candidates) {
         const region = LRC.findLiveRegion(candidate);
-        if (!region || region.root !== candidate || !LRC.isLivePoliteness(region.politeness)) {
+        if (!region || region.root !== candidate || !LRC.isLivePoliteness(region.politeness) || !regionAllowed(region)) {
           continue;
         }
         const content = LRC.computeAccessibleContent(candidate);
@@ -472,6 +489,10 @@
 
     return {
       start() {
+        observeTree(document);
+      },
+      // Re-walks the tree, e.g. after shadow DOM observation is re-enabled.
+      rescan() {
         observeTree(document);
       }
     };

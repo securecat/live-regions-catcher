@@ -11,9 +11,26 @@
   }
   globalThis.__lrcStarted = true;
 
+  // Mutated in place so the engine always reads current values.
   const settings = { ...LRC.DEFAULT_SETTINGS };
 
+  function mergeSettings(stored) {
+    for (const key of Object.keys(LRC.DEFAULT_SETTINGS)) {
+      settings[key] = LRC.DEFAULT_SETTINGS[key];
+    }
+    if (stored && typeof stored === 'object') {
+      for (const key of Object.keys(LRC.DEFAULT_SETTINGS)) {
+        if (key in stored) {
+          settings[key] = stored[key];
+        }
+      }
+    }
+  }
+
   function emit(catchRecord) {
+    if (!settings.catchIframes && window !== window.top) {
+      return;
+    }
     catchRecord.source.frameUrl = location.href;
     catchRecord.source.isTopFrame = window === window.top;
     if (settings.debug) {
@@ -21,7 +38,7 @@
     }
     try {
       chrome.runtime.sendMessage({ type: 'lrc:catch', payload: catchRecord }).catch(() => {
-        // No receiver yet; the background pipeline arrives in a later phase.
+        // No receiver; safe to ignore.
       });
     } catch {
       // Extension context is gone (e.g. the extension was reloaded).
@@ -30,9 +47,33 @@
 
   const engine = LRC.createEngine(settings, emit);
 
+  try {
+    chrome.storage.onChanged.addListener((changes, area) => {
+      if (area !== 'local' || !changes.settings) {
+        return;
+      }
+      const hadShadowDom = settings.catchShadowDom;
+      mergeSettings(changes.settings.newValue);
+      if (!hadShadowDom && settings.catchShadowDom) {
+        engine.rescan();
+      }
+    });
+  } catch {
+    // Extension context is gone.
+  }
+
+  const settingsReady = chrome.storage.local
+    .get('settings')
+    .then((stored) => mergeSettings(stored.settings))
+    .catch(() => {});
+
+  function start() {
+    settingsReady.then(() => engine.start());
+  }
+
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => engine.start(), { once: true });
+    document.addEventListener('DOMContentLoaded', start, { once: true });
   } else {
-    engine.start();
+    start();
   }
 })();

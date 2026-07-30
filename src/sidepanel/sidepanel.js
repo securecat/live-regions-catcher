@@ -1,6 +1,7 @@
-import { applyI18n, getLanguage, t } from '../lib/i18n.js';
+import { applyI18n, getLanguage, setLanguage, t } from '../lib/i18n.js';
+import { DEFAULT_SETTINGS, loadSettings, onSettingsChanged } from '../lib/settings.js';
 
-applyI18n();
+let settings = { ...DEFAULT_SETTINGS }; // replaced by stored values in init
 
 const emptyMessage = document.getElementById('empty-message');
 const clearButton = document.getElementById('clear-log');
@@ -25,7 +26,9 @@ function locale() {
 }
 
 function formatTime(iso) {
-  return new Date(iso).toLocaleTimeString(locale());
+  return settings.timePrecision === 'milliseconds'
+    ? formatTimeDetailed(iso)
+    : new Date(iso).toLocaleTimeString(locale());
 }
 
 function formatTimeDetailed(iso) {
@@ -174,6 +177,7 @@ function renderBody(record) {
 function renderDetails(record) {
   const details = document.createElement('details');
   details.className = 'catch-details';
+  details.open = settings.detailsInitiallyOpen;
   const summary = document.createElement('summary');
   summary.textContent = t('detailsSummary');
   details.append(summary);
@@ -296,7 +300,7 @@ function renderDetails(record) {
   return details;
 }
 
-function renderItem(record) {
+function renderItem(record, count = 1) {
   const item = document.createElement('li');
   item.className = 'catch-item';
 
@@ -328,6 +332,9 @@ function renderItem(record) {
   if (record.source?.inShadowDom) {
     meta.append(chip(t('chipShadow')));
   }
+  if (count > 1 && settings.duplicateHandling === 'count') {
+    meta.append(chip(t('occurrenceCount', { count })));
+  }
 
   const time = document.createElement('time');
   time.dateTime = record.timestamp;
@@ -338,15 +345,44 @@ function renderItem(record) {
   return item;
 }
 
+// Groups consecutive identical notifications (spec §12.5); the latest
+// occurrence represents the group.
+function groupCatches(catches) {
+  if (settings.duplicateHandling === 'all') {
+    return catches.map((record) => ({ record, count: 1 }));
+  }
+  const grouped = [];
+  for (const record of catches) {
+    const previous = grouped[grouped.length - 1];
+    if (
+      previous &&
+      previous.record.politeness === record.politeness &&
+      previous.record.content === record.content &&
+      previous.record.emptyContent === record.emptyContent &&
+      previous.record.source?.domPath === record.source?.domPath &&
+      previous.record.source?.frameUrl === record.source?.frameUrl
+    ) {
+      previous.record = record;
+      previous.count += 1;
+    } else {
+      grouped.push({ record, count: 1 });
+    }
+  }
+  return grouped;
+}
+
 function render(catches, { forceBottom = false } = {}) {
   const doc = document.documentElement;
   const wasAtBottom = window.innerHeight + window.scrollY >= doc.scrollHeight - 8;
-  list.replaceChildren(...catches.map(renderItem));
-  list.hidden = catches.length === 0;
-  emptyMessage.hidden = catches.length > 0;
-  // Scroll only when the user is already at the end (spec §12.6 default);
-  // never move focus (spec §17).
-  if (forceBottom || wasAtBottom) {
+  const entries = groupCatches(catches);
+  list.replaceChildren(...entries.map((entry) => renderItem(entry.record, entry.count)));
+  list.hidden = entries.length === 0;
+  emptyMessage.hidden = entries.length > 0;
+  // Auto-scroll per spec §12.6; never move focus (spec §17).
+  const stick =
+    settings.autoScroll === 'always' ||
+    (settings.autoScroll === 'when-at-end' && wasAtBottom);
+  if (forceBottom || stick) {
     window.scrollTo(0, doc.scrollHeight);
   }
 }
@@ -388,7 +424,19 @@ chrome.tabs.onActivated.addListener(async () => {
   refresh({ initial: true });
 });
 
+// Language and other display settings apply immediately (spec §15.7); text
+// is rewritten in place, so focus and reading position are kept (spec §17).
+onSettingsChanged((next) => {
+  settings = next;
+  setLanguage(settings.language);
+  applyI18n();
+  refresh();
+});
+
 (async () => {
+  settings = await loadSettings();
+  setLanguage(settings.language);
+  applyI18n();
   currentTabId = await activeTabId();
   refresh({ initial: true });
 })();

@@ -1,15 +1,74 @@
 .options-page {
   max-width: 40rem;
   margin: 0 auto;
-  padding: 1.5rem 1rem;
+  padding: 1.5rem 1rem 3rem;
 }
 
 .options-page h1 {
-  margin: 0 0 1rem;
+  margin: 0 0 0.5rem;
   font-size: 1.5rem;
   line-height: 1.4;
 }
 
-.placeholder-message {
+.auto-save-note {
+  margin: 0 0 1rem;
+  color: var(--color-text-subtle);
+}
+
+fieldset {
+  border: 0;
+  margin: 1.5rem 0 0;
+  padding: 0;
+}
+
+legend {
+  padding: 0;
+  font-weight: 700;
+  font-size: 1.125rem;
+  margin-bottom: 0.375rem;
+}
+
+.section-group > fieldset {
+  margin: 1rem 0 0;
+}
+
+.section-group > fieldset legend {
+  font-size: 1rem;
+}
+
+form label {
+  display: block;
+  padding: 0.25rem 0;
+}
+
+.number-label {
+  margin-top: 0.375rem;
+}
+
+input[type="number"] {
+  font: inherit;
+  width: 6.5rem;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--color-control-border);
+  border-radius: 0.375rem;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+hr {
+  margin: 2.5rem 0 1rem;
+  border: 0;
+  border-top: 1px solid var(--color-separator);
+}
+
+.report-bugs {
   margin: 0;
+}
+
+.report-bugs a {
+  color: inherit;
+}
+
+.report-bugs a:hover {
+  text-decoration-thickness: 0.125em;
 }
