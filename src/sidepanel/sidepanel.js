@@ -428,14 +428,15 @@ const EXPORT_CHECKBOXES = [
   'exportIncludeDomPath',
   'exportIncludeFrameInfo',
   'exportIncludeNotes',
+  'exportIncludePage',
+  'exportIncludeContents',
+  'exportIncludeExplicitValues',
   'exportIncludeMutations',
-  'exportIncludeHtml',
-  'exportIncludePage'
+  'exportIncludeHtml'
 ];
 const exportForm = document.getElementById('export-form');
 
 function reflectExportSettings() {
-  exportForm.elements.exportDetail.value = settings.exportDetail;
   for (const key of EXPORT_CHECKBOXES) {
     exportForm.elements[key].checked = Boolean(settings[key]);
   }
@@ -444,7 +445,7 @@ function reflectExportSettings() {
 // Export choices persist as settings (spec §16.7) while remaining selectable
 // at export time (spec §14.8).
 exportForm.addEventListener('change', async () => {
-  const next = { ...settings, exportDetail: exportForm.elements.exportDetail.value };
+  const next = { ...settings };
   for (const key of EXPORT_CHECKBOXES) {
     next[key] = exportForm.elements[key].checked;
   }
@@ -480,13 +481,14 @@ async function exportLog(format) {
     extensionVersion: chrome.runtime.getManifest().version
   };
   const flags = {
-    detail: settings.exportDetail,
-    includeHtml: settings.exportIncludeHtml,
     includeDomPath: settings.exportIncludeDomPath,
-    includeMutations: settings.exportIncludeMutations,
     includeFrameInfo: settings.exportIncludeFrameInfo,
     includeNotes: settings.exportIncludeNotes,
-    includePage: settings.exportIncludePage
+    includePage: settings.exportIncludePage,
+    includeContents: settings.exportIncludeContents,
+    includeExplicitValues: settings.exportIncludeExplicitValues,
+    includeMutations: settings.exportIncludeMutations,
+    includeHtml: settings.exportIncludeHtml
   };
   let hostname = 'page';
   try {

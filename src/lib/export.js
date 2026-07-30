@@ -59,6 +59,18 @@ export function buildMarkdown(catches, meta, flags) {
       lines.push(`- aria-atomic: \`${record.effective.atomic}\``);
       lines.push(`- aria-relevant: \`${(record.effective.relevant ?? []).join(' ')}\``);
     }
+    if (flags.includeExplicitValues && record.sourceType !== 'aria-notify' && record.explicit) {
+      const explicitPairs = [
+        ['role', record.explicit.role],
+        ['aria-live', record.explicit.ariaLive],
+        ['aria-atomic', record.explicit.ariaAtomic],
+        ['aria-relevant', record.explicit.ariaRelevant],
+        ['aria-busy', record.explicit.ariaBusy]
+      ];
+      for (const [name, value] of explicitPairs) {
+        lines.push(`- ${name} (${t('detailExplicit')}): ${value != null ? `\`${value}\`` : t('valueNone')}`);
+      }
+    }
     if (record.modalPosition === 'inside' || record.modalPosition === 'outside') {
       lines.push(`- ${t('detailModalPosition')}: ${t(record.modalPosition === 'inside' ? 'modalInside' : 'modalOutside')}`);
     }
@@ -68,16 +80,16 @@ export function buildMarkdown(catches, meta, flags) {
     if (flags.includeMutations && record.mutationCount) {
       lines.push(`- ${t('detailMutationCount')}: ${record.mutationCount}`);
     }
-    if (flags.detail === 'detailed') {
+    if (flags.includeContents) {
       if (record.previousContent) {
         lines.push(`- ${t('detailPreviousContent')}: ${record.previousContent}`);
       }
       if (record.regionContent) {
         lines.push(`- ${t('detailCurrentContent')}: ${record.regionContent}`);
       }
-      if (record.contentLanguage) {
-        lines.push(`- ${t('detailContentLanguage')}: ${record.contentLanguage}`);
-      }
+    }
+    if (record.contentLanguage) {
+      lines.push(`- ${t('detailContentLanguage')}: ${record.contentLanguage}`);
     }
     if (flags.includeNotes && record.notes?.length > 0) {
       lines.push(`- ${t('detailNotes')}:`);
@@ -107,13 +119,14 @@ export function buildJsonExport(catches, meta, flags) {
     exportedAt: meta.exportedAt,
     uiLocale: meta.uiLocale,
     exportSettings: {
-      detail: flags.detail,
-      includeHtml: flags.includeHtml,
       includeDomPath: flags.includeDomPath,
-      includeMutations: flags.includeMutations,
       includeFrameInfo: flags.includeFrameInfo,
       includeNotes: flags.includeNotes,
-      includePage: flags.includePage
+      includePage: flags.includePage,
+      includeContents: flags.includeContents,
+      includeExplicitValues: flags.includeExplicitValues,
+      includeMutations: flags.includeMutations,
+      includeHtml: flags.includeHtml
     }
   };
   if (flags.includePage) {
@@ -140,9 +153,11 @@ export function buildJsonExport(catches, meta, flags) {
       item.atomic = record.effective?.atomic ?? null;
       item.relevant = record.effective?.relevant ?? [];
     }
-    if (flags.detail === 'detailed') {
+    if (flags.includeExplicitValues && record.sourceType !== 'aria-notify') {
       item.explicit = record.explicit ?? null;
       item.effective = record.effective ?? null;
+    }
+    if (flags.includeContents) {
       item.previousContent = record.previousContent ?? null;
       item.currentContent = record.regionContent ?? null;
     }

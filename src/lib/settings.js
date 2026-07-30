@@ -20,13 +20,16 @@ export const DEFAULT_SETTINGS = {
   duplicateHandling: 'all', // 'all' | 'collapse' | 'count' (spec §12.5)
   autoScroll: 'when-at-end', // 'always' | 'when-at-end' | 'never' (spec §12.6)
   retention: 'tab-close', // 'navigation' | 'tab-close' (spec §16.8)
-  exportDetail: 'simple', // 'simple' | 'detailed' (spec §14.8, §16.7)
-  exportIncludeHtml: false,
+  // Export items (spec §14.8, §16.7): the first group ("simple" equivalents)
+  // defaults to on, the second group ("detailed" equivalents) to off.
   exportIncludeDomPath: true,
-  exportIncludeMutations: false,
   exportIncludeFrameInfo: true,
   exportIncludeNotes: true,
   exportIncludePage: true,
+  exportIncludeContents: false,
+  exportIncludeExplicitValues: false,
+  exportIncludeMutations: false,
+  exportIncludeHtml: false,
   debug: false
 };
 
