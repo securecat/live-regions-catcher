@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Live Regions Catcher — Demo</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --color-bg: #ffffff;
+      --color-text: #1b1b1f;
+      --color-region-border: #767676;
+      --color-control-border: #767676;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --color-bg: #1b1b1f;
+        --color-text: #e9e9ee;
+        --color-region-border: #8a8a94;
+        --color-control-border: #8a8a94;
+      }
+    }
+
+    body {
+      margin: 0 auto;
+      max-width: 46rem;
+      padding: 1.5rem 1rem 3rem;
+      font-family: sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      background: var(--color-bg);
+      color: var(--color-text);
+    }
+
+    h1 {
+      font-size: 1.75rem;
+    }
+
+    h2 {
+      font-size: 1.25rem;
+      margin-top: 2.5rem;
+    }
+
+    .region {
+      border: 1px solid var(--color-region-border);
+      padding: 0.5rem 0.75rem;
+      margin-top: 0.75rem;
+      min-height: 2.75rem;
+    }
+
+    button {
+      font: inherit;
+      padding: 0.25rem 0.75rem;
+    }
+
+    label {
+      display: inline-block;
+      margin-inline-end: 0.5rem;
+    }
+
+    input[type="text"] {
+      font: inherit;
+      padding: 0.25rem 0.5rem;
+      border: 1px solid var(--color-control-border);
+      background: var(--color-bg);
+      color: var(--color-text);
+    }
+
+    ul.region {
+      padding-left: 2rem;
+    }
+
+    iframe {
+      width: 100%;
+      height: 9rem;
+      border: 1px solid var(--color-region-border);
+      margin-top: 0.75rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Live Regions Catcher — Demo</h1>
+  <p>Each button below mutates a live region in a different way. Open the extension's side panel (or this page's console during early development) to see what gets caught.</p>
+
+  <h2>1. role="status"</h2>
+  <button type="button" id="save">Save</button>
+  <div class="region" role="status" id="save-status"></div>
+
+  <h2>2. role="alert"</h2>
+  <button type="button" id="fail">Trigger error</button>
+  <div class="region" role="alert" id="error-region"></div>
+
+  <h2>3. role="log"</h2>
+  <label for="chat-input">Message</label>
+  <input type="text" id="chat-input" value="Hello!">
+  <button type="button" id="send">Send</button>
+  <div class="region" role="log" id="chat-log"></div>
+
+  <h2>4. aria-live="polite" (non-atomic counter)</h2>
+  <p>Only the number's text node changes.</p>
+  <button type="button" id="dec">Remove one item</button>
+  <div class="region" aria-live="polite" id="counter">Items left: <span id="count">5</span></div>
+
+  <h2>5. aria-atomic="true"</h2>
+  <button type="button" id="dec-atomic">Remove one item (atomic)</button>
+  <div class="region" aria-live="polite" aria-atomic="true" id="counter-atomic">Items left: <span id="count-atomic">5</span></div>
+
+  <h2>6. aria-relevant="removals"</h2>
+  <button type="button" id="leave">Remove first member</button>
+  <ul class="region" aria-live="polite" aria-relevant="removals" id="members">
+    <li>Alice</li>
+    <li>Bob</li>
+    <li>Carol</li>
+  </ul>
+
+  <h2>7. aria-busy</h2>
+  <p>Three quick updates happen while <code>aria-busy="true"</code>; the region settles after 600 ms.</p>
+  <button type="button" id="busy-run">Update while busy</button>
+  <div class="region" role="status" id="busy-region"></div>
+
+  <h2>8. Region inserted together with its content</h2>
+  <button type="button" id="insert-with-content">Insert role="status" with content</button>
+  <div class="region" id="insert-target-a"></div>
+
+  <h2>9. Empty region inserted first, then updated</h2>
+  <button type="button" id="insert-then-update">Insert empty region, update after 300 ms</button>
+  <div class="region" id="insert-target-b"></div>
+
+  <h2>10. Open Shadow DOM</h2>
+  <button type="button" id="shadow-update">Update status inside shadow root</button>
+  <div class="region" id="shadow-host"></div>
+
+  <h2>11. Empty notification</h2>
+  <button type="button" id="clear-status">Clear the status region of section 1</button>
+
+  <h2>12. iframe</h2>
+  <iframe id="frame" title="Live region demo iframe" srcdoc='<!DOCTYPE html><html lang="en"><body style="font-family:sans-serif;font-size:16px;background:#ffffff;color:#1b1b1f;"><button type="button" id="b">Update status in iframe</button><div role="status" id="s" style="border:1px solid #767676;padding:4px 8px;margin-top:8px;min-height:2rem;"></div><script>document.getElementById("b").addEventListener("click", () => { document.getElementById("s").textContent = "Updated inside iframe at " + new Date().toLocaleTimeString(); });</script></body></html>'></iframe>
+
+  <script>
+    const byId = (id) => document.getElementById(id);
+    const time = () => new Date().toLocaleTimeString();
+
+    byId('save').addEventListener('click', () => {
+      byId('save-status').textContent = `Saved at ${time()}`;
+    });
+
+    byId('fail').addEventListener('click', () => {
+      byId('error-region').textContent = 'There is an error in the form input.';
+    });
+
+    byId('send').addEventListener('click', () => {
+      const message = document.createElement('p');
+      message.textContent = byId('chat-input').value;
+      byId('chat-log').append(message);
+    });
+
+    let count = 5;
+    byId('dec').addEventListener('click', () => {
+      count = Math.max(0, count - 1);
+      byId('count').firstChild.data = String(count);
+    });
+
+    let countAtomic = 5;
+    byId('dec-atomic').addEventListener('click', () => {
+      countAtomic = Math.max(0, countAtomic - 1);
+      byId('count-atomic').firstChild.data = String(countAtomic);
+    });
+
+    byId('leave').addEventListener('click', () => {
+      const member = byId('members').querySelector('li');
+      if (member) {
+        member.remove();
+      }
+    });
+
+    byId('busy-run').addEventListener('click', () => {
+      const region = byId('busy-region');
+      region.setAttribute('aria-busy', 'true');
+      region.textContent = 'Step 1…';
+      setTimeout(() => { region.textContent = 'Step 2…'; }, 100);
+      setTimeout(() => { region.textContent = 'Done.'; }, 300);
+      setTimeout(() => { region.setAttribute('aria-busy', 'false'); }, 600);
+    });
+
+    byId('insert-with-content').addEventListener('click', () => {
+      const status = document.createElement('div');
+      status.setAttribute('role', 'status');
+      status.textContent = 'Inserted together with this content.';
+      byId('insert-target-a').replaceChildren(status);
+    });
+
+    byId('insert-then-update').addEventListener('click', () => {
+      const status = document.createElement('div');
+      status.setAttribute('role', 'status');
+      byId('insert-target-b').replaceChildren(status);
+      setTimeout(() => {
+        status.textContent = `Updated after insertion at ${time()}`;
+      }, 300);
+    });
+
+    const shadowRoot = byId('shadow-host').attachShadow({ mode: 'open' });
+    const shadowStatus = document.createElement('div');
+    shadowStatus.setAttribute('role', 'status');
+    shadowRoot.append(shadowStatus);
+    byId('shadow-update').addEventListener('click', () => {
+      shadowStatus.textContent = `Updated in shadow at ${time()}`;
+    });
+
+    byId('clear-status').addEventListener('click', () => {
+      byId('save-status').textContent = '';
+    });
+  </script>
+</body>
+</html>
