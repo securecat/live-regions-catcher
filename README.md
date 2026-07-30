@@ -12,7 +12,7 @@ It does **not** reproduce or record what a screen reader actually speaks. It sho
 
 - Catches updates of explicit live regions (`aria-live="polite"` / `"assertive"`) and implicit ones (`role="status"` / `"log"` / `"alert"`), including regions added dynamically
 - Computes effective values of `aria-live`, `aria-atomic`, and `aria-relevant` through the composed tree, and respects `aria-busy` (holding catches until it clears, or recording them if you prefer)
-- Diff-style display: what was added, changed, or removed is marked with text labels, underline styles, and backgrounds — never color alone
+- Catches additions, removals, and text changes individually according to `aria-relevant`, capturing removed content before it becomes unreachable
 - Monitors open shadow DOM (including roots attached after connection) and iframes
 - Observes `ariaNotify()` calls where the API is available, with priority and call-target information
 - Configurable handling of notifications outside `aria-modal` dialogs: catch, ignore, or annotate
@@ -78,7 +78,7 @@ Webページ上のARIAライブリージョンの更新と `ariaNotify()` の呼
 
 - 明示的なライブリージョン（`aria-live="polite"` / `"assertive"`）と暗黙のライブリージョン（`role="status"` / `"log"` / `"alert"`）の更新をキャッチ（動的に追加されたリージョンも対象）
 - `aria-live`・`aria-atomic`・`aria-relevant` の実効値を複合ツリーをたどって計算し、`aria-busy` を尊重（解除まで保留。記録する設定も可）
-- 差分スタイルの表示：追加・変更・削除をテキストラベル・下線スタイル・背景色で示し、色だけに依存しない
+- `aria-relevant` に応じて追加・削除・テキスト変更をそれぞれキャッチ（削除された内容は参照不能になる前に取得して保持）
 - Open Shadow DOM（接続後にattachShadowされたものを含む）とiframeも監視
 - `ariaNotify()` の呼び出しを観測（APIが利用可能な環境）。優先度・呼び出し対象も記録
 - `aria-modal` ダイアログ外の通知の扱いを設定可能：キャッチ／除外／注記付きキャッチ
