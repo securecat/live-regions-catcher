@@ -9,7 +9,9 @@
 </head>
 <body>
   <header class="panel-header">
-    <h1 data-msg="sidePanelTitle">Live Regions Catcher</h1>
+    <!-- Chrome already shows the extension name as the side panel title;
+         the h1 stays for in-document heading navigation only. -->
+    <h1 class="visually-hidden" data-msg="sidePanelTitle">Live Regions Catcher</h1>
     <button type="button" class="panel-button" id="clear-log" data-msg="clearLog">Clear log</button>
   </header>
   <details class="export-panel">

@@ -5,6 +5,7 @@
 ## 基本情報
 
 - 名称：**Live Regions Catcher**／日本語表記：**ライブリージョン・キャッチャー**（中黒あり）
+  - Chromeが表示する拡張名（サイドパネルのタイトル・chrome://extensions・ストア掲載名）はロケール準拠（en=英語名／ja=日本語名）。サイドパネルのタイトルはブラウザUIのため、拡張からフォント・表示有無・文字列の動的変更はできない（検討のうえロケール準拠を維持するというYuさんの決定）
 - **Public リポジトリ** → コミットメッセージは英語（Conventional Commits）、README.md / CHANGELOG.md は英語セクション → `---` → 日本語セクション
 - 仕様書：`work/live-regions-catcher_specification-draft.docx`（`work/` はgitignore対象・ローカルのみ）。実装判断に迷ったら必ず仕様書に立ち返ること
 - バージョン記載箇所：`manifest.json` の `version`。変更のたびにsemverで更新し、リリース時はCHANGELOG.md（全履歴）とREADME.md（最新のみ）の両方へ記載

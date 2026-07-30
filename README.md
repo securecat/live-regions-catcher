@@ -56,11 +56,11 @@ A demo page covering the typical scenarios is included at [docs/index.html](http
 
 See [CHANGELOG.md](./CHANGELOG.md) for the full history.
 
-### [1.0.1] - 2026-07-31
+### [1.0.2] - 2026-07-31
 
 #### Changed
 
-- Adjusted the extension icon colors
+- Hid the side panel's in-page heading visually, since Chrome already shows the extension name as the panel title (it remains for screen-reader heading navigation)
 
 ---
 
@@ -122,8 +122,8 @@ Webページ上のARIAライブリージョンの更新と `ariaNotify()` の呼
 
 全履歴は [CHANGELOG.md](./CHANGELOG.md) を参照してください。
 
-### [1.0.1] - 2026-07-31
+### [1.0.2] - 2026-07-31
 
 #### 変更
 
-- 拡張機能アイコンの配色を調整
+- サイドパネルのタイトルとしてChromeが拡張名を表示するため、パネル内の同内容の見出しを視覚的に非表示化（スクリーンリーダーの見出しナビゲーション用として維持）
