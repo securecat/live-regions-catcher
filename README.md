@@ -41,10 +41,10 @@ It does **not** reproduce or record what a screen reader actually speaks. It sho
 1. Click the Live Regions Catcher icon in the toolbar to open the side panel
 2. Browse as usual — live region updates on the current tab are caught and listed chronologically
 3. Expand **Details** on a catch item to inspect roles, effective ARIA values, DOM paths, and more
-4. Use **Export** to save the log as Markdown or JSON, or **Clear log** to start over
-5. Fine-tune behavior on the Options page: catch targets, mutation grouping, `aria-busy` and modal handling, display preferences, data retention, and UI language
+4. Open **Options** at the top of the panel to export the log (Markdown / JSON), clear it, or jump to the settings and the guide
+5. Fine-tune behavior on the Options page: catch targets, mutation grouping, `aria-busy` and modal handling, display preferences, data retention, notification sound, and UI language
 
-A demo page covering the typical scenarios is included at [docs/index.html](https://securecat.github.io/live-regions-catcher/).
+A demo page covering the typical scenarios is included at [docs/index.html](https://securecat.github.io/live-regions-catcher/), and the [guide page](https://securecat.github.io/live-regions-catcher/guide.html) explains catch patterns and notes in detail.
 
 ## Privacy
 
@@ -57,11 +57,15 @@ A demo page covering the typical scenarios is included at [docs/index.html](http
 
 See [CHANGELOG.md](./CHANGELOG.md) for the full history.
 
-### [1.2.0] - 2026-08-01
+### [1.3.0] - 2026-08-02
 
 #### Added
 
-- Optional notification sound for each catch: a four-way choice on the Options page (silent by default; three sound styles with preview buttons)
+- Guide page on the project site explaining catch patterns, the notes reference, and limitations (English and Japanese)
+
+#### Changed
+
+- The top of the side panel is now an "Options" disclosure grouping export, log clearing (no confirmation dialog, destructive-styled button), and links to the Options page and the guide
 
 ---
 
@@ -108,10 +112,10 @@ Webページ上のARIAライブリージョンの更新と `ariaNotify()` の呼
 1. ツールバーのライブリージョン・キャッチャーのアイコンをクリックしてサイドパネルを開く
 2. 通常どおりブラウジングすると、現在のタブのライブリージョン更新がキャッチされ時系列で表示されます
 3. キャッチ項目の**詳細**を展開すると、ロール・ARIA実効値・DOMパスなどを確認できます
-4. **エクスポート**でMarkdown/JSONとして保存、**ログを消去**でやり直しができます
-5. Optionsページで動作を調整できます：キャッチ対象・Mutationの集約・`aria-busy` とモーダルの扱い・表示設定・データ保持・UI言語
+4. パネル先頭の**オプション**から、ログのエクスポート（Markdown / JSON）・消去、設定やガイドへの移動ができます
+5. Optionsページで動作を調整できます：キャッチ対象・Mutationの集約・`aria-busy` とモーダルの扱い・表示設定・データ保持・通知音・UI言語
 
-典型的なシナリオを集めたデモページを [docs/index.html](https://securecat.github.io/live-regions-catcher/) に同梱しています。
+典型的なシナリオを集めたデモページを [docs/index.html](https://securecat.github.io/live-regions-catcher/) に同梱しているほか、[ガイドページ](https://securecat.github.io/live-regions-catcher/guide.html) でキャッチのパターンや注意情報を詳しく解説しています。
 
 ## プライバシー
 
@@ -124,8 +128,12 @@ Webページ上のARIAライブリージョンの更新と `ariaNotify()` の呼
 
 全履歴は [CHANGELOG.md](./CHANGELOG.md) を参照してください。
 
-### [1.2.0] - 2026-08-01
+### [1.3.0] - 2026-08-02
 
 #### 追加
 
-- キャッチごとの通知音：Optionsページの4択ラジオ（初期値は無音。3種類の音は試聴ボタン付き）
+- キャッチのパターン・注意情報リファレンス・制約を解説するガイドページをプロジェクトサイトに追加（英語・日本語）
+
+#### 変更
+
+- サイドパネルの先頭を「オプション」開閉領域に変更し、エクスポート・ログ消去（確認ダイアログなし・破壊的スタイルのボタン）・オプションページとガイドへのリンクを集約

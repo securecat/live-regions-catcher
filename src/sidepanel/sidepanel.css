@@ -2,6 +2,8 @@
   --color-diff-added-bg: #d3ecd3;
   --color-diff-changed-bg: #d7e5f7;
   --color-diff-removed-bg: #f6dcdc;
+  /* Chips keep the pre-1.3.0 border tone until the chat-log restyling pass. */
+  --color-chip-border: #767676;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -9,19 +11,8 @@
     --color-diff-added-bg: #23422a;
     --color-diff-changed-bg: #23384f;
     --color-diff-removed-bg: #4a2626;
+    --color-chip-border: #8a8a94;
   }
-}
-
-.panel-header {
-  position: sticky;
-  top: 0;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 0.75rem;
-  background: var(--color-bg);
-  padding: 0.5rem 1rem;
-  border-bottom: 1px solid var(--color-separator);
 }
 
 .panel-button {
@@ -34,48 +25,46 @@
 }
 
 .panel-button:hover {
-  border-color: var(--color-text);
+  background: var(--color-hover-bg);
 }
 
-.export-panel {
+.panel-options {
   border-bottom: 1px solid var(--color-separator);
   padding: 0.5rem 1rem 0.75rem;
 }
 
-.export-panel summary {
-  color: var(--color-text-subtle);
+.panel-options summary {
   cursor: pointer;
 }
 
-.export-privacy,
-.export-defaults {
-  margin: 0.5rem 0;
+.panel-options h2 {
+  font-size: 1.125rem;
+  line-height: 1.4;
+  margin: 1rem 0 0.375rem;
+}
+
+.panel-options p {
+  margin: 0 0 0.5rem;
+}
+
+/* Subtle color is reserved for annotation-level text; body-level copy
+   (the disclosure title, export and clear descriptions) uses the full
+   text color. */
+.export-privacy {
   color: var(--color-text-subtle);
 }
 
-.export-panel fieldset {
-  border: 0;
-  margin: 0 0 0.5rem;
-  padding: 0;
-}
-
-.export-panel legend {
-  padding: 0;
-  margin-bottom: 0.125rem;
-  font-weight: 700;
-}
-
-.export-panel form label {
+.panel-options form label {
   display: block;
   padding: 0.125rem 0;
 }
 
 .export-actions {
-  margin: 0.75rem 0 0;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 0.5rem;
+  margin: 0.75rem 0 0.5rem;
 }
 
 .catch-log {
@@ -112,7 +101,7 @@
 }
 
 .chip {
-  border: 1px solid var(--color-control-border);
+  border: 1px solid var(--color-chip-border);
   border-radius: 0.25rem;
   padding: 0 0.375rem;
   color: var(--color-text-subtle);

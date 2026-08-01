@@ -8,15 +8,12 @@
   <link rel="stylesheet" href="sidepanel.css">
 </head>
 <body>
-  <header class="panel-header">
-    <!-- Chrome already shows the extension name as the side panel title;
-         the h1 stays for in-document heading navigation only. -->
-    <h1 class="visually-hidden" data-msg="sidePanelTitle">Live Regions Catcher</h1>
-    <button type="button" class="panel-button" id="clear-log" data-msg="clearLog">Clear log</button>
-  </header>
-  <details class="export-panel">
-    <summary data-msg="exportSummary">Export</summary>
-    <p class="export-privacy" data-msg="exportPrivacyNote">The log may contain personal or sensitive information from the page. Files are saved locally only and are never sent anywhere.</p>
+  <!-- Chrome already shows the extension name as the side panel title;
+       the h1 stays for in-document heading navigation only. -->
+  <h1 class="visually-hidden" data-msg="sidePanelTitle">Live Regions Catcher</h1>
+  <details class="panel-options">
+    <summary data-msg="optionsTitle">Options</summary>
+    <h2 data-msg="exportSummary">Export</h2>
     <p class="export-defaults" data-msg="exportDefaultsNote">DOM paths, frame info, notes, and page URLs are always exported. You can add the following to the export:</p>
     <form id="export-form">
       <label><input type="checkbox" name="exportIncludeContents"> <span data-msg="exportIncludeContents">Previous and current content</span></label>
@@ -29,6 +26,14 @@
       <button type="button" class="panel-button" id="export-markdown">Markdown</button>
       <button type="button" class="panel-button" id="export-json">JSON</button>
     </p>
+    <p class="export-privacy" data-msg="exportPrivacyNote">The log may contain personal or sensitive information from the page. Files are saved locally only and are never sent anywhere.</p>
+    <h2 data-msg="clearLogHeading">Catch log</h2>
+    <p class="clear-description" data-msg="clearLogDescription">Deletes all catches for the current tab. This cannot be undone.</p>
+    <p><button type="button" class="danger-button" id="clear-log" data-msg="clearLog">Clear log</button></p>
+    <h2 data-msg="sectionAdvanced">Advanced settings</h2>
+    <p><span data-msg="settingsLinkPrefix">More detailed settings are available on the </span><a href="../options/options.html" id="open-options" target="_blank" rel="noopener" data-msg="settingsLinkText">Options page</a><span data-msg="settingsLinkSuffix">.</span></p>
+    <h2 data-msg="guideHeading">Guide</h2>
+    <p><span data-msg="guideLinkPrefix">The </span><a href="https://securecat.github.io/live-regions-catcher/guide.html" target="_blank" rel="noopener" data-msg="guideLinkText">guide page</a><span data-msg="guideLinkSuffix"> explains what kinds of live regions Live Regions Catcher catches and how this extension handles them.</span></p>
   </details>
   <main class="catch-log">
     <p class="empty-message" id="empty-message" data-msg="sidePanelEmpty">No catches yet. Updates of ARIA live regions on the current tab will appear here.</p>

@@ -2,6 +2,17 @@
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.3.0] - 2026-08-02
+
+### Added
+
+- Guide page on the project site explaining what gets caught, region insertion patterns, the notes reference, modal handling, and limitations (English and Japanese)
+
+### Changed
+
+- The top of the side panel is now an "Options" disclosure grouping export, catch log clearing, and links to the Options page and the guide; it no longer sticks while scrolling
+- Clearing the log no longer shows a confirmation dialog; the button uses the destructive style instead
+
 ## [1.2.0] - 2026-08-01
 
 ### Added
@@ -60,6 +71,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 # 更新履歴
 
 このファイルは [Keep a Changelog](https://keepachangelog.com/ja/1.1.0/) の形式に基づき、プロジェクトは [Semantic Versioning](https://semver.org/lang/ja/) に従います。
+
+## [1.3.0] - 2026-08-02
+
+### 追加
+
+- キャッチ対象・リージョンの挿入パターン・注意情報リファレンス・モーダルの扱い・制約を解説するガイドページをプロジェクトサイトに追加（英語・日本語）
+
+### 変更
+
+- サイドパネルの先頭を「オプション」開閉領域に変更し、エクスポート・キャッチログの消去・オプションページとガイドへのリンクを集約。スクロール追従（固定表示）は廃止
+- ログ消去の確認ダイアログを廃止し、ボタンを破壊的アクションスタイルに変更
 
 ## [1.2.0] - 2026-08-01
 

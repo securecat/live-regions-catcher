@@ -27,8 +27,10 @@
         <label><input type="checkbox" name="catchEmpty"> <span data-msg="targetEmpty">Empty notifications</span></label>
         <label><input type="checkbox" name="catchIframes"> <span data-msg="targetIframes">Notifications inside iframes</span></label>
         <label><input type="checkbox" name="catchShadowDom"> <span data-msg="targetShadowDom">Notifications inside open shadow DOM</span></label>
-        <label><input type="checkbox" name="catchAriaNotify"> <span data-msg="targetAriaNotify">ariaNotify() calls</span></label>
-        <p class="sub-option field-note" data-msg="ariaNotifyNote">Calls made before the observer is injected, or in browsers without the API, cannot be caught.</p>
+        <div class="option-with-note">
+          <label><input type="checkbox" name="catchAriaNotify" aria-describedby="arianotify-note"> <span data-msg="targetAriaNotify">ariaNotify() calls</span></label>
+          <span class="field-note-inline" id="arianotify-note" data-msg="ariaNotifyNote">Calls made before the observer is injected, or in browsers without the API, cannot be caught.</span>
+        </div>
       </fieldset>
 
       <fieldset>

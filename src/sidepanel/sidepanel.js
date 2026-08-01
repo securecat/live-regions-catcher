@@ -498,7 +498,7 @@ document.getElementById('export-markdown').addEventListener('click', () => expor
 document.getElementById('export-json').addEventListener('click', () => exportLog('json'));
 
 clearButton.addEventListener('click', async () => {
-  if (currentTabId === null || !window.confirm(t('clearLogConfirm'))) {
+  if (currentTabId === null) {
     return;
   }
   await chrome.storage.session.remove(catchesKey(currentTabId));
@@ -507,6 +507,13 @@ clearButton.addEventListener('click', async () => {
   } catch {
     // Badge cleanup only; safe to ignore.
   }
+});
+
+// Opening via the API focuses an existing Options tab instead of stacking
+// new ones; the href stays as a plain-link fallback.
+document.getElementById('open-options').addEventListener('click', (event) => {
+  event.preventDefault();
+  chrome.runtime.openOptionsPage();
 });
 
 chrome.storage.session.onChanged.addListener((changes) => {
