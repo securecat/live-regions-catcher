@@ -2,6 +2,12 @@
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.2.0] - 2026-08-01
+
+### Added
+
+- Optional notification sound for each catch: a four-way choice on the Options page (silent by default; three sound styles with preview buttons); a new sound stops the one still playing, so rapid catches never overlap
+
 ## [1.1.0] - 2026-08-01
 
 ### Changed
@@ -54,6 +60,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 # 更新履歴
 
 このファイルは [Keep a Changelog](https://keepachangelog.com/ja/1.1.0/) の形式に基づき、プロジェクトは [Semantic Versioning](https://semver.org/lang/ja/) に従います。
+
+## [1.2.0] - 2026-08-01
+
+### 追加
+
+- キャッチごとの通知音：Optionsページの4択ラジオ（初期値は無音。3種類の音は試聴ボタン付き）。新しい音が鳴るときは再生中の音を停止してから鳴らすため、連続キャッチでも音が重ならない
 
 ## [1.1.0] - 2026-08-01
 

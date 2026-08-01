@@ -61,6 +61,25 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
   });
 });
 
+// The offscreen document is auto-closed by Chrome after ~30 s of silence,
+// so it is (re)created on demand; "document already exists" is expected.
+async function playCatchSound(file) {
+  try {
+    await chrome.offscreen.createDocument({
+      url: 'src/offscreen/offscreen.html',
+      reasons: ['AUDIO_PLAYBACK'],
+      justification: 'Play the notification sound for caught live region updates'
+    });
+  } catch {
+    // Already open.
+  }
+  try {
+    await chrome.runtime.sendMessage({ type: 'lrc:play-sound', file });
+  } catch {
+    // No receiver; nothing to do.
+  }
+}
+
 async function storeCatch(tabId, record) {
   const stored = await chrome.storage.session.get([catchesKey(tabId), unreadKey(tabId)]);
   const catches = stored[catchesKey(tabId)] ?? [];
@@ -76,6 +95,11 @@ async function storeCatch(tabId, record) {
     [unreadKey(tabId)]: unread
   });
   await updateBadge(tabId, unread);
+
+  const settings = await loadSettings();
+  if (settings.soundFile !== 'none') {
+    await playCatchSound(settings.soundFile);
+  }
 }
 
 async function markRead(tabId) {

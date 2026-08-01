@@ -26,6 +26,7 @@ function reflect(settings) {
   form.elements.duplicateHandling.value = settings.duplicateHandling;
   form.elements.autoScroll.value = settings.autoScroll;
   form.elements.retention.value = settings.retention;
+  form.elements.soundFile.value = settings.soundFile;
   form.elements.debug.checked = settings.debug;
 }
 
@@ -51,6 +52,7 @@ function collect() {
     duplicateHandling: form.elements.duplicateHandling.value,
     autoScroll: form.elements.autoScroll.value,
     retention: form.elements.retention.value,
+    soundFile: form.elements.soundFile.value,
     debug: form.elements.debug.checked
   };
 }
@@ -60,6 +62,29 @@ function collect() {
 function applyLanguage(language) {
   setLanguage(language);
   applyI18n();
+  // The three preview buttons share the visible label "Preview"; each gets a
+  // distinct accessible name that starts with that visible label.
+  for (const button of document.querySelectorAll('.sound-preview')) {
+    button.textContent = t('previewLabel');
+    button.setAttribute('aria-label', t('previewAria', { name: t(button.dataset.nameMsg) }));
+  }
+}
+
+// Preview reuses one Audio element: starting a preview stops the one that is
+// still playing, matching the catch-sound behavior.
+const previewPlayer = new Audio();
+for (const button of document.querySelectorAll('.sound-preview')) {
+  button.addEventListener('click', () => {
+    const url = chrome.runtime.getURL(`sounds/${button.dataset.sound}`);
+    if (previewPlayer.src !== url) {
+      previewPlayer.src = url;
+    } else {
+      previewPlayer.currentTime = 0;
+    }
+    previewPlayer.play().catch(() => {
+      // Playback failures must not break the page.
+    });
+  });
 }
 
 function showWindowError(key, substitutions) {

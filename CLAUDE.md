@@ -22,6 +22,7 @@
 - **i18n**：`_locales/` はChrome直轄の文言のみ（拡張名・説明・ツールチップ）。拡張内UIは `src/lib/messages.js`（en/jaカタログ・同一キー・enフォールバック）＋ `src/lib/i18n.js` の `t()`。**拡張内UIで `chrome.i18n.getMessage` を使わないこと**（実行時言語切替のため）
 - **エクスポート**：`src/lib/export.js`。Markdownの見出し・ラベルはUI言語／内容は原文、JSONはキー・列挙値とも英語固定（schemaVersion `1.0`）。ファイル名は `{hostname}-live-region-log-{YYYYMMDD-HHMMSS}.{md|json}`。Blob + `<a download>`（downloads権限不要）。エクスポート後のログ自動消去はしない
 - モーダル判定（§11.3）はヒューリスティック（表示中の `aria-modal="true"` な dialog/alertdialog のうちスキャン順で最後）。「本拡張が判定したモーダル」として扱う
+- **通知音**：Optionsの4択ラジオ（無音＝初期値／3種の音）。SWがキャッチ保存後に Offscreen Document（`src/offscreen/`、`offscreen` 権限、`AUDIO_PLAYBACK`）へ `lrc:play-sound` を送って再生。単一Audio要素の使い回しで「新しい音は再生中の音を止めてから鳴る」。音源は `sounds/` の3ファイル（ https://sounddino.com/ 取得。無料・商用可・加工自由・クレジット不要）。優先度による音の使い分けは**しない**（Yuさんの決定）。音量設定なし
 
 ## Yuさんと合意済みの方針
 

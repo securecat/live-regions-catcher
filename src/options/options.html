@@ -83,6 +83,23 @@
       </fieldset>
 
       <fieldset>
+        <legend data-msg="sectionSound">Notification sound</legend>
+        <label><input type="radio" name="soundFile" value="none"> <span data-msg="sound-none">Silent</span></label>
+        <div class="sound-option">
+          <label><input type="radio" name="soundFile" value="sound-messages-odnoklassniki.mp3"> <span data-msg="sound-odnoklassniki">Odnoklassniki style</span></label>
+          <button type="button" class="preview-button sound-preview" data-sound="sound-messages-odnoklassniki.mp3" data-name-msg="sound-odnoklassniki">Preview</button>
+        </div>
+        <div class="sound-option">
+          <label><input type="radio" name="soundFile" value="oh-oh-icq-sound.mp3"> <span data-msg="sound-icq">ICQ style</span></label>
+          <button type="button" class="preview-button sound-preview" data-sound="oh-oh-icq-sound.mp3" data-name-msg="sound-icq">Preview</button>
+        </div>
+        <div class="sound-option">
+          <label><input type="radio" name="soundFile" value="message-notification.mp3"> <span data-msg="sound-pager">Pager style</span></label>
+          <button type="button" class="preview-button sound-preview" data-sound="message-notification.mp3" data-name-msg="sound-pager">Preview</button>
+        </div>
+      </fieldset>
+
+      <fieldset>
         <legend data-msg="sectionRetention">Data retention</legend>
         <label><input type="radio" name="retention" value="navigation"> <span data-msg="retentionNavigation">Clear on page navigation</span></label>
         <label><input type="radio" name="retention" value="tab-close"> <span data-msg="retentionTabClose">Keep until the tab is closed</span></label>
