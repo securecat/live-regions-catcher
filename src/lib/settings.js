@@ -20,12 +20,9 @@ export const DEFAULT_SETTINGS = {
   duplicateHandling: 'all', // 'all' | 'collapse' | 'count' (spec §12.5)
   autoScroll: 'when-at-end', // 'always' | 'when-at-end' | 'never' (spec §12.6)
   retention: 'tab-close', // 'navigation' | 'tab-close' (spec §16.8)
-  // Export items (spec §14.8, §16.7): the first group ("simple" equivalents)
-  // defaults to on, the second group ("detailed" equivalents) to off.
-  exportIncludeDomPath: true,
-  exportIncludeFrameInfo: true,
-  exportIncludeNotes: true,
-  exportIncludePage: true,
+  // Export detail items (spec §14.8, §16.7). The basic set (DOM paths,
+  // frame info, notes, per-catch page URLs) is always exported and has no
+  // settings; only these four additions are selectable.
   exportIncludeContents: false,
   exportIncludeExplicitValues: false,
   exportIncludeMutations: false,

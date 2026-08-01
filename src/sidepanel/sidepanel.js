@@ -425,10 +425,6 @@ async function refresh({ initial = false } = {}) {
 }
 
 const EXPORT_CHECKBOXES = [
-  'exportIncludeDomPath',
-  'exportIncludeFrameInfo',
-  'exportIncludeNotes',
-  'exportIncludePage',
   'exportIncludeContents',
   'exportIncludeExplicitValues',
   'exportIncludeMutations',
@@ -474,16 +470,11 @@ async function exportLog(format) {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   const now = new Date();
   const meta = {
-    url: tab?.url ?? null,
     exportedAt: now.toISOString(),
     uiLocale: getLanguage(),
     extensionVersion: chrome.runtime.getManifest().version
   };
   const flags = {
-    includeDomPath: settings.exportIncludeDomPath,
-    includeFrameInfo: settings.exportIncludeFrameInfo,
-    includeNotes: settings.exportIncludeNotes,
-    includePage: settings.exportIncludePage,
     includeContents: settings.exportIncludeContents,
     includeExplicitValues: settings.exportIncludeExplicitValues,
     includeMutations: settings.exportIncludeMutations,

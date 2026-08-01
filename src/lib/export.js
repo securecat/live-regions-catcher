@@ -31,9 +31,6 @@ function timeOf(iso) {
 
 export function buildMarkdown(catches, meta, flags) {
   const lines = [`# ${t('mdTitle')}`, ''];
-  if (flags.includePage) {
-    lines.push(`- URL: ${meta.url || t('valueUnknown')}`);
-  }
   lines.push(`- ${t('mdExportedAt')}: ${meta.exportedAt}`);
   lines.push(`- ${t('mdCatchCount')}: ${catches.length}`);
 
@@ -50,7 +47,7 @@ export function buildMarkdown(catches, meta, flags) {
       const names = record.changeTypes.map((type) => t(CHANGE_TYPE_KEYS[type] ?? type)).join(', ');
       lines.push(`- ${t('detailChangeTypes')}: ${names}`);
     }
-    if (flags.includeDomPath && record.source?.domPath) {
+    if (record.source?.domPath) {
       lines.push(`- ${t('detailDomPath')}: \`${record.source.domPath}\``);
     }
     if (record.sourceType !== 'aria-notify' && record.effective) {
@@ -73,11 +70,9 @@ export function buildMarkdown(catches, meta, flags) {
     if (record.modalPosition === 'inside' || record.modalPosition === 'outside') {
       lines.push(`- ${t('detailModalPosition')}: ${t(record.modalPosition === 'inside' ? 'modalInside' : 'modalOutside')}`);
     }
-    if (flags.includeFrameInfo) {
-      const sourceUrl = record.source?.frameUrl || t('valueUnknown');
-      const iframeMark = record.source?.isTopFrame === false ? ' (iframe)' : '';
-      lines.push(`- URL: ${sourceUrl}${iframeMark}`);
-    }
+    const sourceUrl = record.source?.frameUrl || t('valueUnknown');
+    const iframeMark = record.source?.isTopFrame === false ? ' (iframe)' : '';
+    lines.push(`- URL: ${sourceUrl}${iframeMark}`);
     if (flags.includeMutations && record.mutationCount) {
       lines.push(`- ${t('detailMutationCount')}: ${record.mutationCount}`);
     }
@@ -92,7 +87,7 @@ export function buildMarkdown(catches, meta, flags) {
     if (record.contentLanguage) {
       lines.push(`- ${t('detailContentLanguage')}: ${record.contentLanguage}`);
     }
-    if (flags.includeNotes && record.notes?.length > 0) {
+    if (record.notes?.length > 0) {
       lines.push(`- ${t('detailNotes')}:`);
       for (const note of record.notes) {
         lines.push(`  - ${t(`note-${note}`)}`);
@@ -115,24 +110,17 @@ export function buildMarkdown(catches, meta, flags) {
 
 export function buildJsonExport(catches, meta, flags) {
   const out = {
-    schemaVersion: '1.0',
+    schemaVersion: '1.1',
     extensionVersion: meta.extensionVersion,
     exportedAt: meta.exportedAt,
     uiLocale: meta.uiLocale,
     exportSettings: {
-      includeDomPath: flags.includeDomPath,
-      includeFrameInfo: flags.includeFrameInfo,
-      includeNotes: flags.includeNotes,
-      includePage: flags.includePage,
       includeContents: flags.includeContents,
       includeExplicitValues: flags.includeExplicitValues,
       includeMutations: flags.includeMutations,
       includeHtml: flags.includeHtml
     }
   };
-  if (flags.includePage) {
-    out.page = { url: meta.url ?? null };
-  }
 
   out.catches = catches.map((record) => {
     const item = {
@@ -176,22 +164,15 @@ export function buildJsonExport(catches, meta, flags) {
     } else if (flags.includeHtml) {
       item.htmlFragments = (record.changes ?? []).map((change) => change.html).filter(Boolean);
     }
-    if (flags.includeNotes) {
-      item.notes = record.notes ?? [];
-    }
-    const source = {
+    item.notes = record.notes ?? [];
+    item.source = {
       inShadowDom: Boolean(record.source?.inShadowDom),
-      modalPosition: record.modalPosition ?? 'none'
+      modalPosition: record.modalPosition ?? 'none',
+      domPath: record.source?.domPath ?? null,
+      frameUrl: record.source?.frameUrl ?? null,
+      frameId: record.source?.frameId ?? null,
+      isTopFrame: record.source?.isTopFrame ?? null
     };
-    if (flags.includeDomPath) {
-      source.domPath = record.source?.domPath ?? null;
-    }
-    if (flags.includeFrameInfo) {
-      source.frameUrl = record.source?.frameUrl ?? null;
-      source.frameId = record.source?.frameId ?? null;
-      source.isTopFrame = record.source?.isTopFrame ?? null;
-    }
-    item.source = source;
     return item;
   });
 

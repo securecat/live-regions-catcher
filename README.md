@@ -19,7 +19,7 @@ It does **not** reproduce or record what a screen reader actually speaks. It sho
 - Notes for patterns worth inspecting: empty notification candidates, regions inserted together with their content, invalid `aria-relevant` tokens, assertive bursts, implicit roles muted with `aria-live="off"`, and more
 - Chat-log style timeline with expandable details (explicit vs effective values, DOM path, HTML fragments, mutation breakdown)
 - Unread badge on the toolbar icon; red when unread catches include assertive ones
-- Export the log as Markdown or JSON, choosing exactly which items to include — files are saved locally only
+- Export the log as Markdown or JSON, optionally adding extra details — files are named after the page's hostname and saved locally only
 - UI in English and Japanese, switchable at runtime; caught content is always kept verbatim
 
 ## Installation
@@ -56,16 +56,12 @@ A demo page covering the typical scenarios is included at [docs/index.html](http
 
 See [CHANGELOG.md](./CHANGELOG.md) for the full history.
 
-### [1.0.3] - 2026-08-01
-
-#### Fixed
-
-- The export header URL was always empty (missing host permissions for reading the active tab's URL)
-- Re-inserting the same node within one grouping window produced duplicate identical changes and HTML fragments in a catch
+### [1.1.0] - 2026-08-01
 
 #### Changed
 
-- Markdown export now records the source URL for every catch when frame info is included; the page title was removed from exports and the option is now "Include page URL"
+- The basic export set (DOM paths, frame info, notes, per-catch page URLs) is now always exported; only the four detail items remain selectable
+- Removed the export-time page URL from the export header — each catch carries its own source URL (JSON schemaVersion is now 1.1)
 
 ---
 
@@ -90,7 +86,7 @@ Webページ上のARIAライブリージョンの更新と `ariaNotify()` の呼
 - 検証の手がかりになる注意情報：空の通知候補、内容ごと挿入されたリージョン、不正な `aria-relevant` トークン、assertiveの多発、`aria-live="off"` で無効化された暗黙ロールなど
 - チャットログ風のタイムラインと展開式の詳細表示（明示値/実効値の対比・DOMパス・HTML断片・Mutationの内訳）
 - ツールバーアイコンに未確認件数バッジ。未確認にassertiveが含まれる場合は赤色
-- ログをMarkdownまたはJSONでエクスポート。含める項目を選択でき、ファイルはローカルにのみ保存
+- ログをMarkdownまたはJSONでエクスポート。詳細情報の追加も選択でき、ファイルはページのホスト名を冠した名前でローカルにのみ保存
 - UIは英語・日本語に対応し、実行中に切替可能。キャッチした内容は常に原文のまま保持
 
 ## インストール
@@ -127,13 +123,9 @@ Webページ上のARIAライブリージョンの更新と `ariaNotify()` の呼
 
 全履歴は [CHANGELOG.md](./CHANGELOG.md) を参照してください。
 
-### [1.0.3] - 2026-08-01
-
-#### 修正
-
-- エクスポートのヘッダーのURLが常に空になっていた問題を修正（アクティブタブのURL取得に必要なホスト権限の不足）
-- 同一ノードが1つの集約時間内に再挿入された場合に、同一の変更とHTML断片が重複して記録されていた問題を修正
+### [1.1.0] - 2026-08-01
 
 #### 変更
 
-- Markdownエクスポートで、「フレーム情報を含める」時に各キャッチへ発生元URLを出力するように。エクスポートからページタイトルを削除し、オプション名を「ページURLを含める」に変更
+- エクスポートの基本セット（DOMパス・フレーム情報・注意情報・各キャッチのページURL）は常時出力とし、選択できるのは詳細4項目のみに変更
+- エクスポート先頭のURLを削除 — 各キャッチが発生元URLを持っているため（JSONのschemaVersionは1.1に更新）

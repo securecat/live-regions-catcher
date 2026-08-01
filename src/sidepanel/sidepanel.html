@@ -17,15 +17,12 @@
   <details class="export-panel">
     <summary data-msg="exportSummary">Export</summary>
     <p class="export-privacy" data-msg="exportPrivacyNote">The log may contain personal or sensitive information from the page. Files are saved locally only and are never sent anywhere.</p>
+    <p class="export-defaults" data-msg="exportDefaultsNote">DOM paths, frame info, notes, and page URLs are always exported. You can add the following to the export:</p>
     <form id="export-form">
-      <label><input type="checkbox" name="exportIncludeDomPath"> <span data-msg="exportIncludeDomPath">Include DOM paths</span></label>
-      <label><input type="checkbox" name="exportIncludeFrameInfo"> <span data-msg="exportIncludeFrameInfo">Include frame info</span></label>
-      <label><input type="checkbox" name="exportIncludeNotes"> <span data-msg="exportIncludeNotes">Include notes</span></label>
-      <label><input type="checkbox" name="exportIncludePage"> <span data-msg="exportIncludePage">Include page URL</span></label>
-      <label><input type="checkbox" name="exportIncludeContents"> <span data-msg="exportIncludeContents">Include previous and current content</span></label>
-      <label><input type="checkbox" name="exportIncludeExplicitValues"> <span data-msg="exportIncludeExplicitValues">Include explicit ARIA values</span></label>
-      <label><input type="checkbox" name="exportIncludeMutations"> <span data-msg="exportIncludeMutations">Include mutation breakdown</span></label>
-      <label><input type="checkbox" name="exportIncludeHtml"> <span data-msg="exportIncludeHtml">Include HTML fragments</span></label>
+      <label><input type="checkbox" name="exportIncludeContents"> <span data-msg="exportIncludeContents">Previous and current content</span></label>
+      <label><input type="checkbox" name="exportIncludeExplicitValues"> <span data-msg="exportIncludeExplicitValues">Explicit ARIA values</span></label>
+      <label><input type="checkbox" name="exportIncludeMutations"> <span data-msg="exportIncludeMutations">Mutation breakdown</span></label>
+      <label><input type="checkbox" name="exportIncludeHtml"> <span data-msg="exportIncludeHtml">HTML fragments</span></label>
     </form>
     <p class="export-actions" role="group" aria-labelledby="export-actions-label">
       <span id="export-actions-label" data-msg="exportSummary">Export</span>

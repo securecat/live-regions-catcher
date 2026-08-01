@@ -2,6 +2,13 @@
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.1.0] - 2026-08-01
+
+### Changed
+
+- The basic export set (DOM paths, frame info, notes, per-catch page URLs) is now always exported; only the four detail items (previous/current content, explicit ARIA values, mutation breakdown, HTML fragments) remain selectable
+- Removed the export-time page URL from the export header — a log can span multiple pages, and each catch already carries its own source URL (JSON schemaVersion is now 1.1)
+
 ## [1.0.3] - 2026-08-01
 
 ### Fixed
@@ -47,6 +54,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 # 更新履歴
 
 このファイルは [Keep a Changelog](https://keepachangelog.com/ja/1.1.0/) の形式に基づき、プロジェクトは [Semantic Versioning](https://semver.org/lang/ja/) に従います。
+
+## [1.1.0] - 2026-08-01
+
+### 変更
+
+- エクスポートの基本セット（DOMパス・フレーム情報・注意情報・各キャッチのページURL）は常時出力とし、選択できるのは詳細4項目（変更前後の内容・ARIAの明示値・Mutationの内訳・HTML断片）のみに変更
+- エクスポート先頭のURLを削除 — ログは複数ページをまたぐことがあり、各キャッチが発生元URLを持っているため（JSONのschemaVersionは1.1に更新）
 
 ## [1.0.3] - 2026-08-01
 
