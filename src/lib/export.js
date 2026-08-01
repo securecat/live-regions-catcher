@@ -32,8 +32,7 @@ function timeOf(iso) {
 export function buildMarkdown(catches, meta, flags) {
   const lines = [`# ${t('mdTitle')}`, ''];
   if (flags.includePage) {
-    lines.push(`- URL: ${meta.url ?? ''}`);
-    lines.push(`- ${t('mdPageTitle')}: ${meta.title ?? ''}`);
+    lines.push(`- URL: ${meta.url || t('valueUnknown')}`);
   }
   lines.push(`- ${t('mdExportedAt')}: ${meta.exportedAt}`);
   lines.push(`- ${t('mdCatchCount')}: ${catches.length}`);
@@ -74,8 +73,10 @@ export function buildMarkdown(catches, meta, flags) {
     if (record.modalPosition === 'inside' || record.modalPosition === 'outside') {
       lines.push(`- ${t('detailModalPosition')}: ${t(record.modalPosition === 'inside' ? 'modalInside' : 'modalOutside')}`);
     }
-    if (flags.includeFrameInfo && record.source?.isTopFrame === false) {
-      lines.push(`- ${t('detailFrame')}: ${record.source.frameUrl ?? ''}`);
+    if (flags.includeFrameInfo) {
+      const sourceUrl = record.source?.frameUrl || t('valueUnknown');
+      const iframeMark = record.source?.isTopFrame === false ? ' (iframe)' : '';
+      lines.push(`- URL: ${sourceUrl}${iframeMark}`);
     }
     if (flags.includeMutations && record.mutationCount) {
       lines.push(`- ${t('detailMutationCount')}: ${record.mutationCount}`);
@@ -130,7 +131,7 @@ export function buildJsonExport(catches, meta, flags) {
     }
   };
   if (flags.includePage) {
-    out.page = { url: meta.url ?? null, title: meta.title ?? null };
+    out.page = { url: meta.url ?? null };
   }
 
   out.catches = catches.map((record) => {

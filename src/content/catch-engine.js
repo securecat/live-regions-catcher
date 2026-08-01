@@ -153,6 +153,7 @@
         if (regionIsLive) {
           addChange(region, {
             kind: 'addition',
+            node,
             content: LRC.computeAccessibleContent(node),
             html: htmlOf(node)
           }, now);
@@ -266,6 +267,7 @@
         batch.notes.add('region-inserted-with-content');
         pushChange(batch, {
           kind: 'addition',
+          node: candidate,
           content,
           html: htmlOf(candidate)
         }, now);
@@ -311,6 +313,21 @@
     }
 
     function pushChange(batch, change, now) {
+      // Re-inserting the same node within one batch (remove + re-add is a
+      // common re-render pattern) must not duplicate the change; the earlier
+      // entry is updated in place while mutationCount still counts both.
+      if (change.kind === 'addition' && change.node) {
+        const existing = batch.changes.find(
+          (entry) => entry.kind === 'addition' && entry.node === change.node
+        );
+        if (existing) {
+          existing.content = change.content;
+          existing.html = change.html;
+          batch.lastTime = now;
+          batch.mutationCount += 1;
+          return;
+        }
+      }
       batch.changes.push(change);
       batch.lastTime = now;
       batch.mutationCount += 1;

@@ -56,11 +56,16 @@ A demo page covering the typical scenarios is included at [docs/index.html](http
 
 See [CHANGELOG.md](./CHANGELOG.md) for the full history.
 
-### [1.0.2] - 2026-07-31
+### [1.0.3] - 2026-08-01
+
+#### Fixed
+
+- The export header URL was always empty (missing host permissions for reading the active tab's URL)
+- Re-inserting the same node within one grouping window produced duplicate identical changes and HTML fragments in a catch
 
 #### Changed
 
-- Hid the side panel's in-page heading visually, since Chrome already shows the extension name as the panel title (it remains for screen-reader heading navigation)
+- Markdown export now records the source URL for every catch when frame info is included; the page title was removed from exports and the option is now "Include page URL"
 
 ---
 
@@ -122,8 +127,13 @@ Webページ上のARIAライブリージョンの更新と `ariaNotify()` の呼
 
 全履歴は [CHANGELOG.md](./CHANGELOG.md) を参照してください。
 
-### [1.0.2] - 2026-07-31
+### [1.0.3] - 2026-08-01
+
+#### 修正
+
+- エクスポートのヘッダーのURLが常に空になっていた問題を修正（アクティブタブのURL取得に必要なホスト権限の不足）
+- 同一ノードが1つの集約時間内に再挿入された場合に、同一の変更とHTML断片が重複して記録されていた問題を修正
 
 #### 変更
 
-- サイドパネルのタイトルとしてChromeが拡張名を表示するため、パネル内の同内容の見出しを視覚的に非表示化（スクリーンリーダーの見出しナビゲーション用として維持）
+- Markdownエクスポートで、「フレーム情報を含める」時に各キャッチへ発生元URLを出力するように。エクスポートからページタイトルを削除し、オプション名を「ページURLを含める」に変更

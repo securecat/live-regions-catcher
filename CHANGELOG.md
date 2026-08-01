@@ -2,6 +2,18 @@
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.0.3] - 2026-08-01
+
+### Fixed
+
+- The export header URL was always empty (missing host permissions for reading the active tab's URL)
+- Re-inserting the same node within one grouping window (a common re-render pattern) produced duplicate identical changes and HTML fragments in a catch; the change is now updated in place while the mutation count still reflects both
+
+### Changed
+
+- Markdown export now records the source URL for every catch when frame info is included (iframe catches are marked); JSON already carried it per catch
+- Removed the page title from exports; the export option is now "Include page URL"
+
 ## [1.0.2] - 2026-07-31
 
 ### Changed
@@ -35,6 +47,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 # 更新履歴
 
 このファイルは [Keep a Changelog](https://keepachangelog.com/ja/1.1.0/) の形式に基づき、プロジェクトは [Semantic Versioning](https://semver.org/lang/ja/) に従います。
+
+## [1.0.3] - 2026-08-01
+
+### 修正
+
+- エクスポートのヘッダーのURLが常に空になっていた問題を修正（アクティブタブのURL取得に必要なホスト権限の不足）
+- 同一ノードが1つの集約時間内に再挿入された場合（再レンダリングで頻出するパターン）に、同一の変更とHTML断片が重複して記録されていた問題を修正（変更は最新内容で更新し、Mutation数には両方を計上）
+
+### 変更
+
+- Markdownエクスポートで、「フレーム情報を含める」時に各キャッチへ発生元URLを出力するように（iframe発生には印を付加。JSONは従来から個別に記録済み）
+- エクスポートからページタイトルを削除し、オプション名を「ページURLを含める」に変更
 
 ## [1.0.2] - 2026-07-31
 

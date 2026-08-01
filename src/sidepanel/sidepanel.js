@@ -475,7 +475,6 @@ async function exportLog(format) {
   const now = new Date();
   const meta = {
     url: tab?.url ?? null,
-    title: tab?.title ?? null,
     exportedAt: now.toISOString(),
     uiLocale: getLanguage(),
     extensionVersion: chrome.runtime.getManifest().version
