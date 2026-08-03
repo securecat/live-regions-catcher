@@ -7,6 +7,8 @@ chrome.runtime.onMessage.addListener((message) => {
   if (message?.type !== 'lrc:play-sound' || typeof message.file !== 'string') {
     return;
   }
+  player.volume =
+    typeof message.volume === 'number' ? Math.min(Math.max(message.volume, 0), 1) : 1;
   const url = chrome.runtime.getURL(`sounds/${message.file}`);
   if (player.src !== url) {
     player.src = url;

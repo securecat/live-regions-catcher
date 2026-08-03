@@ -19,7 +19,7 @@ It does **not** reproduce or record what a screen reader actually speaks. It sho
 - Notes for patterns worth inspecting: empty notification candidates, regions inserted together with their content, invalid `aria-relevant` tokens, assertive bursts, implicit roles muted with `aria-live="off"`, and more
 - Chat-log style timeline with expandable details (explicit vs effective values, DOM path, HTML fragments, mutation breakdown)
 - Unread badge on the toolbar icon; red when unread catches include assertive ones
-- Optional notification sound for each catch, like a chat app (silent by default; three styles with preview on the Options page)
+- Optional notification sound for each catch, like a chat app (silent by default; four patterns with preview and a three-step volume setting on the Options page)
 - Export the log as Markdown or JSON, optionally adding extra details — files are named after the page's hostname and saved locally only
 - UI in English and Japanese, switchable at runtime; caught content is always kept verbatim
 
@@ -57,15 +57,15 @@ A demo page covering the typical scenarios is included at [docs/index.html](http
 
 See [CHANGELOG.md](./CHANGELOG.md) for the full history.
 
-### [1.3.0] - 2026-08-02
+### [1.4.0] - 2026-08-03
 
 #### Added
 
-- Guide page on the project site explaining catch patterns, the notes reference, and limitations (English and Japanese)
+- New "Boing" notification sound, and a volume setting: standard / quieter (-8 dB) / even quieter (-16 dB); preview buttons play at the selected volume
 
 #### Changed
 
-- The top of the side panel is now an "Options" disclosure grouping export, log clearing (no confirmation dialog, destructive-styled button), and links to the Options page and the guide
+- The sound section is now titled "Notification sound pattern"
 
 ---
 
@@ -90,7 +90,7 @@ Webページ上のARIAライブリージョンの更新と `ariaNotify()` の呼
 - 検証の手がかりになる注意情報：空の通知候補、内容ごと挿入されたリージョン、不正な `aria-relevant` トークン、assertiveの多発、`aria-live="off"` で無効化された暗黙ロールなど
 - チャットログ風のタイムラインと展開式の詳細表示（明示値/実効値の対比・DOMパス・HTML断片・Mutationの内訳）
 - ツールバーアイコンに未確認件数バッジ。未確認にassertiveが含まれる場合は赤色
-- チャットアプリのような、キャッチごとの通知音（初期値は無音。Optionsページで3種類から試聴して選択可能）
+- チャットアプリのような、キャッチごとの通知音（初期値は無音。Optionsページで4種類から試聴して選択でき、ボリュームも3段階から選択可能）
 - ログをMarkdownまたはJSONでエクスポート。詳細情報の追加も選択でき、ファイルはページのホスト名を冠した名前でローカルにのみ保存
 - UIは英語・日本語に対応し、実行中に切替可能。キャッチした内容は常に原文のまま保持
 
@@ -128,12 +128,12 @@ Webページ上のARIAライブリージョンの更新と `ariaNotify()` の呼
 
 全履歴は [CHANGELOG.md](./CHANGELOG.md) を参照してください。
 
-### [1.3.0] - 2026-08-02
+### [1.4.0] - 2026-08-03
 
 #### 追加
 
-- キャッチのパターン・注意情報リファレンス・制約を解説するガイドページをプロジェクトサイトに追加（英語・日本語）
+- 通知音「ボヨヨン擬音」と、通知音ボリューム設定（標準／小さく(-8dB)／もっと小さく(-16dB)）を追加。試聴ボタンも選択中のボリュームで再生
 
 #### 変更
 
-- サイドパネルの先頭を「オプション」開閉領域に変更し、エクスポート・ログ消去（確認ダイアログなし・破壊的スタイルのボタン）・オプションページとガイドへのリンクを集約
+- 通知音セクションの名称を「通知音パターン」に変更

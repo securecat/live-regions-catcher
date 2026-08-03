@@ -3,6 +3,9 @@
 // src/content/shared.js in sync for the keys the engine consumes.
 export const BATCH_WINDOW_LIMITS = { min: 0, max: 2000 };
 
+// Amplitude multipliers for the sound volume setting: -8 dB and -16 dB.
+export const SOUND_VOLUME_LEVELS = { standard: 1, quiet: 0.4, quieter: 0.16 };
+
 export const DEFAULT_SETTINGS = {
   language: 'auto', // 'auto' | 'en' | 'ja' (spec §16.1)
   catchExplicit: true, // spec §16.2
@@ -21,6 +24,7 @@ export const DEFAULT_SETTINGS = {
   autoScroll: 'when-at-end', // 'always' | 'when-at-end' | 'never' (spec §12.6)
   retention: 'tab-close', // 'navigation' | 'tab-close' (spec §16.8)
   soundFile: 'none', // 'none' | a file name under sounds/ (per-catch sound, opt-in)
+  soundVolume: 'standard', // key of SOUND_VOLUME_LEVELS
   // Export detail items (spec §14.8, §16.7). The basic set (DOM paths,
   // frame info, notes, per-catch page URLs) is always exported and has no
   // settings; only these four additions are selectable.

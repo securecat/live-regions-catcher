@@ -2,6 +2,17 @@
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.4.0] - 2026-08-03
+
+### Added
+
+- New "Boing" notification sound (from Pixabay; free license, commercial use OK, no attribution required)
+- Notification sound volume setting: standard / quieter (-8 dB) / even quieter (-16 dB); preview buttons play at the selected volume
+
+### Changed
+
+- The sound section is now titled "Notification sound pattern"
+
 ## [1.3.0] - 2026-08-02
 
 ### Added
@@ -71,6 +82,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 # 更新履歴
 
 このファイルは [Keep a Changelog](https://keepachangelog.com/ja/1.1.0/) の形式に基づき、プロジェクトは [Semantic Versioning](https://semver.org/lang/ja/) に従います。
+
+## [1.4.0] - 2026-08-03
+
+### 追加
+
+- 通知音「ボヨヨン擬音」を追加（Pixabay取得。無料ライセンス・商用可・クレジット不要）
+- 通知音ボリューム設定を新設：標準／小さく（-8dB）／もっと小さく（-16dB）。試聴ボタンも選択中のボリュームで再生
+
+### 変更
+
+- 通知音セクションの名称を「通知音パターン」に変更
 
 ## [1.3.0] - 2026-08-02
 

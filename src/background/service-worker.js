@@ -4,7 +4,7 @@
 // All state lives in chrome.storage.session because the service worker can
 // be shut down at any time.
 
-import { loadSettings } from '../lib/settings.js';
+import { SOUND_VOLUME_LEVELS, loadSettings } from '../lib/settings.js';
 
 const MAX_CATCHES_PER_TAB = 1000;
 const BADGE_COLOR_NORMAL = '#1a56a8';
@@ -63,7 +63,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
 
 // The offscreen document is auto-closed by Chrome after ~30 s of silence,
 // so it is (re)created on demand; "document already exists" is expected.
-async function playCatchSound(file) {
+async function playCatchSound(file, volume) {
   try {
     await chrome.offscreen.createDocument({
       url: 'src/offscreen/offscreen.html',
@@ -74,7 +74,7 @@ async function playCatchSound(file) {
     // Already open.
   }
   try {
-    await chrome.runtime.sendMessage({ type: 'lrc:play-sound', file });
+    await chrome.runtime.sendMessage({ type: 'lrc:play-sound', file, volume });
   } catch {
     // No receiver; nothing to do.
   }
@@ -98,7 +98,7 @@ async function storeCatch(tabId, record) {
 
   const settings = await loadSettings();
   if (settings.soundFile !== 'none') {
-    await playCatchSound(settings.soundFile);
+    await playCatchSound(settings.soundFile, SOUND_VOLUME_LEVELS[settings.soundVolume] ?? 1);
   }
 }
 

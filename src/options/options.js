@@ -1,5 +1,5 @@
 import { applyI18n, setLanguage, t } from '../lib/i18n.js';
-import { BATCH_WINDOW_LIMITS, DEFAULT_SETTINGS, loadSettings, saveSettings, onSettingsChanged } from '../lib/settings.js';
+import { BATCH_WINDOW_LIMITS, DEFAULT_SETTINGS, SOUND_VOLUME_LEVELS, loadSettings, saveSettings, onSettingsChanged } from '../lib/settings.js';
 
 const form = document.getElementById('settings-form');
 const windowInput = form.elements.batchWindowMs;
@@ -27,6 +27,7 @@ function reflect(settings) {
   form.elements.autoScroll.value = settings.autoScroll;
   form.elements.retention.value = settings.retention;
   form.elements.soundFile.value = settings.soundFile;
+  form.elements.soundVolume.value = settings.soundVolume;
   form.elements.debug.checked = settings.debug;
 }
 
@@ -53,6 +54,7 @@ function collect() {
     autoScroll: form.elements.autoScroll.value,
     retention: form.elements.retention.value,
     soundFile: form.elements.soundFile.value,
+    soundVolume: form.elements.soundVolume.value,
     debug: form.elements.debug.checked
   };
 }
@@ -71,10 +73,12 @@ function applyLanguage(language) {
 }
 
 // Preview reuses one Audio element: starting a preview stops the one that is
-// still playing, matching the catch-sound behavior.
+// still playing, matching the catch-sound behavior. It also plays at the
+// currently selected notification volume.
 const previewPlayer = new Audio();
 for (const button of document.querySelectorAll('.sound-preview')) {
   button.addEventListener('click', () => {
+    previewPlayer.volume = SOUND_VOLUME_LEVELS[form.elements.soundVolume.value] ?? 1;
     const url = chrome.runtime.getURL(`sounds/${button.dataset.sound}`);
     if (previewPlayer.src !== url) {
       previewPlayer.src = url;
