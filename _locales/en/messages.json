@@ -8,7 +8,7 @@
     "description": "Extension description shown in the Chrome Web Store and chrome://extensions."
   },
   "actionTooltip": {
-    "message": "Open the Live Regions Catcher side panel",
+    "message": "Live Regions Catcher",
     "description": "Tooltip of the toolbar icon."
   }
 }

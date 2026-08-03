@@ -2,6 +2,12 @@
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.5.1] - 2026-08-03
+
+### Changed
+
+- While monitoring is off, the toolbar icon now turns gray instead of showing an "OFF" badge, and the tooltip reads "Live Regions Catcher (monitoring off)"; the normal tooltip is now just the extension name
+
 ## [1.5.0] - 2026-08-03
 
 ### Added
@@ -93,6 +99,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 # 更新履歴
 
 このファイルは [Keep a Changelog](https://keepachangelog.com/ja/1.1.0/) の形式に基づき、プロジェクトは [Semantic Versioning](https://semver.org/lang/ja/) に従います。
+
+## [1.5.1] - 2026-08-03
+
+### 変更
+
+- 監視オフ中の表現を「OFF」バッジからグレーのアイコンに変更し、ツールチップを「ライブリージョン・キャッチャー（監視オフ）」に。通常時のツールチップは拡張名のみに変更
 
 ## [1.5.0] - 2026-08-03
 

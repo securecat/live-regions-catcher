@@ -19,7 +19,7 @@ It does **not** reproduce or record what a screen reader actually speaks. It sho
 - Notes for patterns worth inspecting: empty notification candidates, regions inserted together with their content, invalid `aria-relevant` tokens, assertive bursts, implicit roles muted with `aria-live="off"`, and more
 - Chat-log style timeline with expandable details (explicit vs effective values, DOM path, HTML fragments, mutation breakdown)
 - Unread badge on the toolbar icon; red when unread catches include assertive ones
-- Monitoring on/off switch in the toolbar popup — while off, the badge shows OFF, nothing new is caught, and existing logs are kept
+- Monitoring on/off switch in the toolbar popup — while off, the toolbar icon turns gray, nothing new is caught, and existing logs are kept
 - Optional notification sound for each catch, like a chat app (silent by default; four patterns with preview and a three-step volume setting on the Options page)
 - Export the log as Markdown or JSON, optionally adding extra details — files are named after the page's hostname and saved locally only
 - UI in English and Japanese, switchable at runtime; caught content is always kept verbatim
@@ -39,7 +39,7 @@ It does **not** reproduce or record what a screen reader actually speaks. It sho
 
 ## Usage
 
-1. Click the Live Regions Catcher icon in the toolbar to open the popup, where you can toggle monitoring on and off (while off, the badge shows OFF and nothing new is caught) and press **Open side panel**
+1. Click the Live Regions Catcher icon in the toolbar to open the popup, where you can toggle monitoring on and off (while off, the icon turns gray and nothing new is caught) and press **Open side panel**
 2. Browse as usual — live region updates on the current tab are caught and listed chronologically
 3. Expand **Details** on a catch item to inspect roles, effective ARIA values, DOM paths, and more
 4. Open **Log management** at the top of the panel to export the log (Markdown / JSON), clear it, or jump to the settings and the guide
@@ -62,15 +62,11 @@ The Odnoklassniki, ICQ, and Pager style notification sounds are from [Sound Dino
 
 See [CHANGELOG.md](./CHANGELOG.md) for the full history.
 
-### [1.5.0] - 2026-08-03
-
-#### Added
-
-- Toolbar popup with a monitoring on/off switch, an "Open side panel" button, and a link to the Options page; while off, the badge shows OFF and nothing new is caught
+### [1.5.1] - 2026-08-03
 
 #### Changed
 
-- Clicking the toolbar icon now opens the popup (minimum Chrome version is now 116); the panel's top disclosure is renamed to "Log management"
+- While monitoring is off, the toolbar icon now turns gray instead of showing an "OFF" badge, and the tooltip reads "Live Regions Catcher (monitoring off)"
 
 ---
 
@@ -95,7 +91,7 @@ Webページ上のARIAライブリージョンの更新と `ariaNotify()` の呼
 - 検証の手がかりになる注意情報：空の通知候補、内容ごと挿入されたリージョン、不正な `aria-relevant` トークン、assertiveの多発、`aria-live="off"` で無効化された暗黙ロールなど
 - チャットログ風のタイムラインと展開式の詳細表示（明示値/実効値の対比・DOMパス・HTML断片・Mutationの内訳）
 - ツールバーアイコンに未確認件数バッジ。未確認にassertiveが含まれる場合は赤色
-- ポップアップに監視の有効・無効スイッチ。無効中はバッジに OFF と表示され、新しいキャッチは行われません（既存のログは保持）
+- ポップアップに監視の有効・無効スイッチ。無効中はツールバーアイコンがグレーになり、新しいキャッチは行われません（既存のログは保持）
 - チャットアプリのような、キャッチごとの通知音（初期値は無音。Optionsページで4種類から試聴して選択でき、ボリュームも3段階から選択可能）
 - ログをMarkdownまたはJSONでエクスポート。詳細情報の追加も選択でき、ファイルはページのホスト名を冠した名前でローカルにのみ保存
 - UIは英語・日本語に対応し、実行中に切替可能。キャッチした内容は常に原文のまま保持
@@ -115,7 +111,7 @@ Webページ上のARIAライブリージョンの更新と `ariaNotify()` の呼
 
 ## 使い方
 
-1. ツールバーのライブリージョン・キャッチャーのアイコンをクリックするとポップアップが開きます。監視の有効・無効の切替（無効中はバッジに OFF と表示され、新しいキャッチは行われません）と、**サイドパネルを開く**ボタンがあります
+1. ツールバーのライブリージョン・キャッチャーのアイコンをクリックするとポップアップが開きます。監視の有効・無効の切替（無効中はアイコンがグレーになり、新しいキャッチは行われません）と、**サイドパネルを開く**ボタンがあります
 2. 通常どおりブラウジングすると、現在のタブのライブリージョン更新がキャッチされ時系列で表示されます
 3. キャッチ項目の**詳細**を展開すると、ロール・ARIA実効値・DOMパスなどを確認できます
 4. パネル先頭の**ログ管理**から、ログのエクスポート（Markdown / JSON）・消去、設定やガイドへの移動ができます
@@ -138,12 +134,8 @@ Webページ上のARIAライブリージョンの更新と `ariaNotify()` の呼
 
 全履歴は [CHANGELOG.md](./CHANGELOG.md) を参照してください。
 
-### [1.5.0] - 2026-08-03
-
-#### 追加
-
-- ツールバーのポップアップを新設：監視の有効・無効スイッチ／「サイドパネルを開く」ボタン／オプションページへのリンク。無効中はバッジに OFF と表示され、新しいキャッチは行われません
+### [1.5.1] - 2026-08-03
 
 #### 変更
 
-- ツールバーアイコンのクリックはポップアップを開くように変更（最低Chromeバージョンは116に）。パネル先頭の開閉領域名を「ログ管理」に変更
+- 監視オフ中の表現を「OFF」バッジからグレーのアイコンに変更し、ツールチップを「ライブリージョン・キャッチャー（監視オフ）」に

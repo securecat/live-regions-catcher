@@ -5,6 +5,7 @@
 // be shut down at any time.
 
 import { SOUND_VOLUME_LEVELS, loadSettings } from '../lib/settings.js';
+import { setLanguage, t } from '../lib/i18n.js';
 
 const MAX_CATCHES_PER_TAB = 1000;
 const BADGE_COLOR_NORMAL = '#1a56a8';
@@ -13,13 +14,36 @@ const BADGE_COLOR_ASSERTIVE = '#b3261e';
 const catchesKey = (tabId) => `catches:${tabId}`;
 const unreadKey = (tabId) => `unread:${tabId}`;
 
-const BADGE_COLOR_OFF = '#696969';
+// Leading slashes: setIcon resolves relative paths against the caller
+// (this service worker lives under src/background/), not the extension root.
+const ICON_PATHS = {
+  normal: {
+    16: '/icons/icon16.png',
+    32: '/icons/icon32.png',
+    48: '/icons/icon48.png',
+    128: '/icons/icon128.png'
+  },
+  off: {
+    16: '/icons/icon16-off.png',
+    32: '/icons/icon32-off.png',
+    48: '/icons/icon48-off.png',
+    128: '/icons/icon128-off.png'
+  }
+};
 
-// While monitoring is off, a gray OFF badge replaces the per-tab unread
-// badges (icon-state policy: badge only, no icon swaps).
-async function applyMonitoringBadge(enabled) {
+// While monitoring is off, the icon turns gray and the tooltip says so;
+// badges are cleared (counts stay in storage). The runtime tooltip follows
+// the extension's UI language setting (spec §15.7).
+async function applyMonitoringState(enabled, language) {
+  setLanguage(language);
+  try {
+    await chrome.action.setIcon({ path: enabled ? ICON_PATHS.normal : ICON_PATHS.off });
+  } catch (error) {
+    console.error('Live Regions Catcher: failed to switch the toolbar icon', error);
+  }
+  await chrome.action.setTitle({ title: t(enabled ? 'sidePanelTitle' : 'actionTitleOff') });
+  await chrome.action.setBadgeText({ text: '' });
   if (enabled) {
-    await chrome.action.setBadgeText({ text: '' });
     const stored = await chrome.storage.session.get(null);
     for (const [key, unread] of Object.entries(stored)) {
       if (key.startsWith('unread:')) {
@@ -27,13 +51,10 @@ async function applyMonitoringBadge(enabled) {
       }
     }
   } else {
-    await chrome.action.setBadgeText({ text: 'OFF' });
-    await chrome.action.setBadgeBackgroundColor({ color: BADGE_COLOR_OFF });
-    await chrome.action.setBadgeTextColor({ color: '#ffffff' });
     const tabs = await chrome.tabs.query({});
     for (const tab of tabs) {
       try {
-        // null clears the per-tab override so the global OFF badge shows.
+        // null clears the per-tab override.
         await chrome.action.setBadgeText({ tabId: tab.id, text: null });
       } catch {
         // Tab gone.
@@ -46,19 +67,21 @@ chrome.storage.onChanged.addListener((changes, area) => {
   if (area !== 'local' || !changes.settings) {
     return;
   }
-  const before = changes.settings.oldValue?.monitoringEnabled ?? true;
-  const after = changes.settings.newValue?.monitoringEnabled ?? true;
-  if (before !== after) {
-    enqueue(() => applyMonitoringBadge(after));
+  const before = changes.settings.oldValue ?? {};
+  const after = changes.settings.newValue ?? {};
+  const enabledBefore = before.monitoringEnabled ?? true;
+  const enabledAfter = after.monitoringEnabled ?? true;
+  if (enabledBefore !== enabledAfter || before.language !== after.language) {
+    enqueue(() => applyMonitoringState(enabledAfter, after.language));
   }
 });
 
 // Reflect the persisted state whenever the service worker wakes up.
 // (Not via enqueue: this runs at module evaluation, before `queue` exists.)
 loadSettings()
-  .then((settings) => (settings.monitoringEnabled ? undefined : applyMonitoringBadge(false)))
+  .then((settings) => applyMonitoringState(settings.monitoringEnabled, settings.language))
   .catch((error) => {
-    console.error('Live Regions Catcher: failed to restore the badge state', error);
+    console.error('Live Regions Catcher: failed to restore the toolbar state', error);
   });
 
 // Storage writes are read-modify-write; serialize them so rapid catches
