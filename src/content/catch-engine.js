@@ -555,6 +555,16 @@
       observeShadowRoot(root) {
         observeTree(root);
       },
+      // Monitoring pause: disconnect everything and drop pending work;
+      // existing catches in storage are untouched. rescan() restarts.
+      pause() {
+        for (const observer of observers.values()) {
+          observer.disconnect();
+        }
+        observers.clear();
+        pendingBatches.clear();
+        heldBatches.clear();
+      },
       modalPositionFor
     };
   };

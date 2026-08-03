@@ -28,6 +28,9 @@
   }
 
   function emit(catchRecord) {
+    if (!settings.monitoringEnabled) {
+      return;
+    }
     if (!settings.catchIframes && window !== window.top) {
       return;
     }
@@ -123,14 +126,25 @@
     true
   );
 
+  let domReady = false;
+
   try {
     chrome.storage.onChanged.addListener((changes, area) => {
       if (area !== 'local' || !changes.settings) {
         return;
       }
+      const wasEnabled = settings.monitoringEnabled;
       const hadShadowDom = settings.catchShadowDom;
       mergeSettings(changes.settings.newValue);
-      if (!hadShadowDom && settings.catchShadowDom) {
+      if (wasEnabled && !settings.monitoringEnabled) {
+        engine.pause();
+        return;
+      }
+      if (!wasEnabled && settings.monitoringEnabled && domReady) {
+        engine.rescan();
+        return;
+      }
+      if (!hadShadowDom && settings.catchShadowDom && settings.monitoringEnabled) {
         engine.rescan();
       }
     });
@@ -144,7 +158,12 @@
     .catch(() => {});
 
   function start() {
-    settingsReady.then(() => engine.start());
+    settingsReady.then(() => {
+      domReady = true;
+      if (settings.monitoringEnabled) {
+        engine.start();
+      }
+    });
   }
 
   if (document.readyState === 'loading') {

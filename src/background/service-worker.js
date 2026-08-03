@@ -13,10 +13,52 @@ const BADGE_COLOR_ASSERTIVE = '#b3261e';
 const catchesKey = (tabId) => `catches:${tabId}`;
 const unreadKey = (tabId) => `unread:${tabId}`;
 
-chrome.sidePanel
-  .setPanelBehavior({ openPanelOnActionClick: true })
+const BADGE_COLOR_OFF = '#696969';
+
+// While monitoring is off, a gray OFF badge replaces the per-tab unread
+// badges (icon-state policy: badge only, no icon swaps).
+async function applyMonitoringBadge(enabled) {
+  if (enabled) {
+    await chrome.action.setBadgeText({ text: '' });
+    const stored = await chrome.storage.session.get(null);
+    for (const [key, unread] of Object.entries(stored)) {
+      if (key.startsWith('unread:')) {
+        await updateBadge(Number(key.slice('unread:'.length)), unread);
+      }
+    }
+  } else {
+    await chrome.action.setBadgeText({ text: 'OFF' });
+    await chrome.action.setBadgeBackgroundColor({ color: BADGE_COLOR_OFF });
+    await chrome.action.setBadgeTextColor({ color: '#ffffff' });
+    const tabs = await chrome.tabs.query({});
+    for (const tab of tabs) {
+      try {
+        // null clears the per-tab override so the global OFF badge shows.
+        await chrome.action.setBadgeText({ tabId: tab.id, text: null });
+      } catch {
+        // Tab gone.
+      }
+    }
+  }
+}
+
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area !== 'local' || !changes.settings) {
+    return;
+  }
+  const before = changes.settings.oldValue?.monitoringEnabled ?? true;
+  const after = changes.settings.newValue?.monitoringEnabled ?? true;
+  if (before !== after) {
+    enqueue(() => applyMonitoringBadge(after));
+  }
+});
+
+// Reflect the persisted state whenever the service worker wakes up.
+// (Not via enqueue: this runs at module evaluation, before `queue` exists.)
+loadSettings()
+  .then((settings) => (settings.monitoringEnabled ? undefined : applyMonitoringBadge(false)))
   .catch((error) => {
-    console.error('Live Regions Catcher: failed to set side panel behavior', error);
+    console.error('Live Regions Catcher: failed to restore the badge state', error);
   });
 
 // Storage writes are read-modify-write; serialize them so rapid catches
@@ -81,6 +123,10 @@ async function playCatchSound(file, volume) {
 }
 
 async function storeCatch(tabId, record) {
+  const settings = await loadSettings();
+  if (!settings.monitoringEnabled) {
+    return;
+  }
   const stored = await chrome.storage.session.get([catchesKey(tabId), unreadKey(tabId)]);
   const catches = stored[catchesKey(tabId)] ?? [];
   catches.push(record);
@@ -96,7 +142,6 @@ async function storeCatch(tabId, record) {
   });
   await updateBadge(tabId, unread);
 
-  const settings = await loadSettings();
   if (settings.soundFile !== 'none') {
     await playCatchSound(settings.soundFile, SOUND_VOLUME_LEVELS[settings.soundVolume] ?? 1);
   }

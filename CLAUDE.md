@@ -13,8 +13,8 @@
 
 ## アーキテクチャ
 
-- Manifest V3・ビルドツールなしのVanilla JS（ES modules）＋バニラCSS。UIはポップアップではなく**サイドパネル**（アイコンクリックで開く）
-- ディレクトリ：`src/sidepanel/`・`src/options/`・`src/content/`・`src/background/`・`src/lib/`・`src/styles/`・`_locales/`・`docs/`（デモページ）・`promotion/`（ストア素材）
+- Manifest V3・ビルドツールなしのVanilla JS（ES modules）＋バニラCSS。アイコンクリックで**popup**（監視の有効/無効スイッチ・「サイドパネルを開く」ボタン・オプションページへのリンクの最小構成）が開き、ログ表示は**サイドパネル**（popup内ボタンから `chrome.sidePanel.open()`。このため `minimum_chrome_version` は116）
+- ディレクトリ：`src/sidepanel/`・`src/popup/`・`src/options/`・`src/content/`・`src/background/`・`src/lib/`・`src/styles/`・`_locales/`・`docs/`（デモページ）・`promotion/`（ストア素材）
 - **コンテンツスクリプト**はclassicスクリプト。`manifest.json` の記載順（shared → effective-values → accessible-content → dom-path → modal → catch-engine → observer）にロードし `globalThis.LRC` 名前空間を共有。DOM監視の開始は**DOMContentLoaded後**（パーサー挿入の初期内容は「更新」ではない）
 - **MAIN worldフック**（`src/content/page-hooks.js`）：`ariaNotify()` と `attachShadow()`（openのみ）をラップし、DOMイベント（`lrc-arianotify` / `lrc-attachshadow`）でISOLATED側へ通知。detailは**JSON文字列**（オブジェクトはworld境界を越えない）。ラッパーは元メソッドを必ず呼び、this・引数・戻り値・例外を変更しない（§4.4）
 - **パイプライン**：content → SW（`lrc:catch`）→ `chrome.storage.session` の `catches:<tabId>` / `unread:<tabId>`（1タブ上限1000件）→ サイドパネルは storage を直接読み `onChanged` で追従。既読はパネル → SW の `lrc:mark-read`。バッジ更新はSWのみ（通常 `#1a56a8`／assertive含む `#b3261e`）
@@ -26,7 +26,9 @@
 
 ## Yuさんと合意済みの方針
 
-- 拡張アイコンの状態表現（§13.1）は**アイコン画像切替ではなくバッジのみ**（件数＋色）
+- 拡張アイコンの状態表現（§13.1）は**アイコン画像切替ではなくバッジのみ**（件数＋色。監視無効中は灰色 `#696969` の「OFF」）
+- 監視の有効/無効はpopupのスイッチ（設定キー `monitoringEnabled`）。無効中は新規キャッチ・音・バッジ加算を停止し、コンテンツスクリプト側はobserverを切断（既存ログは保持、再開時はツリー再スキャン）
+- パネル先頭のディスクロージャータイトルは**「ログ管理」**（「オプション」はオプションページと紛らわしいため不可）
 - エクスポートの基本セット（DOMパス・フレーム情報・注意情報・各キャッチのページURL）は**常時出力**でUIに出さない。選択できるのは詳細4項目（変更前後の内容・ARIA明示値・Mutation内訳・HTML断片、初期値OFF）のみ。**エクスポート先頭のURL・ページタイトルは出力しない**（ログは複数ページをまたぐことがあり、各キャッチが発生元URLを持つため）。JSONのschemaVersionは1.1
 - Optionsページ最下部には `<hr>` ＋ GitHub Issues への報告案内リンクを必ず置く（en/jaでローカライズ）
 - フォームエラーは自動消去しない。消してよいのは「同フィールドの再編集・他コントロールの操作・ページのblur」のタイミング

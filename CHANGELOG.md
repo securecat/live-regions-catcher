@@ -2,6 +2,17 @@
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.5.0] - 2026-08-03
+
+### Added
+
+- Toolbar popup with a monitoring on/off switch, an "Open side panel" button, and a link to the Options page; while monitoring is off, the badge shows a gray OFF, nothing new is caught (no sound, no unread counting), observation is disconnected in pages, and existing logs are kept
+
+### Changed
+
+- Clicking the toolbar icon now opens the popup; the side panel opens from the button inside it (this raises the minimum Chrome version to 116)
+- The side panel's top disclosure is renamed from "Options" to "Log management" to avoid confusion with the Options page
+
 ## [1.4.0] - 2026-08-03
 
 ### Added
@@ -82,6 +93,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 # 更新履歴
 
 このファイルは [Keep a Changelog](https://keepachangelog.com/ja/1.1.0/) の形式に基づき、プロジェクトは [Semantic Versioning](https://semver.org/lang/ja/) に従います。
+
+## [1.5.0] - 2026-08-03
+
+### 追加
+
+- ツールバーのポップアップを新設：監視の有効・無効スイッチ／「サイドパネルを開く」ボタン／オプションページへのリンク。無効中はバッジに灰色の OFF を表示し、新しいキャッチを停止（音・未確認カウントも停止、ページ内の監視も切断）。既存のログは保持
+
+### 変更
+
+- ツールバーアイコンのクリックはポップアップを開くように変更（サイドパネルはポップアップ内のボタンから。これに伴い最低Chromeバージョンを116に引き上げ）
+- サイドパネル先頭の開閉領域名を「オプション」から「ログ管理」に変更（オプションページとの紛らわしさを解消）
 
 ## [1.4.0] - 2026-08-03
 

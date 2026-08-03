@@ -48,6 +48,10 @@ body {
   outline-offset: 2px;
 }
 
+button {
+  cursor: pointer;
+}
+
 a:link,
 a:visited {
   color: var(--color-link);

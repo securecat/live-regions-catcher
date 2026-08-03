@@ -7,6 +7,7 @@ export const BATCH_WINDOW_LIMITS = { min: 0, max: 2000 };
 export const SOUND_VOLUME_LEVELS = { standard: 1, quiet: 0.4, quieter: 0.16 };
 
 export const DEFAULT_SETTINGS = {
+  monitoringEnabled: true, // popup switch: while off, nothing new is caught
   language: 'auto', // 'auto' | 'en' | 'ja' (spec §16.1)
   catchExplicit: true, // spec §16.2
   catchImplicit: true,

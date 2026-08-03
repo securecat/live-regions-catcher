@@ -44,6 +44,7 @@ LRC.IMPLICIT_LIVE_ROLES = {
 // DEFAULT_SETTINGS in src/lib/settings.js (content scripts cannot import
 // ES modules); user values arrive from chrome.storage.local at runtime.
 LRC.DEFAULT_SETTINGS = {
+  monitoringEnabled: true,
   catchExplicit: true, // spec §16.2
   catchImplicit: true,
   catchEmpty: true, // spec §7.4
