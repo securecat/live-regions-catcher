@@ -60,13 +60,13 @@ The Odnoklassniki, ICQ, and Pager style notification sounds are from [Sound Dino
 
 ## Changelog
 
-See [CHANGELOG.md](./CHANGELOG.md) for the full history.
-
 ### [1.5.2] - 2026-08-03
 
 #### Changed
 
 - The popup switch's off state is now a crisper gray, so "off" does not read as "disabled" next to the on-state blue
+
+See [CHANGELOG.md](./CHANGELOG.md) for the full history.
 
 ---
 
@@ -132,10 +132,10 @@ Webページ上のARIAライブリージョンの更新と `ariaNotify()` の呼
 
 ## 更新履歴
 
-全履歴は [CHANGELOG.md](./CHANGELOG.md) を参照してください。
-
 ### [1.5.2] - 2026-08-03
 
 #### 変更
 
 - popupのスイッチのオフ状態を、よりくっきりしたグレーに変更（オン状態の青と並んだときに「無効」に見えないように）
+
+全履歴は [CHANGELOG.md](./CHANGELOG.md) を参照してください。
