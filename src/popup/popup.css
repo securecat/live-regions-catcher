@@ -1,3 +1,15 @@
+/* The off-state switch must read as "enabled but off", not disabled: its
+   crispness matches the on-state blue (7:1-class in both themes). */
+:root {
+  --color-switch-off: #595959;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-switch-off: #b9b9c3;
+  }
+}
+
 body {
   min-width: 16rem;
   padding: 0.875rem 1rem;
@@ -24,7 +36,7 @@ input[type="checkbox"].switch {
   width: 2.5rem;
   height: 1.375rem;
   margin: 0;
-  border: 0.125rem solid var(--color-control-border);
+  border: 0.125rem solid var(--color-switch-off);
   border-radius: 0.6875rem;
   background: var(--color-bg);
   position: relative;
@@ -38,7 +50,7 @@ input[type="checkbox"].switch::before {
   width: 0.875rem;
   height: 0.875rem;
   border-radius: 50%;
-  background: var(--color-control-border);
+  background: var(--color-switch-off);
 }
 
 input[type="checkbox"].switch:checked {

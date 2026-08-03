@@ -62,11 +62,11 @@ The Odnoklassniki, ICQ, and Pager style notification sounds are from [Sound Dino
 
 See [CHANGELOG.md](./CHANGELOG.md) for the full history.
 
-### [1.5.1] - 2026-08-03
+### [1.5.2] - 2026-08-03
 
 #### Changed
 
-- While monitoring is off, the toolbar icon now turns gray instead of showing an "OFF" badge, and the tooltip reads "Live Regions Catcher (monitoring off)"
+- The popup switch's off state is now a crisper gray, so "off" does not read as "disabled" next to the on-state blue
 
 ---
 
@@ -134,8 +134,8 @@ Webページ上のARIAライブリージョンの更新と `ariaNotify()` の呼
 
 全履歴は [CHANGELOG.md](./CHANGELOG.md) を参照してください。
 
-### [1.5.1] - 2026-08-03
+### [1.5.2] - 2026-08-03
 
 #### 変更
 
-- 監視オフ中の表現を「OFF」バッジからグレーのアイコンに変更し、ツールチップを「ライブリージョン・キャッチャー（監視オフ）」に
+- popupのスイッチのオフ状態を、よりくっきりしたグレーに変更（オン状態の青と並んだときに「無効」に見えないように）
