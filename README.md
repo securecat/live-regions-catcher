@@ -53,6 +53,10 @@ A demo page covering the typical scenarios is included at [docs/index.html](http
 - Password input values are never collected
 - Exported files may contain personal or sensitive information from the page — handle them with care
 
+## Sound credits
+
+The Odnoklassniki, ICQ, and Pager style notification sounds are from [Sound Dino](https://sounddino.com/), and the Boing sound is from [Pixabay](https://pixabay.com/). All of them are free to use, including commercially, with no attribution required.
+
 ## Changelog
 
 See [CHANGELOG.md](./CHANGELOG.md) for the full history.
@@ -123,6 +127,10 @@ Webページ上のARIAライブリージョンの更新と `ariaNotify()` の呼
 - キャッチデータはタブ単位でセッションストレージに保持され、タブを閉じると破棄されます（保持設定によりさらに短くできます）
 - パスワード入力値は収集しません
 - エクスポートしたファイルにはページ由来の個人情報・機密情報が含まれる可能性があります。取り扱いにご注意ください
+
+## 音源クレジット
+
+オドノクラスニキ風・ICQ風・ポケベル風の通知音は [Sound Dino](https://sounddino.com/) から、ボヨヨン擬音は [Pixabay](https://pixabay.com/) から取得しました。いずれも無料・商用可・クレジット表記不要のライセンスです。
 
 ## 更新履歴
 
