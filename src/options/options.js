@@ -1,5 +1,5 @@
 import { applyI18n, setLanguage, t } from '../lib/i18n.js';
-import { BATCH_WINDOW_LIMITS, DEFAULT_SETTINGS, SOUND_VOLUME_LEVELS, loadSettings, saveSettings, onSettingsChanged } from '../lib/settings.js';
+import { BATCH_WINDOW_LIMITS, DEFAULT_SETTINGS, SOUND_VOLUME_LEVELS, fadeInEnabled, loadSettings, saveSettings, onSettingsChanged } from '../lib/settings.js';
 
 const form = document.getElementById('settings-form');
 const windowInput = form.elements.batchWindowMs;
@@ -25,6 +25,9 @@ function reflect(settings) {
   form.elements.detailsInitial.value = settings.detailsInitiallyOpen ? 'open' : 'closed';
   form.elements.duplicateHandling.value = settings.duplicateHandling;
   form.elements.autoScroll.value = settings.autoScroll;
+  // Until the user chooses, the radio shows what prefers-reduced-motion
+  // implies; picking either option then overrides the OS setting.
+  form.elements.fadeInNew.value = fadeInEnabled(settings) ? 'on' : 'off';
   form.elements.retention.value = settings.retention;
   form.elements.soundFile.value = settings.soundFile;
   form.elements.soundVolume.value = settings.soundVolume;
@@ -52,6 +55,7 @@ function collect() {
     detailsInitiallyOpen: form.elements.detailsInitial.value === 'open',
     duplicateHandling: form.elements.duplicateHandling.value,
     autoScroll: form.elements.autoScroll.value,
+    fadeInNew: form.elements.fadeInNew.value,
     retention: form.elements.retention.value,
     soundFile: form.elements.soundFile.value,
     soundVolume: form.elements.soundVolume.value,

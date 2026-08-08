@@ -1,5 +1,11 @@
 import { applyI18n, getLanguage, setLanguage, t } from '../lib/i18n.js';
-import { DEFAULT_SETTINGS, loadSettings, onSettingsChanged, saveSettings } from '../lib/settings.js';
+import {
+  DEFAULT_SETTINGS,
+  fadeInEnabled,
+  loadSettings,
+  onSettingsChanged,
+  saveSettings
+} from '../lib/settings.js';
 import { buildJsonExport, buildMarkdown, sanitizeFileNamePart, timestampSlug } from '../lib/export.js';
 
 let settings = { ...DEFAULT_SETTINGS }; // replaced by stored values in init
@@ -10,6 +16,11 @@ const catchesKey = (tabId) => `catches:${tabId}`;
 const unreadKey = (tabId) => `unread:${tabId}`;
 let currentTabId = null;
 let seenCatchIds = new Set();
+let newBatchAnchorId = null;
+let lastNewCatchTime = null;
+
+// Catches arriving within this window count as one burst under the divider.
+const NEW_BURST_WINDOW_MS = 1000;
 
 // The list is created here rather than in the static HTML: an empty <ol>
 // with no listitem children fails accessibility checks.
@@ -317,9 +328,24 @@ function renderDetails(record) {
   return details;
 }
 
+// Marks where the entries the user has not seen yet begin. It is a real list
+// item so that it is announced in reading order, like a chat app's unread
+// line.
+function renderNewDivider() {
+  const divider = document.createElement('li');
+  divider.className = 'new-divider';
+  divider.textContent = t('newFromHere');
+  return divider;
+}
+
 function renderItem(record, count = 1, isNew = false) {
   const item = document.createElement('li');
-  item.className = isNew ? 'catch-item catch-item-new' : 'catch-item';
+  const fadeIn = isNew && fadeInEnabled(settings);
+  item.className = fadeIn ? 'catch-item catch-item-new' : 'catch-item';
+  if (fadeIn) {
+    // Opting in overrides prefers-reduced-motion (see base.css).
+    item.dataset.motionAllowed = '';
+  }
 
   const meta = document.createElement('p');
   meta.className = 'catch-meta';
@@ -405,12 +431,39 @@ function render(catches, { forceBottom = false, animateNew = true } = {}) {
   // recognized by id and fade in once; everything already on screen (and the
   // whole log on the first render) appears without animation.
   const nextSeen = new Set();
-  const items = entries.map((entry) => {
-    const isNew = animateNew && !seenCatchIds.has(entry.record.id);
+  const newEntries = [];
+  for (const entry of entries) {
+    if (animateNew && !seenCatchIds.has(entry.record.id)) {
+      newEntries.push(entry);
+    }
     nextSeen.add(entry.record.id);
-    return renderItem(entry.record, entry.count, isNew);
-  });
+  }
   seenCatchIds = nextSeen;
+
+  // The divider stays put across unrelated re-renders and marks new entries
+  // without motion. Catches that land within a second of the previous one
+  // belong to the same burst, so the divider stays above the whole group
+  // instead of creeping down one entry at a time.
+  if (newEntries.length > 0) {
+    const firstTime = Date.parse(newEntries[0].record.timestamp);
+    const continuesBurst =
+      newBatchAnchorId !== null &&
+      lastNewCatchTime !== null &&
+      firstTime - lastNewCatchTime <= NEW_BURST_WINDOW_MS;
+    if (!continuesBurst) {
+      newBatchAnchorId = newEntries[0].record.id;
+    }
+    lastNewCatchTime = Date.parse(newEntries[newEntries.length - 1].record.timestamp);
+  }
+  const newIdSet = new Set(newEntries.map((entry) => entry.record.id));
+
+  const items = [];
+  for (const entry of entries) {
+    if (entry.record.id === newBatchAnchorId) {
+      items.push(renderNewDivider());
+    }
+    items.push(renderItem(entry.record, entry.count, newIdSet.has(entry.record.id)));
+  }
 
   list.replaceChildren(...items);
   list.hidden = entries.length === 0;
@@ -443,6 +496,8 @@ async function refresh({ initial = false } = {}) {
     seenCatchIds = new Set(
       catches.slice(0, catches.length - unreadCount).map((record) => record.id)
     );
+    newBatchAnchorId = null;
+    lastNewCatchTime = null;
   }
 
   render(catches, { forceBottom: initial });

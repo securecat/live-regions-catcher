@@ -23,6 +23,9 @@ export const DEFAULT_SETTINGS = {
   detailsInitiallyOpen: false,
   duplicateHandling: 'all', // 'all' | 'collapse' | 'count' (spec §12.5)
   autoScroll: 'when-at-end', // 'always' | 'when-at-end' | 'never' (spec §12.6)
+  // 'on' | 'off'. Unset means "follow prefers-reduced-motion"; an explicit
+  // choice wins over the OS setting in both directions.
+  fadeInNew: null,
   retention: 'tab-close', // 'navigation' | 'tab-close' (spec §16.8)
   soundFile: 'none', // 'none' | a file name under sounds/ (per-catch sound, opt-in)
   soundVolume: 'standard', // key of SOUND_VOLUME_LEVELS
@@ -43,6 +46,15 @@ export async function loadSettings() {
 
 export async function saveSettings(settings) {
   await chrome.storage.local.set({ settings });
+}
+
+// Resolves the fade-in preference: an explicit choice wins, otherwise the
+// OS reduced-motion setting decides.
+export function fadeInEnabled(settings) {
+  if (settings.fadeInNew === 'on' || settings.fadeInNew === 'off') {
+    return settings.fadeInNew === 'on';
+  }
+  return !globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 }
 
 export function onSettingsChanged(callback) {

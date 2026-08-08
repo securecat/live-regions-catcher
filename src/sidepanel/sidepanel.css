@@ -19,6 +19,7 @@
   --color-muted-content: var(--color-text-subtle);
   /* The empty message sits on the log background, not the page background. */
   --color-empty-message: #34343c;
+  --color-new-divider-bg: #63779a;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -44,6 +45,7 @@
        carry a lighter subtle tone than the rest of the panel. */
     --color-muted-content: #cccccc;
     --color-empty-message: var(--color-text-subtle);
+    --color-new-divider-bg: #000000;
   }
 }
 
@@ -133,6 +135,16 @@ body {
   border: 1px solid var(--color-separator);
   border-radius: 0.5rem;
   padding: 0.5rem 0.75rem;
+}
+
+/* Marks where unseen entries begin. Unlike the fade-in, this stays put, so
+   new entries are identifiable without motion. */
+.new-divider {
+  color: #ffffff;
+  background: var(--color-new-divider-bg);
+  text-align: center;
+  border-radius: 0.25rem;
+  padding: 0.125rem 0.5rem;
 }
 
 /* A catch that arrived while the panel is open fades in once, so it is

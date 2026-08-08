@@ -102,8 +102,10 @@ input[type="checkbox"]:checked {
   }
 }
 
+/* Motion is off by default here. Anything the user has explicitly opted into
+   carries data-motion-allowed and is exempt. */
 @media (prefers-reduced-motion: reduce) {
-  *,
+  *:not([data-motion-allowed]),
   *::before,
   *::after {
     animation: none !important;

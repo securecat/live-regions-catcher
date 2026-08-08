@@ -2,6 +2,13 @@
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.8.0] - 2026-08-09
+
+### Added
+
+- A "New from here" band marks where unseen catches begin, so new entries are identifiable without relying on motion. It stays in place and moves only when a later burst arrives; catches landing within a second of each other stay under one band
+- Options setting for the fade-in of new catches (Display section): fade in / do not fade in. Until it is chosen, it follows the OS reduced-motion preference; choosing either option overrides that preference in both directions
+
 ## [1.7.0] - 2026-08-09
 
 ### Added
@@ -124,6 +131,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 # 更新履歴
 
 このファイルは [Keep a Changelog](https://keepachangelog.com/ja/1.1.0/) の形式に基づき、プロジェクトは [Semantic Versioning](https://semver.org/lang/ja/) に従います。
+
+## [1.8.0] - 2026-08-09
+
+### 追加
+
+- 未確認のキャッチの先頭に「ここから新着」の帯を表示。動きに依存せず新着を判別できます。帯はその場に留まり、間隔が空いて次のキャッチが届いたときに移動します（1秒以内に連続して届いたキャッチは1つの帯にまとまります）
+- 新しいキャッチのフェードイン表示をOptionsページ（表示セクション）で選択可能に：する／しない。未選択のうちはOSのprefers-reduced-motion設定に従い、いずれかを選ぶとその選択が優先されます
 
 ## [1.7.0] - 2026-08-09
 

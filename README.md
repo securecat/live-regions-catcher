@@ -60,11 +60,12 @@ The Odnoklassniki, ICQ, and Pager style notification sounds are from [Sound Dino
 
 ## Changelog
 
-### [1.7.0] - 2026-08-09
+### [1.8.0] - 2026-08-09
 
 #### Added
 
-- Newly arrived catches fade in, both as they arrive and when the panel opens with unread ones waiting (respects prefers-reduced-motion)
+- A "New from here" band marks where unseen catches begin, so new entries are identifiable without relying on motion
+- Options setting for the fade-in of new catches; until it is chosen, it follows the OS reduced-motion preference
 
 See [CHANGELOG.md](./CHANGELOG.md) for the full history.
 
@@ -132,10 +133,11 @@ Webページ上のARIAライブリージョンの更新と `ariaNotify()` の呼
 
 ## 更新履歴
 
-### [1.7.0] - 2026-08-09
+### [1.8.0] - 2026-08-09
 
 #### 追加
 
-- 新着のキャッチをフェードイン表示（届いた時点、およびパネルを開いた時点の未確認分。prefers-reduced-motionを尊重）
+- 未確認のキャッチの先頭に「ここから新着」の帯を表示（動きに依存せず新着を判別できます）
+- 新しいキャッチのフェードイン表示をOptionsページで選択可能に（未選択のうちはOSのprefers-reduced-motion設定に従います）
 
 全履歴は [CHANGELOG.md](./CHANGELOG.md) を参照してください。
