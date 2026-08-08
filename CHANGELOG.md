@@ -2,6 +2,14 @@
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.6.0] - 2026-08-09
+
+### Changed
+
+- Restyled the catch log: the log area gets its own background so catch items read as cards, and colors now separate the roles of each element — meta chips, diff labels, politeness, detail labels, timestamps, and code blocks
+- Diff ranges are clearer: the changed range is outlined and the removed range is dashed, each with its own underline color
+- assertive and ariaNotify() catches are no longer bolded; politeness is stated, not emphasized
+
 ## [1.5.2] - 2026-08-03
 
 ### Changed
@@ -105,6 +113,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 # 更新履歴
 
 このファイルは [Keep a Changelog](https://keepachangelog.com/ja/1.1.0/) の形式に基づき、プロジェクトは [Semantic Versioning](https://semver.org/lang/ja/) に従います。
+
+## [1.6.0] - 2026-08-09
+
+### 変更
+
+- キャッチログの配色を刷新：ログ領域に独自の背景色を与えてキャッチ項目をカードとして見せ、メタ情報のチップ・差分ラベル・優先度・詳細の項目名・時刻・コードブロックを、役割ごとに色分け
+- 差分表現を明確化：変更範囲は枠線で囲み、削除範囲は破線で囲んで、それぞれ専用の下線色を設定
+- assertive・ariaNotify()のキャッチの太字表示を廃止（優先度は事実として示し、強調はしない）
 
 ## [1.5.2] - 2026-08-03
 

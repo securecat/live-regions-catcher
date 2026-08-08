@@ -1,17 +1,46 @@
 :root {
+  --color-log-bg: #93aad4;
+  --color-options-bg: var(--color-bg);
+  --color-item-bg: var(--color-bg);
+  --color-chip-text: #c74700;
+  --color-chip-border: #949494;
+  --color-politeness-text: #000000;
+  --color-politeness-border: #767676;
+  --color-diff-label: #595961;
+  --color-detail-label: #32872a;
+  --color-time: #927200;
+  --color-code-bg: #f2f2f2;
   --color-diff-added-bg: #d3ecd3;
-  --color-diff-changed-bg: #d7e5f7;
-  --color-diff-removed-bg: #f6dcdc;
-  /* Chips keep the pre-1.3.0 border tone until the chat-log restyling pass. */
-  --color-chip-border: #767676;
+  --color-diff-changed-bg: #d9e6ff;
+  --color-diff-changed-border: #4979f5;
+  --color-diff-changed-line: #0031d8;
+  --color-diff-removed-border: #ff5454;
+  --color-diff-removed-line: #ec0000;
+  --color-muted-content: var(--color-text-subtle);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
+    --color-log-bg: #1a1a1a;
+    --color-options-bg: #000000;
+    --color-item-bg: #2a2a2a;
+    --color-chip-text: #ffc199;
+    --color-chip-border: #767676;
+    --color-politeness-text: #e0e0e0;
+    --color-politeness-border: #e6e6e6;
+    --color-diff-label: #b3b3b3;
+    --color-detail-label: #74c96c;
+    --color-time: #b78f00;
+    --color-code-bg: #000000;
     --color-diff-added-bg: #23422a;
     --color-diff-changed-bg: #23384f;
-    --color-diff-removed-bg: #4a2626;
-    --color-chip-border: #8a8a94;
+    --color-diff-changed-border: #00a3bf;
+    --color-diff-changed-line: #2bc8e4;
+    --color-diff-removed-border: #ff5454;
+    --color-diff-removed-line: #ec0000;
+    /* Empty content and diff context sit on the item background, so they
+       carry a lighter subtle tone than the rest of the panel. */
+    --color-muted-content: #cccccc;
   }
 }
 
@@ -29,6 +58,7 @@
 }
 
 .panel-options {
+  background: var(--color-options-bg);
   border-bottom: 1px solid var(--color-separator);
   padding: 0.5rem 1rem 0.75rem;
 }
@@ -68,6 +98,7 @@
 }
 
 .catch-log {
+  background: var(--color-log-bg);
   padding: 1rem;
 }
 
@@ -86,6 +117,7 @@
 }
 
 .catch-item {
+  background: var(--color-item-bg);
   border: 1px solid var(--color-separator);
   border-radius: 0.5rem;
   padding: 0.5rem 0.75rem;
@@ -100,25 +132,37 @@
   color: var(--color-text-subtle);
 }
 
+.catch-meta time {
+  color: var(--color-time);
+}
+
 .chip {
   border: 1px solid var(--color-chip-border);
   border-radius: 0.25rem;
   padding: 0 0.375rem;
-  color: var(--color-text-subtle);
+  color: var(--color-chip-text);
 }
 
+/* Diff labels stay neutral so the meta chips carry the accent. */
+.chip-context,
+.chip-added,
+.chip-changed,
+.chip-removed {
+  color: var(--color-diff-label);
+}
+
+/* Politeness is stated, not emphasized: assertive gets no extra weight. */
 .catch-politeness {
   font-family: monospace;
   font-size: 1rem;
-}
-
-.catch-politeness[data-politeness="assertive"] {
-  font-weight: 700;
+  color: var(--color-politeness-text);
+  border-color: var(--color-politeness-border);
 }
 
 .catch-token {
   font-family: monospace;
   font-size: 1rem;
+  color: var(--color-detail-label);
 }
 
 .catch-content {
@@ -131,7 +175,7 @@
 }
 
 .catch-content-empty {
-  color: var(--color-text-subtle);
+  color: var(--color-muted-content);
 }
 
 .catch-changes {
@@ -154,7 +198,7 @@
 /* Diff ranges use text labels, underline styles, and background together —
    never color alone (spec §8.3). */
 .diff-context {
-  color: var(--color-text-subtle);
+  color: var(--color-muted-content);
 }
 
 .diff-added {
@@ -166,14 +210,20 @@
 
 .diff-changed {
   background: var(--color-diff-changed-bg);
-  text-decoration: underline double;
+  border: 1px solid var(--color-diff-changed-border);
+  border-radius: 0.25rem;
+  padding: 0 2px;
+  text-decoration: underline;
+  text-decoration-color: var(--color-diff-changed-line);
   text-underline-offset: 0.125em;
 }
 
 .diff-removed {
   background: var(--color-diff-removed-bg);
+  border: 1px dashed var(--color-diff-removed-border);
+  padding: 0 2px;
   text-decoration: line-through;
-  text-decoration-thickness: 0.125em;
+  text-decoration-color: var(--color-diff-removed-line);
 }
 
 /* Forced colors strip the tinted backgrounds; the underline styles,
@@ -202,7 +252,7 @@
 }
 
 .detail-list dt {
-  color: var(--color-text-subtle);
+  color: var(--color-detail-label);
   margin-top: 0.5rem;
 }
 
@@ -225,12 +275,13 @@
 
 .detail-block-heading {
   margin: 0.75rem 0 0.25rem;
-  color: var(--color-text-subtle);
+  color: var(--color-detail-label);
 }
 
 .code-block {
   overflow-x: auto;
   margin: 0.25rem 0 0;
+  background: var(--color-code-bg);
   border: 1px solid var(--color-separator);
   padding: 0.375rem 0.5rem;
 }

@@ -60,11 +60,11 @@ The Odnoklassniki, ICQ, and Pager style notification sounds are from [Sound Dino
 
 ## Changelog
 
-### [1.5.2] - 2026-08-03
+### [1.6.0] - 2026-08-09
 
 #### Changed
 
-- The popup switch's off state is now a crisper gray, so "off" does not read as "disabled" next to the on-state blue
+- Restyled the catch log: catch items read as cards on their own log background, and colors separate the roles of each element; diff ranges are outlined, and assertive catches are no longer bolded
 
 See [CHANGELOG.md](./CHANGELOG.md) for the full history.
 
@@ -132,10 +132,10 @@ Webページ上のARIAライブリージョンの更新と `ariaNotify()` の呼
 
 ## 更新履歴
 
-### [1.5.2] - 2026-08-03
+### [1.6.0] - 2026-08-09
 
 #### 変更
 
-- popupのスイッチのオフ状態を、よりくっきりしたグレーに変更（オン状態の青と並んだときに「無効」に見えないように）
+- キャッチログの配色を刷新：ログ領域の背景の上にキャッチ項目をカードとして見せ、各要素を役割ごとに色分け。差分範囲を枠線で明示し、assertiveの太字表示を廃止
 
 全履歴は [CHANGELOG.md](./CHANGELOG.md) を参照してください。
