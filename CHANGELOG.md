@@ -2,6 +2,17 @@
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.7.0] - 2026-08-09
+
+### Added
+
+- Newly arrived catches fade in, so it is apparent which entries are new: those caught while the panel is open fade in as they arrive, and those that piled up while the panel was closed fade in together when it opens (respects prefers-reduced-motion)
+
+### Fixed
+
+- The log background now fills the panel, so a short log or the empty message no longer leaves the page background exposed below it
+- The empty message is readable against the log background in the light theme
+
 ## [1.6.0] - 2026-08-09
 
 ### Changed
@@ -113,6 +124,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 # 更新履歴
 
 このファイルは [Keep a Changelog](https://keepachangelog.com/ja/1.1.0/) の形式に基づき、プロジェクトは [Semantic Versioning](https://semver.org/lang/ja/) に従います。
+
+## [1.7.0] - 2026-08-09
+
+### 追加
+
+- 新着のキャッチをフェードイン表示：パネルを開いている間に届いたキャッチはその都度、パネルを閉じている間にたまった未確認のキャッチは開いた時点でまとめて、ふわっと表示されます（prefers-reduced-motionを尊重）
+
+### 修正
+
+- ログ領域の背景がパネル全体を満たすように修正（キャッチが少ないときや空のときに、下部の背景色が途切れていた）
+- ライトテーマで「まだキャッチはありません」のメッセージが背景に対して読みやすい色に
 
 ## [1.6.0] - 2026-08-09
 

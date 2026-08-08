@@ -60,11 +60,11 @@ The Odnoklassniki, ICQ, and Pager style notification sounds are from [Sound Dino
 
 ## Changelog
 
-### [1.6.0] - 2026-08-09
+### [1.7.0] - 2026-08-09
 
-#### Changed
+#### Added
 
-- Restyled the catch log: catch items read as cards on their own log background, and colors separate the roles of each element; diff ranges are outlined, and assertive catches are no longer bolded
+- Newly arrived catches fade in, both as they arrive and when the panel opens with unread ones waiting (respects prefers-reduced-motion)
 
 See [CHANGELOG.md](./CHANGELOG.md) for the full history.
 
@@ -132,10 +132,10 @@ Webページ上のARIAライブリージョンの更新と `ariaNotify()` の呼
 
 ## 更新履歴
 
-### [1.6.0] - 2026-08-09
+### [1.7.0] - 2026-08-09
 
-#### 変更
+#### 追加
 
-- キャッチログの配色を刷新：ログ領域の背景の上にキャッチ項目をカードとして見せ、各要素を役割ごとに色分け。差分範囲を枠線で明示し、assertiveの太字表示を廃止
+- 新着のキャッチをフェードイン表示（届いた時点、およびパネルを開いた時点の未確認分。prefers-reduced-motionを尊重）
 
 全履歴は [CHANGELOG.md](./CHANGELOG.md) を参照してください。

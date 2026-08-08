@@ -7,7 +7,9 @@ let settings = { ...DEFAULT_SETTINGS }; // replaced by stored values in init
 const emptyMessage = document.getElementById('empty-message');
 const clearButton = document.getElementById('clear-log');
 const catchesKey = (tabId) => `catches:${tabId}`;
+const unreadKey = (tabId) => `unread:${tabId}`;
 let currentTabId = null;
+let seenCatchIds = new Set();
 
 // The list is created here rather than in the static HTML: an empty <ol>
 // with no listitem children fails accessibility checks.
@@ -315,9 +317,9 @@ function renderDetails(record) {
   return details;
 }
 
-function renderItem(record, count = 1) {
+function renderItem(record, count = 1, isNew = false) {
   const item = document.createElement('li');
-  item.className = 'catch-item';
+  item.className = isNew ? 'catch-item catch-item-new' : 'catch-item';
 
   const meta = document.createElement('p');
   meta.className = 'catch-meta';
@@ -394,11 +396,23 @@ function groupCatches(catches) {
   return grouped;
 }
 
-function render(catches, { forceBottom = false } = {}) {
+function render(catches, { forceBottom = false, animateNew = true } = {}) {
   const doc = document.documentElement;
   const wasAtBottom = window.innerHeight + window.scrollY >= doc.scrollHeight - 8;
   const entries = groupCatches(catches);
-  list.replaceChildren(...entries.map((entry) => renderItem(entry.record, entry.count)));
+
+  // The list is rebuilt on every render, so freshly arrived catches are
+  // recognized by id and fade in once; everything already on screen (and the
+  // whole log on the first render) appears without animation.
+  const nextSeen = new Set();
+  const items = entries.map((entry) => {
+    const isNew = animateNew && !seenCatchIds.has(entry.record.id);
+    nextSeen.add(entry.record.id);
+    return renderItem(entry.record, entry.count, isNew);
+  });
+  seenCatchIds = nextSeen;
+
+  list.replaceChildren(...items);
   list.hidden = entries.length === 0;
   emptyMessage.hidden = entries.length > 0;
   // Auto-scroll per spec §12.6; never move focus (spec §17).
@@ -412,11 +426,26 @@ function render(catches, { forceBottom = false } = {}) {
 
 async function refresh({ initial = false } = {}) {
   if (currentTabId === null) {
-    render([], { forceBottom: false });
+    render([], { forceBottom: false, animateNew: false });
     return;
   }
-  const stored = await chrome.storage.session.get(catchesKey(currentTabId));
-  render(stored[catchesKey(currentTabId)] ?? [], { forceBottom: initial });
+  const stored = await chrome.storage.session.get([
+    catchesKey(currentTabId),
+    unreadKey(currentTabId)
+  ]);
+  const catches = stored[catchesKey(currentTabId)] ?? [];
+
+  if (initial) {
+    // Opening the panel (or switching tabs) fades in everything that was
+    // still unread — the entries that piled up while the panel was closed —
+    // and leaves the already-read history static.
+    const unreadCount = Math.min(stored[unreadKey(currentTabId)]?.count ?? 0, catches.length);
+    seenCatchIds = new Set(
+      catches.slice(0, catches.length - unreadCount).map((record) => record.id)
+    );
+  }
+
+  render(catches, { forceBottom: initial });
   try {
     await chrome.runtime.sendMessage({ type: 'lrc:mark-read', tabId: currentTabId });
   } catch {

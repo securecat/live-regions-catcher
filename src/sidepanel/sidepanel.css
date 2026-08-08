@@ -17,6 +17,8 @@
   --color-diff-removed-border: #ff5454;
   --color-diff-removed-line: #ec0000;
   --color-muted-content: var(--color-text-subtle);
+  /* The empty message sits on the log background, not the page background. */
+  --color-empty-message: #34343c;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -41,6 +43,7 @@
     /* Empty content and diff context sit on the item background, so they
        carry a lighter subtle tone than the rest of the panel. */
     --color-muted-content: #cccccc;
+    --color-empty-message: var(--color-text-subtle);
   }
 }
 
@@ -97,14 +100,23 @@
   margin: 0.75rem 0 0.5rem;
 }
 
+/* The log background fills the rest of the panel, so a short log (or the
+   empty message) does not leave the page background exposed below it. */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 .catch-log {
   background: var(--color-log-bg);
   padding: 1rem;
+  flex: 1;
 }
 
 .empty-message {
   margin: 0;
-  color: var(--color-text-subtle);
+  color: var(--color-empty-message);
 }
 
 .catch-list {
@@ -121,6 +133,25 @@
   border: 1px solid var(--color-separator);
   border-radius: 0.5rem;
   padding: 0.5rem 0.75rem;
+}
+
+/* A catch that arrived while the panel is open fades in once, so it is
+   apparent which entry is new. base.css disables this under
+   prefers-reduced-motion, where the item simply appears. */
+@keyframes catch-item-appear {
+  from {
+    opacity: 0;
+    transform: translateY(0.375rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.catch-item-new {
+  animation: catch-item-appear 400ms ease-out;
 }
 
 .catch-meta {
