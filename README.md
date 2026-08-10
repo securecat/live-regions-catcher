@@ -6,7 +6,9 @@ A Chrome extension that catches ARIA live region updates and `ariaNotify()` call
 
 Live Regions Catcher detects notifications that a web page attempts to convey to browsers and assistive technologies, and displays them as visual messages — like a one-way chat window from the page to you.
 
-It does **not** reproduce or record what a screen reader actually speaks. It shows the page's notification intent as observable from the DOM and Web APIs, keeping the original content untouched.
+It does not reproduce or record what a screen reader actually speaks. It shows the page's notification intent as observable from the DOM and Web APIs, keeping the original content untouched.
+
+The people who use the web are not simply divided into those who see and those who do not: there are many people with visual impairments who are not blind and do not use a screen reader. In other words, information that the screen fails to convey cannot be substituted by a live region alone. Visualizing live regions makes it possible to check whether that information is properly conveyed visually.
 
 ## Features
 
@@ -64,8 +66,8 @@ The Odnoklassniki, ICQ, and Pager style notification sounds are from [Sound Dino
 
 #### Added
 
-- A "New from here" band marks where unseen catches begin, so new entries are identifiable without relying on motion
-- Options setting for the fade-in of new catches; until it is chosen, it follows the OS reduced-motion preference
+- A "New from here" band marks where unseen catches begin, so new entries are identifiable without relying on motion. It stays in place and moves only when a later burst arrives; catches landing within a second of each other stay under one band
+- Options setting for the fade-in of new catches (Display section): fade in / do not fade in. Until it is chosen, it follows the OS reduced-motion preference; choosing either option overrides that preference in both directions
 
 See [CHANGELOG.md](./CHANGELOG.md) for the full history.
 
@@ -79,7 +81,9 @@ Webページ上のARIAライブリージョンの更新と `ariaNotify()` の呼
 
 ライブリージョン・キャッチャーは、Webページがブラウザや支援技術へ伝えようとした通知を検知し、視覚的なメッセージとして表示します。ページからあなたへ送られる、一方通行のチャットウィンドウのようなイメージです。
 
-スクリーンリーダーが実際に発話した内容を再現・記録するものでは**ありません**。DOMおよびWeb APIから観測できるページ側の通知意図を、原文のまま表示します。
+スクリーンリーダーが実際に発話した内容を再現・記録するものではありません。DOMおよびWeb APIから観測できるページ側の通知意図を、原文のまま表示します。
+
+Webの利用者は晴眼者か全盲かのみに分かれているわけではなく、スクリーンリーダーを使わない全盲以外の視覚障害者もたくさんいます。つまり、画面上で十分に伝わらない情報は、ライブリージョンだけでは代替できないということです。ライブリージョンの可視化により、情報が視覚的に適切に伝えられているかを検証することが可能となります。
 
 ## 機能
 
@@ -137,7 +141,7 @@ Webページ上のARIAライブリージョンの更新と `ariaNotify()` の呼
 
 #### 追加
 
-- 未確認のキャッチの先頭に「ここから新着」の帯を表示（動きに依存せず新着を判別できます）
-- 新しいキャッチのフェードイン表示をOptionsページで選択可能に（未選択のうちはOSのprefers-reduced-motion設定に従います）
+- 未確認のキャッチの先頭に「ここから新着」の帯を表示。動きに依存せず新着を判別できます。帯はその場に留まり、間隔が空いて次のキャッチが届いたときに移動します（1秒以内に連続して届いたキャッチは1つの帯にまとまります）
+- 新しいキャッチのフェードイン表示をOptionsページ（表示セクション）で選択可能に：する／しない。未選択のうちはOSのprefers-reduced-motion設定に従い、いずれかを選ぶとその選択が優先されます
 
 全履歴は [CHANGELOG.md](./CHANGELOG.md) を参照してください。
