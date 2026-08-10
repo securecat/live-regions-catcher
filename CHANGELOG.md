@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
-- A "New from here" band marks where unseen catches begin, so new entries are identifiable without relying on motion. It stays in place and moves only when a later burst arrives; catches landing within a second of each other stay under one band
+- A "New from here" band marks where unseen catches begin. It stays in place and moves only when a later burst arrives; catches landing within a second of each other stay under one band
 - Options setting for the fade-in of new catches (Display section): fade in / do not fade in. Until it is chosen, it follows the OS reduced-motion preference; choosing either option overrides that preference in both directions
 
 ## [1.7.0] - 2026-08-09
@@ -26,13 +26,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - Restyled the catch log: the log area gets its own background so catch items read as cards, and colors now separate the roles of each element — meta chips, diff labels, politeness, detail labels, timestamps, and code blocks
 - Diff ranges are clearer: the changed range is outlined and the removed range is dashed, each with its own underline color
-- assertive and ariaNotify() catches are no longer bolded; politeness is stated, not emphasized
+- assertive and ariaNotify() catches are no longer bolded
 
 ## [1.5.2] - 2026-08-03
 
 ### Changed
 
-- The popup switch's off state is now a crisper gray (7:1-class in the light theme), so "off" does not read as "disabled" next to the on-state blue
+- The popup switch's off state is now a crisper gray (7:1-class in the light theme)
 
 ## [1.5.1] - 2026-08-03
 
@@ -136,7 +136,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### 追加
 
-- 未確認のキャッチの先頭に「ここから新着」の帯を表示。動きに依存せず新着を判別できます。帯はその場に留まり、間隔が空いて次のキャッチが届いたときに移動します（1秒以内に連続して届いたキャッチは1つの帯にまとまります）
+- 新着を判別できるように未確認のキャッチの先頭に「ここから新着」の帯を表示。帯はその場に留まり、間隔が空いて次のキャッチが届いたときに移動します（1秒以内に連続して届いたキャッチは1つの帯にまとまります）
 - 新しいキャッチのフェードイン表示をOptionsページ（表示セクション）で選択可能に：する／しない。未選択のうちはOSのprefers-reduced-motion設定に従い、いずれかを選ぶとその選択が優先されます
 
 ## [1.7.0] - 2026-08-09
@@ -156,13 +156,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - キャッチログの配色を刷新：ログ領域に独自の背景色を与えてキャッチ項目をカードとして見せ、メタ情報のチップ・差分ラベル・優先度・詳細の項目名・時刻・コードブロックを、役割ごとに色分け
 - 差分表現を明確化：変更範囲は枠線で囲み、削除範囲は破線で囲んで、それぞれ専用の下線色を設定
-- assertive・ariaNotify()のキャッチの太字表示を廃止（優先度は事実として示し、強調はしない）
+- assertive・ariaNotify()のキャッチの太字表示を廃止
 
 ## [1.5.2] - 2026-08-03
 
 ### 変更
 
-- popupのスイッチのオフ状態を、よりくっきりしたグレー（ライトテーマで7:1相当）に変更。オン状態の青と並んだときに「無効」に見えないように
+- popupのスイッチのオフ状態を、よりくっきりしたグレー（ライトテーマで7:1相当）に変更
 
 ## [1.5.1] - 2026-08-03
 
