@@ -30,7 +30,9 @@ The people who use the web are not simply divided into those who see and those w
 
 ### Chrome Web Store
 
-(Coming soon)
+https://chromewebstore.google.com/detail/live-regions-catcher/ddbknpeflpoakeepangeomhojaflmfpm
+
+> The Chrome Web Store version may lag behind the repository during the review process.
 
 ### Developer Mode (Manual Install)
 
@@ -105,7 +107,9 @@ Webの利用者は晴眼者か全盲かのみに分かれているわけでは�
 
 ### Chrome ウェブストア
 
-準備中
+https://chromewebstore.google.com/detail/live-regions-catcher/ddbknpeflpoakeepangeomhojaflmfpm
+
+> Chrome ウェブストア版は、審査中のため最新リリースより古い場合があります。
 
 ### デベロッパーモード（手動インストール）
 
