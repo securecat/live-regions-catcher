@@ -188,10 +188,10 @@ function renderBody(record) {
   return body;
 }
 
-function renderDetails(record) {
+function renderDetails(record, open) {
   const details = document.createElement('details');
   details.className = 'catch-details';
-  details.open = settings.detailsInitiallyOpen;
+  details.open = open;
   const summary = document.createElement('summary');
   summary.textContent = t('detailsSummary');
   details.append(summary);
@@ -338,8 +338,9 @@ function renderNewDivider() {
   return divider;
 }
 
-function renderItem(record, count = 1, isNew = false) {
+function renderItem({ key, record, count }, { isNew, detailsOpen }) {
   const item = document.createElement('li');
+  item.dataset.key = key;
   const fadeIn = isNew && fadeInEnabled(settings);
   item.className = fadeIn ? 'catch-item catch-item-new' : 'catch-item';
   if (fadeIn) {
@@ -392,15 +393,16 @@ function renderItem(record, count = 1, isNew = false) {
   time.textContent = formatTime(record.timestamp);
   meta.append(time);
 
-  item.append(meta, renderBody(record), renderDetails(record));
+  item.append(meta, renderBody(record), renderDetails(record, detailsOpen));
   return item;
 }
 
 // Groups consecutive identical notifications (spec §12.5); the latest
-// occurrence represents the group.
+// occurrence represents the group. The key stays that of the group's first
+// occurrence, so an entry keeps its identity while duplicates join it.
 function groupCatches(catches) {
   if (settings.duplicateHandling === 'all') {
-    return catches.map((record) => ({ record, count: 1 }));
+    return catches.map((record) => ({ key: record.id, record, count: 1 }));
   }
   const grouped = [];
   for (const record of catches) {
@@ -416,7 +418,7 @@ function groupCatches(catches) {
       previous.record = record;
       previous.count += 1;
     } else {
-      grouped.push({ record, count: 1 });
+      grouped.push({ key: record.id, record, count: 1 });
     }
   }
   return grouped;
@@ -457,15 +459,37 @@ function render(catches, { forceBottom = false, animateNew = true } = {}) {
   }
   const newIdSet = new Set(newEntries.map((entry) => entry.record.id));
 
+  // Only the user opens or closes a card's details: entries already on screen
+  // keep their state through the rebuild, and only new ones take the initial
+  // setting. Focus on a summary is carried over for the same reason.
+  const detailsOpenByKey = new Map();
+  for (const details of list.querySelectorAll('.catch-details')) {
+    detailsOpenByKey.set(details.closest('.catch-item').dataset.key, details.open);
+  }
+  const focused = document.activeElement;
+  const focusedSummaryKey =
+    focused?.localName === 'summary' && list.contains(focused)
+      ? focused.closest('.catch-item').dataset.key
+      : null;
+
   const items = [];
+  let summaryToFocus = null;
   for (const entry of entries) {
     if (entry.record.id === newBatchAnchorId) {
       items.push(renderNewDivider());
     }
-    items.push(renderItem(entry.record, entry.count, newIdSet.has(entry.record.id)));
+    const item = renderItem(entry, {
+      isNew: newIdSet.has(entry.record.id),
+      detailsOpen: detailsOpenByKey.get(entry.key) ?? settings.detailsInitiallyOpen
+    });
+    if (entry.key === focusedSummaryKey) {
+      summaryToFocus = item.querySelector('summary');
+    }
+    items.push(item);
   }
 
   list.replaceChildren(...items);
+  summaryToFocus?.focus({ preventScroll: true });
   list.hidden = entries.length === 0;
   emptyMessage.hidden = entries.length > 0;
   // Auto-scroll per spec §12.6; never move focus (spec §17).
