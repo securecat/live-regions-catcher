@@ -2,6 +2,12 @@
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.8.1] - 2026-09-24
+
+### Fixed
+
+- A card's open details no longer close when a new catch arrives; details open and close only when the user toggles them, and focus on a details summary stays where it was
+
 ## [1.8.0] - 2026-08-09
 
 ### Added
@@ -131,6 +137,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 # 更新履歴
 
 このファイルは [Keep a Changelog](https://keepachangelog.com/ja/1.1.0/) の形式に基づき、プロジェクトは [Semantic Versioning](https://semver.org/lang/ja/) に従います。
+
+## [1.8.1] - 2026-09-24
+
+### 修正
+
+- 新しいキャッチが届くと、開いていたカードの詳細が閉じてしまう問題を修正。詳細の開閉はユーザーの操作によってのみ行われ、詳細のサマリーにあるフォーカスもそのまま保たれます
 
 ## [1.8.0] - 2026-08-09
 
