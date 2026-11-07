@@ -75,7 +75,7 @@ Live Regions Catcher is developed by an individual, so we can't promise a deadli
 
 These expectations apply equally to human contributors and coding agents.
 
-When you change the UI:
+When you change the UI, aim to meet the following:
 
 - Use native form controls (`<input>`, `<select>`, `<textarea>`). Don't use `<div>` or `<span>` as buttons; use `<button>` for actions on the page and `<a>` for navigation
 - Don't use the `disabled` attribute
@@ -180,7 +180,7 @@ UIは WCAG 2.2 のレベル AA を目標とし、これを上限ではなく下�
 
 ここに挙げることは、人間の貢献者にもコーディングエージェントにも、同じように求めます。
 
-UIを変更するときは、次を守ってください。
+UIを変更するときは、次を満たすように心がけてください。
 
 - フォームにはネイティブの要素（`<input>`・`<select>`・`<textarea>`）を使う。`<div>` や `<span>` をボタンの代わりにしない。画面内の操作には `<button>`、ページの移動には `<a>` を使う
 - `disabled` 属性を使わない
