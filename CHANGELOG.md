@@ -2,6 +2,16 @@
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.9.0] - 2026-11-16
+
+### Added
+
+- A `<dialog>` opened with `showModal()` is now treated as a modal dialog, so notifications outside it are caught, ignored, or annotated according to the modal setting, in the same way as for `aria-modal` dialogs. A `<dialog aria-modal="true">` without a `role` attribute is also treated as a modal dialog
+
+### Changed
+
+- Removed `rel="noopener"` from the links that open in a new tab (no change in behavior)
+
 ## [1.8.1] - 2026-09-24
 
 ### Fixed
@@ -137,6 +147,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 # 更新履歴
 
 このファイルは [Keep a Changelog](https://keepachangelog.com/ja/1.1.0/) の形式に基づき、プロジェクトは [Semantic Versioning](https://semver.org/lang/ja/) に従います。
+
+## [1.9.0] - 2026-11-16
+
+### 追加
+
+- `showModal()` で開かれた `<dialog>` を、モーダルダイアログとして扱うようにしました。その外側の通知は、`aria-modal` のダイアログと同じように、モーダルの設定に従ってキャッチ・除外・注記付きキャッチします。`role` 属性のない `<dialog aria-modal="true">` も、モーダルダイアログとして扱います
+
+### 変更
+
+- 新しいタブで開くリンクから `rel="noopener"` を削除しました（動作は変わりません）
 
 ## [1.8.1] - 2026-09-24
 

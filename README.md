@@ -17,7 +17,7 @@ The people who use the web are not simply divided into those who see and those w
 - Catches additions, removals, and text changes individually according to `aria-relevant`, capturing removed content before it becomes unreachable
 - Monitors open shadow DOM (including roots attached after connection) and iframes
 - Observes `ariaNotify()` calls where the API is available, with priority and call-target information
-- Configurable handling of notifications outside `aria-modal` dialogs: catch, ignore, or annotate
+- Configurable handling of notifications outside modal dialogs (`aria-modal` dialogs and `<dialog>` opened with `showModal()`): catch, ignore, or annotate
 - Notes for patterns worth inspecting: empty notification candidates, regions inserted together with their content, invalid `aria-relevant` tokens, assertive bursts, implicit roles muted with `aria-live="off"`, and more
 - Chat-log style timeline with expandable details (explicit vs effective values, DOM path, HTML fragments, mutation breakdown)
 - Unread badge on the toolbar icon; red when unread catches include assertive ones
@@ -64,11 +64,15 @@ The Odnoklassniki, ICQ, and Pager style notification sounds are from [Sound Dino
 
 ## Changelog
 
-### [1.8.1] - 2026-09-24
+### [1.9.0] - 2026-11-16
 
-#### Fixed
+#### Added
 
-- A card's open details no longer close when a new catch arrives; details open and close only when the user toggles them, and focus on a details summary stays where it was
+- A `<dialog>` opened with `showModal()` is now treated as a modal dialog, so notifications outside it are caught, ignored, or annotated according to the modal setting, in the same way as for `aria-modal` dialogs. A `<dialog aria-modal="true">` without a `role` attribute is also treated as a modal dialog
+
+#### Changed
+
+- Removed `rel="noopener"` from the links that open in a new tab (no change in behavior)
 
 See [CHANGELOG.md](./CHANGELOG.md) for the full history.
 
@@ -93,7 +97,7 @@ Webの利用者は晴眼者か全盲かのみに分かれているわけでは�
 - `aria-relevant` に応じて追加・削除・テキスト変更をそれぞれキャッチ（削除された内容は参照不能になる前に取得して保持）
 - Open Shadow DOM（接続後にattachShadowされたものを含む）とiframeも監視
 - `ariaNotify()` の呼び出しを観測（APIが利用可能な環境）。優先度・呼び出し対象も記録
-- `aria-modal` ダイアログ外の通知の扱いを設定可能：キャッチ／除外／注記付きキャッチ
+- モーダルダイアログ（`aria-modal` のダイアログと、`showModal()` で開かれた `<dialog>`）の外側の通知の扱いを設定可能：キャッチ／除外／注記付きキャッチ
 - 検証の手がかりになる注意情報：空の通知候補、内容ごと挿入されたリージョン、不正な `aria-relevant` トークン、assertiveの多発、`aria-live="off"` で無効化された暗黙ロールなど
 - チャットログ風のタイムラインと展開式の詳細表示（明示値/実効値の対比・DOMパス・HTML断片・Mutationの内訳）
 - ツールバーアイコンに未確認件数バッジ。未確認にassertiveが含まれる場合は赤色
@@ -140,10 +144,14 @@ https://chromewebstore.google.com/detail/live-regions-catcher/ddbknpeflpoakeepan
 
 ## 更新履歴
 
-### [1.8.1] - 2026-09-24
+### [1.9.0] - 2026-11-16
 
-#### 修正
+#### 追加
 
-- 新しいキャッチが届くと、開いていたカードの詳細が閉じてしまう問題を修正。詳細の開閉はユーザーの操作によってのみ行われ、詳細のサマリーにあるフォーカスもそのまま保たれます
+- `showModal()` で開かれた `<dialog>` を、モーダルダイアログとして扱うようにしました。その外側の通知は、`aria-modal` のダイアログと同じように、モーダルの設定に従ってキャッチ・除外・注記付きキャッチします。`role` 属性のない `<dialog aria-modal="true">` も、モーダルダイアログとして扱います
+
+#### 変更
+
+- 新しいタブで開くリンクから `rel="noopener"` を削除しました（動作は変わりません）
 
 全履歴は [CHANGELOG.md](./CHANGELOG.md) を参照してください。
