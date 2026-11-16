@@ -1,12 +1,8 @@
 # Accessibility
 
-Last updated: 2026-11-16
+Last updated: 2026-11-17
 
 ## Priorities and Goals
-
-Live Regions Catcher shows, in visible form, the notifications that a web page tries to convey through ARIA live regions and `ariaNotify()`. These notifications mainly reach screen reader users, and often nothing appears on the screen. People who do not use a screen reader, such as many people with low vision, may never receive that information. This extension helps developers and testers check how live regions behave, and whether the same information is also conveyed visually.
-
-The people who check pages with this extension include screen reader users, keyboard-only users, and people with low vision. The extension's own UI therefore needs to work for them as well.
 
 This statement covers:
 
@@ -102,13 +98,9 @@ Suggestions about this statement or our approach to accessibility are also welco
 
 # アクセシビリティ
 
-最終更新：2026-11-16
+最終更新：2026-11-17
 
 ## 優先事項と目標
-
-ライブリージョン・キャッチャーは、Webページが ARIA のライブリージョンや `ariaNotify()` で伝えようとした通知を、目に見える形で表示します。こうした通知は主にスクリーンリーダーの利用者に届くもので、画面には何も表示されないことも少なくありません。スクリーンリーダーを使わない人、たとえば多くの弱視の人には、その情報が届かないことがあります。この拡張機能は、開発者や検証者がライブリージョンの動きを確かめ、同じ情報が画面上でも伝わっているかを点検するために使います。
-
-この拡張機能でページを点検する人には、スクリーンリーダーの利用者、キーボードだけで操作する人、弱視の人もいます。そのため、拡張機能そのもののUIも、こうした人たちが使えるものである必要があります。
 
 この文書が対象とするのは、次のとおりです。
 
