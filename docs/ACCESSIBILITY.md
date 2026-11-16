@@ -42,11 +42,8 @@ Live Regions Catcher observes pages; it does not change them.
 
 - **When a new catch arrives, the side panel scrolls to the end by default if you are already viewing the end, and new catches fade in.** The fade-in is off by default when your OS is set to reduce motion.
   - Workaround: On the options page, under "Display," set "Auto-scroll on new catches" to "Do not auto-scroll" and "Fade in new catches" to "Do not fade in."
-- **The side panel's title follows Chrome's display language, not the extension's language setting.** The title is part of Chrome's UI, and the extension cannot change it.
-- **Some notifications cannot be caught.** These include notifications inside closed shadow DOM, `ariaNotify()` calls made before the extension is injected or in browsers without the API, and pages where Chrome does not run extensions (such as `chrome://` pages).
-- **Modal dialogs are detected heuristically.** The extension treats a `<dialog>` opened with `showModal()`, or a visible dialog with `aria-modal="true"`, as a modal dialog, and uses the last one in document order as the active modal. This may differ from how a browser or screen reader treats the page.
-- **What the extension shows are notification candidates as observed from the DOM and Web APIs.** It does not reproduce what a screen reader actually speaks, which differs between screen readers and their settings.
-- **The demo page is in English only.**
+- **Some text in the side panel does not reach our own 7:1 contrast rule.** To give the side panel the look of a chat app, some text has a contrast ratio between 4.5:1 and 7:1, such as the times, some labels, the "New from here" band, and the message shown when there are no catches. This meets WCAG 2.2 Level AA (4.5:1), but not the stricter rule in [Contributor Expectations](#contributor-expectations).
+  - Workaround: In forced colors mode, such as Windows contrast themes, the side panel is shown in the system colors.
 
 ## Reporting Accessibility Barriers
 
@@ -147,11 +144,8 @@ UIは WCAG 2.2 のレベル AA を目標とし、これを上限ではなく下�
 
 - **新しいキャッチが届くと、初期設定では、末尾を見ているときにサイドパネルが末尾まで自動でスクロールし、新しい項目がフェードインで表示されます。** フェードインは、OS で視差効果を減らす設定にしている場合は、初期設定で表示しません。
   - 回避策：オプションページの「表示」で、「新しいキャッチ時の自動スクロール」を「自動スクロールしない」に、「新しいキャッチのフェードイン表示」を「しない」にしてください。
-- **サイドパネルのタイトルは、拡張機能の表示言語の設定ではなく、Chrome の表示言語に従います。** タイトルは Chrome のUIの一部で、拡張機能からは変更できないためです。
-- **キャッチできない通知があります。** closed な Shadow DOM の中の通知、拡張機能が読み込まれる前や API のないブラウザでの `ariaNotify()` の呼び出し、Chrome が拡張機能を動かさないページ（`chrome://` のページなど）での通知です。
-- **モーダルダイアログは、推測で判定しています。** `showModal()` で開かれた `<dialog>` と、表示中の `aria-modal="true"` のダイアログをモーダルダイアログとみなし、文書の順序で最後のものを、いま開いているモーダルとして扱います。ブラウザやスクリーンリーダーの扱いとは異なる場合があります。
-- **表示するのは、DOM と Web API から観測できた通知候補です。** スクリーンリーダーが実際に読み上げる内容を再現するものではありません。読み上げは、スクリーンリーダーの種類や設定によって異なります。
-- **デモページは英語のみです。**
+- **サイドパネルの一部の文字は、独自の基準であるコントラスト比 7:1 に届いていません。** サイドパネルをチャットアプリ風の見た目にするため、時刻、一部のラベル、「ここから新着」の帯、キャッチがないときのメッセージなどは、コントラスト比が 4.5:1 以上 7:1 未満です。WCAG 2.2 のレベル AA（4.5:1）は満たしていますが、[貢献者への期待](#貢献者への期待)に挙げた、より厳しい基準には届いていません。
+  - 回避策：Windows のコントラスト テーマなどの強制カラーモードでは、サイドパネルはシステムの配色で表示されます。
 
 ## アクセシビリティの問題を報告する
 
