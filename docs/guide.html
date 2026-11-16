@@ -190,7 +190,7 @@ document.getElementById('save-status').textContent = 'Saved!';</code></pre>
       <dt>An aria-labelledby reference could not be resolved / is not unique.</dt>
       <dd>Content computation hit a missing or duplicated ID.</dd>
       <dt>This notification is outside the active modal dialog.</dt>
-      <dd>While an <code>aria-modal="true"</code> dialog is open, some environments do not announce live regions outside it (handling is configurable).</dd>
+      <dd>While a modal dialog is open, some environments do not announce live regions outside it (handling is configurable).</dd>
       <dt>Many assertive notifications occurred within a short period.</dt>
       <dd>Frequent interruptions are a usability concern for screen reader users.</dd>
       <dt>The language of the notification source could not be determined.</dt>
@@ -200,7 +200,12 @@ document.getElementById('save-status').textContent = 'Saved!';</code></pre>
     </dl>
 
     <h2>Modal dialogs</h2>
-    <p>While a visible <code>aria-modal="true"</code> dialog (<code>role="dialog"</code> or <code>role="alertdialog"</code>) is open, browsers and screen readers disagree on whether live regions outside it are announced. The extension marks each catch as inside or outside "the modal as judged by this extension" (a heuristic), and lets you choose to catch, ignore, or annotate outside notifications.</p>
+    <p>While a modal dialog is open, browsers and screen readers disagree on whether live regions outside it are announced. The extension treats the following as modal dialogs:</p>
+    <ul>
+      <li>A <code>&lt;dialog&gt;</code> element opened with <code>showModal()</code></li>
+      <li>A visible element with <code>aria-modal="true"</code> whose role is <code>dialog</code> or <code>alertdialog</code> (including the implicit role of <code>&lt;dialog&gt;</code>)</li>
+    </ul>
+    <p>When more than one is open, the last one in document order is used. The extension marks each catch as inside or outside "the modal as judged by this extension" (a heuristic), and lets you choose to catch, ignore, or annotate outside notifications.</p>
 
     <h2>What cannot be caught</h2>
     <ul>
@@ -273,7 +278,7 @@ document.getElementById('save-status').textContent = '保存しました';</code
       <dt>aria-labelledbyの参照先が見つかりませんでした／一意ではありません。</dt>
       <dd>通知内容の計算で、参照先IDの欠落または重複に遭遇しました。</dd>
       <dt>モーダル外の通知です。</dt>
-      <dd><code>aria-modal="true"</code> のダイアログ表示中、その外側のライブリージョンを通知しない環境があります（扱いは設定で変更可能）。</dd>
+      <dd>モーダルダイアログの表示中、その外側のライブリージョンを通知しない環境があります（扱いは設定で変更可能）。</dd>
       <dt>短時間にassertive通知が多数発生しています。</dt>
       <dd>頻繁な割り込みは、スクリーンリーダーユーザーにとって使い勝手の問題になり得ます。</dd>
       <dt>通知元の言語を判定できませんでした。</dt>
@@ -283,7 +288,12 @@ document.getElementById('save-status').textContent = '保存しました';</code
     </dl>
 
     <h2>モーダルダイアログとの関係</h2>
-    <p>表示中の <code>aria-modal="true"</code> なダイアログ（<code>role="dialog"</code> / <code>role="alertdialog"</code>）がある間、その外側のライブリージョンを通知するかどうかは、ブラウザとスクリーンリーダーの組み合わせによって異なります。本拡張は「本拡張が判定したモーダル」（ヒューリスティック）に対する内外を各キャッチに記録し、モーダル外の通知を「キャッチ／除外／注記付きキャッチ」から選べるようにしています。</p>
+    <p>モーダルダイアログの表示中、その外側のライブリージョンを通知するかどうかは、ブラウザとスクリーンリーダーの組み合わせによって異なります。本拡張は、次のものをモーダルダイアログとして扱います。</p>
+    <ul>
+      <li><code>showModal()</code> で開かれた <code>&lt;dialog&gt;</code> 要素</li>
+      <li>表示中の <code>aria-modal="true"</code> な要素のうち、ロールが <code>dialog</code> / <code>alertdialog</code> のもの（<code>&lt;dialog&gt;</code> の暗黙のロールを含む）</li>
+    </ul>
+    <p>複数が開いている場合は、文書の順序で最後のものを使います。本拡張は「本拡張が判定したモーダル」（ヒューリスティック）に対する内外を各キャッチに記録し、モーダル外の通知を「キャッチ／除外／注記付きキャッチ」から選べるようにしています。</p>
 
     <h2>キャッチできないもの</h2>
     <ul>

@@ -44,7 +44,7 @@ Live Regions Catcher observes pages; it does not change them.
   - Workaround: On the options page, under "Display," set "Auto-scroll on new catches" to "Do not auto-scroll" and "Fade in new catches" to "Do not fade in."
 - **The side panel's title follows Chrome's display language, not the extension's language setting.** The title is part of Chrome's UI, and the extension cannot change it.
 - **Some notifications cannot be caught.** These include notifications inside closed shadow DOM, `ariaNotify()` calls made before the extension is injected or in browsers without the API, and pages where Chrome does not run extensions (such as `chrome://` pages).
-- **Modal dialogs are detected heuristically.** The extension treats the last visible dialog with `aria-modal="true"` as the active modal. This may differ from how a browser or screen reader treats the page.
+- **Modal dialogs are detected heuristically.** The extension treats a `<dialog>` opened with `showModal()`, or a visible dialog with `aria-modal="true"`, as a modal dialog, and uses the last one in document order as the active modal. This may differ from how a browser or screen reader treats the page.
 - **What the extension shows are notification candidates as observed from the DOM and Web APIs.** It does not reproduce what a screen reader actually speaks, which differs between screen readers and their settings.
 - **The demo page is in English only.**
 
@@ -149,7 +149,7 @@ UIは WCAG 2.2 のレベル AA を目標とし、これを上限ではなく下�
   - 回避策：オプションページの「表示」で、「新しいキャッチ時の自動スクロール」を「自動スクロールしない」に、「新しいキャッチのフェードイン表示」を「しない」にしてください。
 - **サイドパネルのタイトルは、拡張機能の表示言語の設定ではなく、Chrome の表示言語に従います。** タイトルは Chrome のUIの一部で、拡張機能からは変更できないためです。
 - **キャッチできない通知があります。** closed な Shadow DOM の中の通知、拡張機能が読み込まれる前や API のないブラウザでの `ariaNotify()` の呼び出し、Chrome が拡張機能を動かさないページ（`chrome://` のページなど）での通知です。
-- **モーダルダイアログは、推測で判定しています。** 表示中の `aria-modal="true"` のダイアログのうち、最後のものをモーダルとして扱います。ブラウザやスクリーンリーダーの扱いとは異なる場合があります。
+- **モーダルダイアログは、推測で判定しています。** `showModal()` で開かれた `<dialog>` と、表示中の `aria-modal="true"` のダイアログをモーダルダイアログとみなし、文書の順序で最後のものを、いま開いているモーダルとして扱います。ブラウザやスクリーンリーダーの扱いとは異なる場合があります。
 - **表示するのは、DOM と Web API から観測できた通知候補です。** スクリーンリーダーが実際に読み上げる内容を再現するものではありません。読み上げは、スクリーンリーダーの種類や設定によって異なります。
 - **デモページは英語のみです。**
 

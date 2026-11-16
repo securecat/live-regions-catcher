@@ -21,7 +21,7 @@
 - **設定**：`chrome.storage.local` のキー `settings`。既定値・スキーマは `src/lib/settings.js` が単一ソースで、`src/content/shared.js` の `LRC.DEFAULT_SETTINGS` と**同期を保つこと**（コンテンツスクリプトはESモジュールをimportできないため）。全サーフェスが `storage.onChanged` で即追従する
 - **i18n**：`_locales/` はChrome直轄の文言のみ（拡張名・説明・ツールチップ）。拡張内UIは `src/lib/messages.js`（en/jaカタログ・同一キー・enフォールバック）＋ `src/lib/i18n.js` の `t()`。**拡張内UIで `chrome.i18n.getMessage` を使わないこと**（実行時言語切替のため）
 - **エクスポート**：`src/lib/export.js`。Markdownの見出し・ラベルはUI言語／内容は原文、JSONはキー・列挙値とも英語固定（schemaVersion `1.0`）。ファイル名は `{hostname}-live-region-log-{YYYYMMDD-HHMMSS}.{md|json}`。Blob + `<a download>`（downloads権限不要）。エクスポート後のログ自動消去はしない
-- モーダル判定（§11.3）はヒューリスティック（表示中の `aria-modal="true"` な dialog/alertdialog のうちスキャン順で最後）。「本拡張が判定したモーダル」として扱う
+- モーダル判定（§11.3）はヒューリスティック（`showModal()` で開かれた `<dialog>`（`:modal`）と、表示中の `aria-modal="true"` な dialog/alertdialog（`<dialog>` の暗黙ロールを含む）のうち、スキャン順で最後）。「本拡張が判定したモーダル」として扱う
 - **通知音**：Optionsの「通知音パターン」5択ラジオ（無音＝初期値／4種の音）＋「通知音ボリューム」3択（標準＝1.0／小さく＝-8dB(0.4)／もっと小さく＝-16dB(0.16)、`SOUND_VOLUME_LEVELS`）。SWがキャッチ保存後に Offscreen Document（`src/offscreen/`、`offscreen` 権限、`AUDIO_PLAYBACK`）へ `lrc:play-sound` を送って再生。単一Audio要素の使い回しで「新しい音は再生中の音を止めてから鳴る」。試聴も選択中ボリュームを反映。音源の出所はREADMEの「Sound credits」に記載。優先度による音の使い分けは**しない**（Yuさんの決定）
 
 ## Yuさんと合意済みの方針

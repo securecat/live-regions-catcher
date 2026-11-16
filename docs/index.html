@@ -121,9 +121,18 @@
       z-index: 10;
     }
 
-    .demo-modal h3 {
+    .demo-modal h3,
+    .native-dialog h3 {
       margin-top: 0;
       font-size: 1.125rem;
+    }
+
+    .native-dialog {
+      max-width: 22rem;
+      background: var(--color-bg);
+      color: var(--color-text);
+      border: 2px solid var(--color-region-border);
+      padding: 1rem;
     }
   </style>
 </head>
@@ -209,6 +218,16 @@
 
   <h2>16. iframe</h2>
   <iframe id="frame" title="Live region demo iframe" loading="lazy" srcdoc='<!DOCTYPE html><html lang="en"><body style="font-family:sans-serif;font-size:16px;background:#ffffff;color:#1b1b1f;"><button type="button" id="b">Update status in iframe</button><div role="status" id="s" style="border:1px solid #767676;padding:4px 8px;margin-top:8px;min-height:2rem;"></div><script>document.getElementById("b").addEventListener("click", () => { document.getElementById("s").textContent = "Updated inside iframe at " + new Date().toLocaleTimeString(); });</script></body></html>'></iframe>
+
+  <h2>17. Native &lt;dialog&gt; opened with showModal() and an outside notification</h2>
+  <p>A plain <code>&lt;dialog&gt;</code> without <code>role</code> or <code>aria-modal</code> attributes, opened with <code>showModal()</code>. While it is open, the status region below it updates after 1 second.</p>
+  <button type="button" id="open-native-dialog">Open native dialog</button>
+  <div class="region" role="status" id="native-dialog-outside-status"></div>
+  <dialog class="native-dialog" id="native-dialog" aria-labelledby="native-dialog-title">
+    <h3 id="native-dialog-title">Native dialog</h3>
+    <p>A status update fires outside this dialog 1 second after it opens. Press Esc or the Close button to close it.</p>
+    <button type="button" id="close-native-dialog">Close</button>
+  </dialog>
 
   <footer>
     <p><a href="https://github.com/securecat/live-regions-catcher">GitHub repository</a> · <a href="./guide.html">Guide page</a></p>
@@ -321,6 +340,24 @@
     });
 
     byId('close-modal').addEventListener('click', closeModal);
+
+    const nativeDialog = byId('native-dialog');
+
+    byId('open-native-dialog').addEventListener('click', () => {
+      nativeDialog.showModal();
+      setTimeout(() => {
+        byId('native-dialog-outside-status').textContent = `Updated outside the native dialog at ${time()}`;
+      }, 1000);
+    });
+
+    byId('close-native-dialog').addEventListener('click', () => {
+      nativeDialog.close();
+    });
+
+    // Closing by Esc or by the button both end up here.
+    nativeDialog.addEventListener('close', () => {
+      byId('open-native-dialog').focus();
+    });
 
     demoModal.addEventListener('keydown', (event) => {
       if (event.key === 'Escape') {
