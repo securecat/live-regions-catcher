@@ -7,25 +7,9 @@ Last updated: 2026-11-17
 This statement covers:
 
 - The extension's UI (the popup, the side panel, and the options page)
-- How the extension affects the pages you visit
 - The guide page and the demo page published on GitHub Pages
 
 For the UI, we target WCAG 2.2 Level AA, and we treat it as a minimum, not a ceiling. Some of our own rules are stricter than AA (see [Contributor Expectations](#contributor-expectations)). We have not had a third-party evaluation, so this is a target, not a claim of conformance.
-
-## Effect on the Pages You Visit
-
-Live Regions Catcher observes pages; it does not change them.
-
-- It does not modify the page's DOM
-- To observe `ariaNotify()` and `attachShadow()`, it wraps these two methods. The wrappers always call the original method and do not change its arguments, return value, or exceptions
-- It does not move focus on the page
-
-## How New Catches Appear in the Side Panel
-
-- Focus does not move when a new catch arrives
-- The extension does not announce new catches through a live region of its own, so its announcements do not overlap with the page's notifications. You can find new catches by the "New from here" divider in the side panel and by the count on the toolbar icon's badge. You can also choose a notification sound on the options page (silent by default)
-- Differences between the previous and current content, and the kinds of notification, are not shown by color alone. Text labels and underline styles are used as well, and the distinction remains in forced colors mode
-- When the language (`lang`) and direction (`dir`) of the caught content can be determined, they are applied to the content in the side panel
 
 ## Supported Environments
 
@@ -38,6 +22,8 @@ Live Regions Catcher observes pages; it does not change them.
 
 - **When a new catch arrives, the side panel scrolls to the end by default if you are already viewing the end, and new catches fade in.** The fade-in is off by default when your OS is set to reduce motion.
   - Workaround: On the options page, under "Display," set "Auto-scroll on new catches" to "Do not auto-scroll" and "Fade in new catches" to "Do not fade in."
+- **Screen readers are not told when a new catch arrives.** The extension does not announce new catches through a live region of its own, so that its announcements do not overlap with the page's notifications.
+  - Workaround: Choose a notification sound on the options page, and a sound plays each time a catch arrives (silent by default).
 - **Some text in the side panel does not reach our own 7:1 contrast rule.** To give the side panel the look of a chat app, some text has a contrast ratio between 4.5:1 and 7:1, such as the times, some labels, the "New from here" band, and the message shown when there are no catches. This meets WCAG 2.2 Level AA (4.5:1), but not the stricter rule in [Contributor Expectations](#contributor-expectations).
   - Workaround: In forced colors mode, such as Windows contrast themes, the side panel is shown in the system colors.
 
@@ -84,7 +70,7 @@ When you change the UI, aim to meet the following:
 
 After the change, check that everything can be operated with a keyboard alone, and that a screen reader such as NVDA reads the content correctly.
 
-When you change the content scripts (`src/content/`), don't modify the page's DOM or move focus on the page. The wrappers in `page-hooks.js` must always call the original method and must not change `this`, the arguments, the return value, or exceptions. When you change the side panel, don't move focus when a catch arrives, and don't announce new catches through the extension's own live region.
+When you change the content scripts (`src/content/`), don't modify the page's DOM or move focus on the page. When you change the side panel, don't move focus when a catch arrives, and don't announce new catches through the extension's own live region.
 
 ## Ownership and Maintenance
 
@@ -105,25 +91,9 @@ Suggestions about this statement or our approach to accessibility are also welco
 この文書が対象とするのは、次のとおりです。
 
 - 拡張機能のUI（ポップアップ、サイドパネル、オプションページ）
-- 拡張機能が、閲覧中のページに与える影響
 - GitHub Pages で公開しているガイドページとデモページ
 
 UIは WCAG 2.2 のレベル AA を目標とし、これを上限ではなく下限と考えています。AAより厳しい独自の基準もあります（[貢献者への期待](#貢献者への期待)を参照）。第三者による試験は受けていないため、これは目標であり、適合を表明するものではありません。
-
-## 閲覧中のページへの影響
-
-ライブリージョン・キャッチャーは、ページを観測するだけで、ページを変更しません。
-
-- ページの DOM を書き換えません
-- `ariaNotify()` と `attachShadow()` を観測するため、この2つのメソッドを包んでいます。包んだメソッドは、必ず元のメソッドを呼び、引数・戻り値・例外を変えません
-- ページのフォーカスを動かしません
-
-## サイドパネルでの新着の表示
-
-- 新しいキャッチが届いても、フォーカスは動きません
-- 拡張機能自身のライブリージョンで新着を知らせることはしません。ページ側の通知と重ならないようにするためです。新着は、サイドパネルの「ここから新着」の区切りと、ツールバーアイコンのバッジの件数で確認できます。オプションページで通知音を選ぶこともできます（初期値は無音）
-- 変更前後の内容の違いや通知の種類は、色だけで示しません。テキストのラベルや下線の種類も使っており、強制カラーモードでも区別できます
-- キャッチした内容の言語（`lang`）と書字方向（`dir`）が分かる場合は、サイドパネルの表示に反映します
 
 ## 対応している環境
 
@@ -136,6 +106,8 @@ UIは WCAG 2.2 のレベル AA を目標とし、これを上限ではなく下�
 
 - **新しいキャッチが届くと、初期設定では、末尾を見ているときにサイドパネルが末尾まで自動でスクロールし、新しい項目がフェードインで表示されます。** フェードインは、OS で視差効果を減らす設定にしている場合は、初期設定で表示しません。
   - 回避策：オプションページの「表示」で、「新しいキャッチ時の自動スクロール」を「自動スクロールしない」に、「新しいキャッチのフェードイン表示」を「しない」にしてください。
+- **新しいキャッチが届いても、スクリーンリーダーには伝わりません。** ページ側の通知と重ならないように、拡張機能自身のライブリージョンでは知らせていません。
+  - 回避策：オプションページで通知音を選ぶと、キャッチが届くたびに音が鳴ります（初期値は無音）。
 - **サイドパネルの一部の文字は、独自の基準であるコントラスト比 7:1 に届いていません。** サイドパネルをチャットアプリ風の見た目にするため、時刻、一部のラベル、「ここから新着」の帯、キャッチがないときのメッセージなどは、コントラスト比が 4.5:1 以上 7:1 未満です。WCAG 2.2 のレベル AA（4.5:1）は満たしていますが、[貢献者への期待](#貢献者への期待)に挙げた、より厳しい基準には届いていません。
   - 回避策：Windows のコントラスト テーマなどの強制カラーモードでは、サイドパネルはシステムの配色で表示されます。
 
@@ -182,7 +154,7 @@ UIを変更するときは、次を満たすように心がけてください。
 
 変更したあとは、キーボードだけですべて操作できること、NVDA などのスクリーンリーダーで内容が正しく読み上げられることを確認してください。
 
-コンテンツスクリプト（`src/content/`）を変更するときは、ページの DOM を書き換えないこと、ページのフォーカスを動かさないことを守ってください。`page-hooks.js` で包んだメソッドは、必ず元のメソッドを呼び、`this`・引数・戻り値・例外を変えないでください。サイドパネルを変更するときは、キャッチが届いてもフォーカスを動かさないこと、拡張機能自身のライブリージョンで新着を知らせないことを守ってください。
+コンテンツスクリプト（`src/content/`）を変更するときは、ページの DOM を書き換えないこと、ページのフォーカスを動かさないことを守ってください。サイドパネルを変更するときは、キャッチが届いてもフォーカスを動かさないこと、拡張機能自身のライブリージョンで新着を知らせないことを守ってください。
 
 ## 責任者と保守
 
