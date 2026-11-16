@@ -1,6 +1,6 @@
 # Accessibility
 
-Last updated: 2026-11-07
+Last updated: 2026-11-16
 
 ## Priorities and Goals
 
@@ -46,7 +46,7 @@ Live Regions Catcher observes pages; it does not change them.
 - **Some notifications cannot be caught.** These include notifications inside closed shadow DOM, `ariaNotify()` calls made before the extension is injected or in browsers without the API, and pages where Chrome does not run extensions (such as `chrome://` pages).
 - **Modal dialogs are detected heuristically.** The extension treats the last visible dialog with `aria-modal="true"` as the active modal. This may differ from how a browser or screen reader treats the page.
 - **What the extension shows are notification candidates as observed from the DOM and Web APIs.** It does not reproduce what a screen reader actually speaks, which differs between screen readers and their settings.
-- **The demo page is in English only, and its modal dialog is a minimal one for testing.** The content behind the dialog is not made inert, and the Esc key does not close it. Use the "Close" button.
+- **The demo page is in English only.**
 
 ## Reporting Accessibility Barriers
 
@@ -105,7 +105,7 @@ Suggestions about this statement or our approach to accessibility are also welco
 
 # アクセシビリティ
 
-最終更新：2026-11-07
+最終更新：2026-11-16
 
 ## 優先事項と目標
 
@@ -151,7 +151,7 @@ UIは WCAG 2.2 のレベル AA を目標とし、これを上限ではなく下�
 - **キャッチできない通知があります。** closed な Shadow DOM の中の通知、拡張機能が読み込まれる前や API のないブラウザでの `ariaNotify()` の呼び出し、Chrome が拡張機能を動かさないページ（`chrome://` のページなど）での通知です。
 - **モーダルダイアログは、推測で判定しています。** 表示中の `aria-modal="true"` のダイアログのうち、最後のものをモーダルとして扱います。ブラウザやスクリーンリーダーの扱いとは異なる場合があります。
 - **表示するのは、DOM と Web API から観測できた通知候補です。** スクリーンリーダーが実際に読み上げる内容を再現するものではありません。読み上げは、スクリーンリーダーの種類や設定によって異なります。
-- **デモページは英語のみで、そのモーダルダイアログは試験用の最小限のものです。** ダイアログの背後の内容は操作できないようにしておらず、Esc キーでも閉じません。「Close」ボタンで閉じてください。
+- **デモページは英語のみです。**
 
 ## アクセシビリティの問題を報告する
 

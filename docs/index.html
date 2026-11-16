@@ -11,6 +11,7 @@
       --color-text: #1b1b1f;
       --color-region-border: #767676;
       --color-control-border: #767676;
+      --color-hover-bg: #e8e8ee;
       --color-link: #1a56a8;
     }
 
@@ -20,6 +21,7 @@
         --color-text: #e9e9ee;
         --color-region-border: #8a8a94;
         --color-control-border: #8a8a94;
+        --color-hover-bg: #34343c;
         --color-link: #8ab8f0;
       }
     }
@@ -66,9 +68,20 @@
       min-height: 2.75rem;
     }
 
+    /* The browser's default dark-mode button falls short of 7:1 for its
+       label, so buttons get explicit colors. */
     button {
       font: inherit;
       padding: 0.25rem 0.75rem;
+      background: var(--color-bg);
+      color: var(--color-text);
+      border: 1px solid var(--color-control-border);
+      border-radius: 0.375rem;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: var(--color-hover-bg);
     }
 
     label {
@@ -279,17 +292,40 @@
       byId('off-conflict').textContent = `Muted update at ${time()}`;
     });
 
+    // The demo modal stays a div with role="dialog" aria-modal="true", which
+    // is the pattern the extension detects. While it is open, everything
+    // else in the body is inert, and Esc closes it.
+    const demoModal = byId('demo-modal');
+
+    function setBackgroundInert(inert) {
+      for (const el of document.body.children) {
+        if (el !== demoModal && el.localName !== 'script') {
+          el.inert = inert;
+        }
+      }
+    }
+
+    function closeModal() {
+      demoModal.hidden = true;
+      setBackgroundInert(false);
+      byId('open-modal').focus();
+    }
+
     byId('open-modal').addEventListener('click', () => {
-      byId('demo-modal').hidden = false;
+      setBackgroundInert(true);
+      demoModal.hidden = false;
       byId('close-modal').focus();
       setTimeout(() => {
         byId('modal-outside-status').textContent = `Updated outside the modal at ${time()}`;
       }, 1000);
     });
 
-    byId('close-modal').addEventListener('click', () => {
-      byId('demo-modal').hidden = true;
-      byId('open-modal').focus();
+    byId('close-modal').addEventListener('click', closeModal);
+
+    demoModal.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        closeModal();
+      }
     });
 
     if (typeof document.ariaNotify === 'function') {
